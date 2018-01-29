@@ -3,5 +3,23 @@ html
   head
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
+    block scripts
+      script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery-compat/3.0.0-alpha1/jquery.min.js')      
+      script(src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js", integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl", crossorigin="anonymous")
   body
+    .navbar.navbar-inverse.navbar-fixed-top
+      .navbar-inner
+        .container
+          a.brand(href="/") Example
+          ul.nav
+            if (typeof(user) == 'undefined')
+              li
+                a(href="/register") Register
+              li
+                a(href="/login") Log In
+            else
+              li
+                a(href="/logout") Log Out
+
+    .container
     block content

@@ -1,17 +1,21 @@
+var env = process.env.NODE_ENV || 'development';
+
 var express       = require('express');
 var path          = require('path');
 var favicon       = require('serve-favicon');
+var  logger       = require('morgan');
 var logger        = require('morgan');
 var cookieParser  = require('cookie-parser');
 var bodyParser    = require('body-parser');
+var session       = require('cookie-session');
 var mongoose      = require('mongoose');
-var config        = require('./config/config')[process.env];
-// Service Port
-var port = config.port || 8080;
+var config        = require('./config/config')[env];
+var passport      = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
 
+global.config = config;
 
 var index = require('./routes/index');
-var users = require('./routes/users');
 
 var app = express();
 
@@ -21,7 +25,7 @@ app.set('view engine', 'pug');
 
 //MongoDB
 mongoose.Promise = global.Promise;
-mongoose.connect(config.db, { useMongoClient: true })
+mongoose.connect(config.db);
 mongoose.connection.on('connected', () => {
     return console.log('Mongoose conectado');
 });
@@ -39,9 +43,20 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({keys: [config.crypto.secret]}));
+
+// Configure passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Configure passport-local to use account model for authentication
+var Account = require('./models/Account');
+passport.use(new LocalStrategy(Account.authenticate()));
+
+passport.serializeUser(Account.serializeUser());
+passport.deserializeUser(Account.deserializeUser());
 
 app.use('/', index);
-app.use('/users', users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
