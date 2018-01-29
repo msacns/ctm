@@ -27,7 +27,7 @@ router.post('/register', function(req, res, next) {
 });
 
 router.get('/login', function(req, res) {
-  res.render('login', {user: req.user});
+  res.render('login', {title: 'CTM [v1.0.1]', user: req.user});
 });
 
 router.post('/login', passport.authenticate('local'), function(req, res) {
