@@ -5,6 +5,10 @@ var logger        = require('morgan');
 var cookieParser  = require('cookie-parser');
 var bodyParser    = require('body-parser');
 var mongoose      = require('mongoose');
+var config        = require('./config/config')[process.env]
+// Service Port
+var port = config.port || 8080
+
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -17,21 +21,18 @@ app.set('view engine', 'pug');
 
 //MongoDB
 mongoose.Promise = global.Promise;
-mongoose.connect(config.database, { useMongoClient: true })
-
+mongoose.connect(config.db, { useMongoClient: true })
 mongoose.connection.on('connected', () => {
     return console.log('Mongoose conectado');
 });
-
 mongoose.connection.on('disconnected', () => {
     return console.log('Mongoose desconectado');
 });
-
 mongoose.connection.on('error', error => {
     return console.log('Mongoose erro de conexão: ' + error);
 });
 
-// uncomment after placing your favicon in /public
+//Middlewares
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
