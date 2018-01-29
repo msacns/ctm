@@ -58,5 +58,5 @@ typings/
 .env
 
 #VSCode Directory
-/.vscode
+.vscode/
 
