@@ -5,9 +5,9 @@ var logger        = require('morgan');
 var cookieParser  = require('cookie-parser');
 var bodyParser    = require('body-parser');
 var mongoose      = require('mongoose');
-var config        = require('./config/config')[process.env]
+var config        = require('./config/config')[process.env];
 // Service Port
-var port = config.port || 8080
+var port = config.port || 8080;
 
 
 var index = require('./routes/index');
@@ -49,6 +49,13 @@ app.use(function(req, res, next) {
   err.status = 404;
   next(err);
 });
+
+// Set Service Scope for Intercharge messages
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+})
 
 // error handler
 app.use(function(err, req, res, next) {
