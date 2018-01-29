@@ -3,13 +3,16 @@ var mongoose  = require('mongoose'),
 var passportLocalMongoose = require('passport-local-mongoose')
 var mongooseLogs = require('mongoose-activitylogs')
     
-var Account = new Schema({
-    username: String,
+var Account = new Schema({    
+    username: {
+        type: String,
+        unique: true,
+        required: true
+    },
     email: {
         type: String,
         unique: true,
-        lowercase: true,
-        required: true
+        lowercase: true
     },
     password: {
         type: String,
@@ -34,7 +37,7 @@ var Account = new Schema({
 );
 
 Account.plugin(passportLocalMongoose,{
-    usernameField: 'email',
+    usernameField: 'username',
     hashField:'password',
     attemptsField: 'attempts',
     lastLoginField: 'lastloginAt',
@@ -48,7 +51,7 @@ Account.plugin(passportLocalMongoose,{
 });
 
 Account.plugin(mongooseLogs, {
-    schemaName: "user",
+    schemaName: "Account User",
     createAction: "created",
     updateAction: "updated",
     deleteAction: "deleted" 
