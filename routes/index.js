@@ -5,7 +5,7 @@ var router = express.Router();
 var Account = require('../models/Account');
 
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express', user: req.user });
+  res.render('index', { title: 'CTM [v1.0.0]', user: req.user });
 });
 
 router.get('/register', function(req, res) {
