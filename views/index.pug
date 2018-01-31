@@ -1,10 +1,10 @@
-extends layout
+extends layout/default
 
-block content  
-  if (user)
-    h1= title
-    p Welcome to #{title}
-    p You are currently logged in as #{user.username}
-  else
-    p You are currently not logged in. Plaese login or register...
-
+block content
+  
+  main.main         
+        ol.breadcrumb
+          li.breadcrumb-item Home
+          li.breadcrumb-item
+            a(href='#') Admin
+          li.breadcrumb-item.active Dashboard

@@ -6,33 +6,30 @@
                 i.icon-speedometer
                 |  Dashboard 
             li.nav-title
-              | Clientes
+              | Transações
             li.nav-item.nav-dropdown
               a.nav-link.nav-dropdown-toggle(href='#')
                 i.icon-control-start
-                |  Veículos
+                |  Operações
               ul.nav-dropdown-items
                 li.nav-item
                   a.nav-link(href='/trips')
                     i.icon-direction
-                    |  Último trajeto                                
-                //- li.nav-item
-                //-   a.nav-link(href='/locate')
-                //-     i.icon-location-pin
-                //-     |  Localizar                              
+                    |  Registro                               
             li.nav-item.nav-dropdown
               a.nav-link.nav-dropdown-toggle(href='#')
                 i.icon-star
-                |  Eventos
+                |  Relatórios
               ul.nav-dropdown-items
                 li.nav-item
                   a.nav-link(href='/alarms')
                     i.icon-fire
-                    |  Alarmes               
-            li.nav-item
-              a.nav-link(href='/driverbehavior')
-                i.icon-user-follow
-                |  Score
+                    |  Documentos x Clientes  
+              ul.nav-dropdown-items
+                li.nav-item
+                  a.nav-link(href='/alarms')
+                    i.icon-fire
+                    |  Clientes / Fornecedores                                
             li.divider
             li.nav-title
               | Administração
@@ -52,50 +49,8 @@
                 li.nav-item
                   a.nav-link(href='/vehicles')
                     i.icon-energy
-                    |  Veiculos                  
-                li.nav-item.nav-dropdown
-                  a.nav-link.nav-dropdown-toggle(href='#')
-                    i.icon-compass
-                    |  Devices
-                  ul.nav-dropdown-items
-                    li.nav-item
-                      a.nav-link(href='/devices/new')
-                        i.icon-arrow-up-circle
-                        |  Registrar
-                    li.nav-item
-                      a.nav-link(href='/devices')
-                        i.icon-refresh
-                        |  Liberar   
-                    li.nav-item
-                      a.nav-link(href='/devices/setup')
-                        i.icon-reload
-                        |  Setup               
-                li.nav-item.nav-dropdown
-                  a.nav-link.nav-dropdown-toggle(href='#')
-                    i.icon-list
-                    |  Parâmetros
-                  ul.nav-dropdown-items
-                    li.nav-item
-                      a.nav-link(href='/georisks')
-                        i.icon-map
-                        |  Zonas de Risco   
-                    li.nav-item
-                      a.nav-link(href='/calcvars')
-                        i.icon-directions
-                        |  Variáveis para Cálculo  
-                    li.nav-item
-                      a.nav-link(href='/profiles')
-                        i.icon-equalizer
-                        |  Perfis
-                    li.nav-item
-                      a.nav-link(href='/authorities')
-                        i.icon-anchor
-                        |  Autoridade    
-                    li.nav-item
-                      a.nav-link(href='/extclasses')
-                        i.icon-note
-                        |  Tipos Extensivos     
-                    li.nav-item
-                      a.nav-link(href='/extensivevalues')
-                        i.icon-envelope-open
-                        |  Valores Extensivos      
+                    |  Fornecedores   
+                li.nav-item
+                  a.nav-link(href='/vehicles')
+                    i.icon-energy
+                    |  Status                     
