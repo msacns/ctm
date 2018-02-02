@@ -2,8 +2,8 @@
 var mongoose        = require('mongoose');
 var passport        = require('passport');
 var Supplier         = require('../models/Suppliers');
-var config          = require('../lib/config');
-var async           = require('run-async');
+// var config          = require('../lib/config');
+// var async           = require('run-async');
 
 var supplierController = {}
 
@@ -24,7 +24,8 @@ var supplierController = {}
         .find()       
         .limit(limit)
         .skip(limit * page)
-        .exec(function(err, suppliers){         
+        .exec(function(err, suppliers){     
+            Supplier.count().exec(function(err, count){   
                     res.render('suppliers/index',
                     { title: 'CTM [v1.0.0]| Fornecedores', 
                         list: suppliers,
@@ -32,7 +33,7 @@ var supplierController = {}
                         page: page + 1,
                         pages: Math.ceil(count / limit)}
                     );
-                   
+                }); 
             });               
   }
 

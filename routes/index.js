@@ -3,6 +3,7 @@ var express = require('express');
 var router = express.Router();
 
 var Account = require('../models/Account');
+var Supplier = require('../controllers/supplierController');
 
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'CTM [v1.0.0]', user: req.user });
@@ -46,27 +47,27 @@ router.get('/users', function(req, res) {
 
 // ++++++++++++++++++++++ Suppliers +++++++++++++++++++++++++++
 
-router.get('/suppliers',  isLoggedIn, customer.list)
+router.get('/suppliers',  isLoggedIn, Supplier.list);
 // Get single user by id
-router.get('/suppliers/show/:id', isLoggedIn, customer.show)
+router.get('/suppliers/show/:id', isLoggedIn, Supplier.show);
 // Create user
-router.get('/suppliers/new', isLoggedIn, customer.create)
+router.get('/suppliers/new', isLoggedIn, Supplier.create);
 // Save user
-router.post('/suppliers/save', isLoggedIn, customer.save)
+router.post('/suppliers/save', isLoggedIn, Supplier.save);
 // Edit user
-router.get('/suppliers/edit/:id', isLoggedIn, customer.edit)
+router.get('/suppliers/edit/:id', isLoggedIn, Supplier.edit);
 // Edit user
-router.post('/suppliers/update/:id',isLoggedIn,  customer.update)
+router.post('/suppliers/update/:id',isLoggedIn,  Supplier.update);
 // Delete
-router.post('/suppliers/delete/:id', isLoggedIn, customer.delete)
+router.post('/suppliers/delete/:id', isLoggedIn, Supplier.delete);
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 module.exports = router;
 
 function isLoggedIn(req, res, next) {            
-  if (req.isAuthenticated())        
+  // if (req.isAuthenticated())        
       return next();
 
-  res.redirect('/login');
+  // res.redirect('/login');
 }
