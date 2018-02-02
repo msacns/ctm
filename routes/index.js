@@ -39,4 +39,8 @@ router.get('/logout', function(req, res) {
   res.redirect('/');
 });
 
+router.get('/users', function(req, res) {
+  res.render('login', {title: 'CTM [v1.0.1] - Usuários', user: req.user});
+});
+
 module.exports = router;

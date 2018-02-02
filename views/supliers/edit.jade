@@ -1,0 +1,85 @@
+extends ../layout/default
+
+block content
+  main.main
+        // Breadcrumb
+        ol.breadcrumb
+          li.breadcrumb-item Administração
+          li.breadcrumb-item Configurações
+          li.breadcrumb-item Usuário
+          li.breadcrumb-item.active Detalhes
+        .container-fluid
+          .animated.fadeIn
+            .row
+              .col-md-12
+                  .card
+                    .card-header
+                      i.fa.fa-edit
+                      |  Usuário - Edição
+                    .card-body   
+                      != messages()  
+                      form.form-horizontal(action='/users/update/#{users.id}', method='post')
+                        .form-group
+                          label.form-control-label(for='fullname') Nome
+                          .controls
+                            .input-group
+                              input#fullname.form-control(name='fullname',size='16', type='text',  value='#{users.fullname}', readonly=false)
+                        .form-group
+                          label.form-control-label(for='email') e-mail
+                          .controls
+                            .input-group
+                              input#email.form-control(name='email',size='100', type='text',  value='#{users.email}', readonly=false)                                                           
+                        .form-group
+                          label.form-control-label(for='password') Senha
+                          .controls
+                            .input-group
+                              input#password.form-control(name='password',size='16', type='password',  value='#{users.password}', readonly=false) 
+                        .form-group
+                          label.form-control-label(for='genderMF') Genero?
+                          .controls
+                            .input-group
+                              select#select.form-control-sm(name='gender')
+                                option(value='Masculino') Masculino
+                                option(value='Feminino') Feminino 
+                        .form-group
+                          label.form-control-label(for='profilelbl') Perfil
+                          .controls
+                            .input-group
+                              select#select.form-control-sm(name='profile')
+                                each prof in profiles
+                                  option(value='#{prof.id}', selected=prof.id==users.profile) #{prof.ProfileDescription}                                                                                       
+                        .form-group
+                          label.form-control-label(for='authlbl') Autoridade
+                          .controls
+                            .input-group
+                              select#select.form-control-sm(name='authority')
+                                each auth in authorities
+                                  option(value='#{auth.id}', selected=auth.id==users.authority) #{auth.AuthorityDescription}  
+                         .form-group
+                          label.form-control-label(for='accountlbl') Conta
+                          .controls
+                            .input-group
+                              select#select.form-control-sm(name='customer')
+                                each cust in customers
+                                  option(value='#{cust.id}', selected=cust.id==users.customer) #{cust.fullname}  
+                        .form-group
+                          label.col-md-3.form-control-label(for='activedYN') Ativo?
+                          .controls
+                            .col-md-9
+                              select#active.form-control-sm(name='active', disabled=false)
+                                option(value='true', selected=users.active == true) Sim
+                                option(value='false', selected=users.active == false) Não
+                        .form-group
+                          label.form-control-label(for='createdAt') Criado em
+                          .controls
+                            .input-group
+                              input#createdAt.form-control(size='16', type='text', readonly=true, value='#{users.createdAt}')                                                                                                              
+                        .form-actions
+                          button.btn.btn-sm.btn-success(type='submit')
+                            i.fa.fa-edit
+                            |  Atualizar   
+                          span     
+                          a(href='/users/show/#{users.id}')                                           
+                            button.btn.btn-sm.btn-danger(type='button')
+                              i.fa.fa-ban
+                              |  Cancelar                               

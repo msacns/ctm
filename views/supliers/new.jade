@@ -1,0 +1,75 @@
+extends ../layout/default
+
+block content
+  main.main
+        // Breadcrumb
+        ol.breadcrumb
+          li.breadcrumb-item Administração
+          li.breadcrumb-item Configurações
+          li.breadcrumb-item.active Usuários
+        .container-fluid
+          .animated.fadeIn
+            .row
+              .col-md-12
+                  .card
+                    .card-header
+                      i.fa.fa-edit
+                      |  Usuários
+                    .card-body                                              
+                      != messages()
+                      form.form-horizontal(action='/users/save', method='post')
+                        .form-group
+                          label.form-control-label(for='fullname') Nome
+                          .controls
+                            .input-group
+                              input#fullname.form-control(name='fullname',size='16', type='text')
+                        .form-group
+                          label.form-control-label(for='email') e-mail
+                          .controls
+                            .input-group
+                              input#email.form-control(name='email',size='100', type='text')                                                              
+                        .form-group
+                          label.form-control-label(for='password') Senha
+                          .controls
+                            .input-group
+                              input#password.form-control(name='password',size='16', type='password')  
+                        .form-group
+                          label.form-control-label(for='genderMF') Genero?
+                          .controls
+                            .input-group
+                              select#select.form-control-sm(name='gender')
+                                option(value='Masculino') Masculino
+                                option(value='Feminino') Feminino 
+                        .form-group
+                          label.form-control-label(for='profilelbl') Perfil
+                          .controls
+                            .input-group
+                              select#select.form-control-sm(name='profile')
+                                each prof in profiles
+                                  option(value='#{prof.id}') #{prof.ProfileDescription}                                                                                       
+                        .form-group
+                          label.form-control-label(for='authlbl') Autoridade
+                          .controls
+                            .input-group
+                              select#select.form-control-sm(name='authority')
+                                each auth in authorities
+                                  option(value='#{auth.id}') #{auth.AuthorityDescription}  
+                         .form-group
+                          label.form-control-label(for='accountlbl') Conta
+                          .controls
+                            .input-group
+                              select#select.form-control-sm(name='customer')
+                                each cust in customers
+                                  option(value='#{cust.id}') #{cust.fullname}   
+                         .form-group
+                          label.form-control-label(for='activedYN') Ativo?
+                          .controls
+                            .input-group
+                              select#select.form-control-sm(name='active')
+                                option(value='true') Sim
+                                option(value='false') Não          
+                        .form-actions
+                          button.btn.btn-sm.primary(type='submit') Salvar
+                          span
+                          a(href='/users') 
+                           button.btn.btn-sm.secondary(type='button') Cancelar                                                                       

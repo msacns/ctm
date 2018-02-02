@@ -1,0 +1,82 @@
+extends ../layout/default
+
+block content
+  main.main
+        // Breadcrumb
+        ol.breadcrumb
+          li.breadcrumb-item Administração
+          li.breadcrumb-item Configurações
+          li.breadcrumb-item Usuários
+          li.breadcrumb-item.active Detalhes
+        .container-fluid
+          .animated.fadeIn
+            .row
+              .col-md-12
+                  .card
+                    .card-header
+                      i.fa.fa-edit
+                      |  Usuário - Detalhes
+                    .card-body   
+                      != messages()  
+                      form.form-horizontal(action='/users/delete/#{users.id}', method='post') 
+                         .form-group
+                          label.form-control-label(for='fullname') Nome
+                          .controls
+                            .input-group
+                              input#fullname.form-control(name='fullname',size='16', type='text',  value='#{users.fullname}', readonly=true)
+                        .form-group
+                          label.form-control-label(for='email') e-mail
+                          .controls
+                            .input-group
+                              input#email.form-control(name='email',size='100', type='text',  value='#{users.email}', readonly=true)                                                           
+                        .form-group
+                          label.form-control-label(for='password') Senha
+                          .controls
+                            .input-group
+                              input#password.form-control(name='password',size='16', type='password',  value='#{users.password}', readonly=true) 
+                        .form-group
+                          label.form-control-label(for='genderMF') Genero
+                          .controls
+                            .input-group
+                              input#gender.form-control(name='gender',size='100', type='text',  value="if(users.gender =='M') 'Masculino' else 'Feminino'", readonly=true) 
+                        .form-group
+                          label.form-control-label(for='profilelbl') Perfil
+                          .controls
+                            .input-group
+                              input#profile.form-control(name='profile',size='100', type='text', value='#{users.profile}',  readonly=true)                                                                                     
+                        .form-group
+                          label.form-control-label(for='authlbl') Autoridade
+                          .controls
+                            .input-group
+                              input#authority.form-control(name='authority',size='100', type='text',  value='#{users.authority}', readonly=true)   
+                         .form-group
+                          label.form-control-label(for='accountlbl') Conta
+                          .controls
+                            .input-group
+                              input#customer.form-control(name='customer',size='100', type='text',  value='#{users.customer}', readonly=true) 
+                        .form-group
+                          label.col-md-3.form-control-label(for='activedYN') Ativo?
+                          .controls
+                            .col-md-9
+                              select#active.form-control-sm(name='active', disabled=true)
+                                option(value='true', selected=users.active == true) Sim
+                                option(value='false', selected=users.active == false) Não
+                        .form-group
+                          label.form-control-label(for='createdAt') Criado em
+                          .controls
+                            .input-group
+                              input#createdAt.form-control(size='16', type='text', readonly=true, value='#{users.createdAt}')                                                                                                              
+                        .form-actions                          
+                          a(href='/users/edit/#{users.id}') 
+                            button.btn.btn-sm.btn-success(type='button')
+                              i.fa.fa-edit
+                              |  Editar   
+                            span    
+                          button.btn.btn-sm.btn-primary(type='submit')
+                            i.fa.fa-delicious
+                            |  Deletar   
+                          span         
+                          a(href='/users')                
+                            button.btn.btn-sm.btn-info(type='button')
+                              i.fa.fa-backward
+                              |  Voltar a lista                               
