@@ -43,4 +43,30 @@ router.get('/users', function(req, res) {
   res.render('login', {title: 'CTM [v1.0.1] - Usuários', user: req.user});
 });
 
+
+// ++++++++++++++++++++++ Suppliers +++++++++++++++++++++++++++
+
+router.get('/suppliers',  isLoggedIn, customer.list)
+// Get single user by id
+router.get('/suppliers/show/:id', isLoggedIn, customer.show)
+// Create user
+router.get('/suppliers/new', isLoggedIn, customer.create)
+// Save user
+router.post('/suppliers/save', isLoggedIn, customer.save)
+// Edit user
+router.get('/suppliers/edit/:id', isLoggedIn, customer.edit)
+// Edit user
+router.post('/suppliers/update/:id',isLoggedIn,  customer.update)
+// Delete
+router.post('/suppliers/delete/:id', isLoggedIn, customer.delete)
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 module.exports = router;
+
+function isLoggedIn(req, res, next) {            
+  if (req.isAuthenticated())        
+      return next();
+
+  res.redirect('/login');
+}

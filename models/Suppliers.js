@@ -25,6 +25,9 @@ var SupplierSchema = new Schema({
     active: {
         type: Boolean,
         required: true
+    },
+    modifiedBy: {
+        type: String
     }
 },
 {
