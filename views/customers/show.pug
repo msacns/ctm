@@ -6,7 +6,7 @@ block content
         ol.breadcrumb
           li.breadcrumb-item Administração
           li.breadcrumb-item Configurações
-          li.breadcrumb-item Fornecedores
+          li.breadcrumb-item Clientes
           li.breadcrumb-item.active Detalhes
         .container-fluid
           .animated.fadeIn
@@ -15,32 +15,44 @@ block content
                   .card
                     .card-header
                       i.fa.fa-edit
-                      |  Fornecedor - Detalhes
-                      - var docid       = suppl.id;
-                      - var codfor      = suppl.supplier;
-                      - var descfor     = suppl.description;
-                      - var codpais     = suppl.country;
-                      - var desccontato = suppl.contact;
-                      - var ativo       = suppl.active;
-                      - var dtcriacao   = suppl.createdAt;
+                      |  Cliente - Detalhes
+                      - var docid       = clients.id;
+                      - var codcli      = clients.customer;
+                      - var descli      = clients.description;
+                      - var codpais     = clients.country;
+                      - var codestado     = clients.state;
+                      - var codcidade     = clients.city;
+                      - var desccontato = clients.contact;
+                      - var ativo       = clients.active;
+                      - var dtcriacao   = clients.createdAt;
                     .card-body   
                       != messages()  
-                      form.form-horizontal(action='/suppliers/delete/' + docid, method='post')                         
+                      form.form-horizontal(action='/customers/delete/' + docid, method='post')                         
                         .form-group
                           label.form-control-label(for='fullname') Código
                           .controls
                             .input-group
-                              input#supplier.form-control(name='supplier',size='16', type='text',  value=codfor, readonly=true)
+                              input#customer.form-control(name='customer',size='16', type='text',  value=codcli, readonly=true)
                         .form-group
-                          label.form-control-label(for='description') Fornecedor
+                          label.form-control-label(for='description') Cliente
                           .controls
                             .input-group
-                              input#description.form-control(name='description',size='100', type='text',  value=descfor, readonly=true)                                                           
+                              input#description.form-control(name='description',size='100', type='text',  value=descli, readonly=true)                                                           
                         .form-group
-                          label.form-control-label(for='country') País
+                          label.form-control-label(for='lblcountry') País
                           .controls
                             .input-group
                               input#country.form-control(name='country',size='16', type='text',  value=codpais, readonly=true) 
+                        .form-group
+                          label.form-control-label(for='lblstate') Estado
+                          .controls
+                            .input-group
+                              input#state.form-control(name='state',size='16', type='text',  value=codestado, readonly=true) 
+                        .form-group
+                          label.form-control-label(for='lblcity') Cidade
+                          .controls
+                            .input-group
+                              input#city.form-control(name='city',size='16', type='text',  value=codcidade, readonly=true)             
                         .form-group
                           label.form-control-label(for='country') Contato
                           .controls
@@ -60,7 +72,7 @@ block content
                             .input-group
                               input#createdAt.form-control(size='16', type='text', readonly=true, value=formatDate(dtcriacao))                                                                                                              
                         .form-actions                          
-                          a(href='/supplier/edit/'+docid) 
+                          a(href='/customers/edit/'+docid) 
                             button.btn.btn-sm.btn-success(type='button')
                               i.fa.fa-edit
                               |  Editar   
@@ -69,7 +81,7 @@ block content
                             i.fa.fa-delicious
                             |  Deletar   
                           span         
-                          a(href='/suppliers')                
+                          a(href='/customers')                
                             button.btn.btn-sm.btn-info(type='button')
                               i.fa.fa-backward
                               |  Voltar a lista                               

@@ -100,7 +100,7 @@ customerController.show = function(req, res){
         } else {    
             Countries
               .find().exec(function(err, country){
-                res.render('suppliers/edit', {clients: customers, countries: country});
+                res.render('customers/edit', {clients: customers, countries: country});
               });                
         };
       });
@@ -117,16 +117,18 @@ customerController.show = function(req, res){
           req.params.id,          
           { $set: 
               { 
-                supplier: req.body.supplier, 
+                customer: req.body.customer, 
                 description: req.body.description, 
                 country: req.body.country,
+                state: req.body.state,
+                city: req.body.city,
                 contact: req.body.contact,
                 active: req.body.active,
                 modifiedBy: moduser
               }
           }, 
           { new: true }, 
-   function (err, customers) {                                                              
+   function (err, custom) {                                                              
         if (err) {         
           switch (err.code)
           {
@@ -137,10 +139,10 @@ customerController.show = function(req, res){
                  req.flash('alert-danger', "Erro ao atualizar:"+ err);  
                  break;
           }   
-          res.render("customers/edit", {clients: req.body, baseuri:baseurl});
+          res.render("customers/edit", {clients: req.body});
         }else{
           req.flash('alert-info', 'Dados salvos com sucesso!');         
-          res.redirect("/customers/show/"+suppl._id);
+          res.redirect("/customers/show/"+custom._id);
         }
       })
   }  
@@ -171,8 +173,7 @@ customerController.show = function(req, res){
     });
   };
 
- customerController.delete = function(req, res){    
-    var baseurl = req.protocol + "://" + req.get('host') + "/" 
+ customerController.delete = function(req, res){        
     Customer.remove({_id: req.params.id}, function(err) {
         if(err) {
           switch (err.code)
@@ -200,7 +201,7 @@ customerController.export2excel = function(req, res) {
             Customer.count().exec(function(err, count){                    
                 if(count)    {
                     res.writeHead(200, {
-                        'Content-Disposition': 'attachment; filename="fornecedores.xlsx"',
+                        'Content-Disposition': 'attachment; filename="clientes.xlsx"',
                         'Transfer-Encoding': 'chunked',
                         'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
                       });
@@ -209,24 +210,28 @@ customerController.export2excel = function(req, res) {
                     worksheet.columns = [
                         { header: 'Código', key: 'id', width: 10 },
                         { header: 'Cliente', key: 'name', width: 32 },
-                        { header: 'País', key: 'country', width: 10 },
+                        { header: 'País', key: 'country', width: 15 },
+                        { header: 'Estado', key: 'state', width: 15 },
+                        { header: 'Cidate', key: 'city', width: 15 },
                         { header: 'Contato', key: 'contact', width: 22},
                         { header: 'Ativo', key: 'activeflag', width: 10}
                     ];                                        
                     for(i=0;i < count; i++){
-                        var codfor = suppliers[i].supplier;
-                        var desfor = suppliers[i].description;
-                        var cdpais = suppliers[i].country;
-                        var contac = suppliers[i].contact;
-                        var ativo = suppliers[i].active;
+                        var codfor = customers[i].customer;
+                        var desfor = customers[i].description;
+                        var cdpais = customers[i].country;
+                        var cdestado = customers[i].state;
+                        var cdcidade = customers[i].city;
+                        var contac = customers[i].contact;
+                        var ativo = customers[i].active;
                        
-                        worksheet.addRow([codfor, desfor,cdpais,contac,ativo]).commit();
+                        worksheet.addRow([codfor, desfor,cdpais,cdestado,cdcidade,contac,ativo]).commit();
                     }                    
                     worksheet.commit();
                     workbook.commit();
                  } else {
                     req.flash('alert-danger', "Sem dados para exportar ao Excel."); 
-                    res.redirect("/suppliers");
+                    res.redirect("/customers");
                  };  
                 }); 
             });               

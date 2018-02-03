@@ -4,6 +4,7 @@ var router = express.Router();
 
 var Account = require('../models/Account');
 var Supplier = require('../controllers/supplierController');
+var Customer = require('../controllers/customerController');
 
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'CTM [v1.0.0]', user: req.user });
@@ -65,6 +66,26 @@ router.get('/suppliers/exportxls',  isLoggedIn, Supplier.export2excel);
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
+// ++++++++++++++++++++++ Customers +++++++++++++++++++++++++++
+
+router.get('/customers',  isLoggedIn, Customer.list);
+// Get single user by id
+router.get('/customers/show/:id', isLoggedIn, Customer.show);
+// Create user
+router.get('/customers/new', isLoggedIn, Customer.create);
+// Save user
+router.post('/customers/save', isLoggedIn, Customer.save);
+// Edit user
+router.get('/customers/edit/:id', isLoggedIn, Customer.edit);
+// Edit user
+router.post('/customers/update/:id',isLoggedIn,  Customer.update);
+// Delete
+router.post('/customers/delete/:id', isLoggedIn, Customer.delete);
+
+router.get('/customers/exportxls',  isLoggedIn, Customer.export2excel);
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 module.exports = router;
 
 function isLoggedIn(req, res, next) {            

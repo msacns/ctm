@@ -6,7 +6,7 @@ block content
         ol.breadcrumb
           li.breadcrumb-item Administração
           li.breadcrumb-item Configurações
-          li.breadcrumb-item.active Fornecedores
+          li.breadcrumb-item.active Clientes
         .container-fluid
           .animated.fadeIn
             .row
@@ -14,31 +14,35 @@ block content
                   .card
                     .card-header
                       i.fa.fa-align-justify
-                      |  Fornecedores
+                      |  Clientes
                     .card-body   
                       != messages()                        
                       table.table.table-striped
                         thead
                           tr
                             th Código
-                            th Fornecedor
+                            th Cliente
                             th País
+                            th Estado / Província
+                            th Cidade
                             th Contato  
                             th Ativo
                             th Ações
                         tbody                                                                                                                                     
-                            each suppl in list  
-                              - var  lnid = suppl.id;                      
+                            each custome in list  
+                              - var  lnid = custome.id;                      
                               tr
-                                td #{suppl.supplier}
-                                td #{suppl.description}                                                                
-                                td #{suppl.country}
-                                td #{suppl.contact} 
-                                td #{ativo = suppl.active==true?'Sim':'Não' }                            
+                                td #{custome.customer}
+                                td #{custome.description}                                                                
+                                td #{custome.country}
+                                td #{custome.state}
+                                td #{custome.city}
+                                td #{custome.contact} 
+                                td #{ativo = custome.active==true?'Sim':'Não' }                            
                                 td 
                                   .form-group
-                                    form.form-horizontal(action='/suppliers/delete/'+lnid, method='post')                                      
-                                      a(href='/suppliers/edit/'+lnid)
+                                    form.form-horizontal(action='/customers/delete/'+lnid, method='post')                                      
+                                      a(href='/customers/edit/'+lnid)
                                         button(type='button', style='background-color:transparent; border-color:transparent;')
                                           i.fa.fa-edit                                                                                                              
                                       span                                      
@@ -47,7 +51,7 @@ block content
                         if (pages > 1)
                           ul.pagination
                             != createPagination(pages, page)  
-                      a(href='/suppliers/new', target='_top')    
+                      a(href='/customers/new', target='_top')    
                        button.btn.btn-primary.btn-sm(type='button') Novo
-                      a(href='/suppliers/exportxls', target='_self')    
+                      a(href='/customers/exportxls', target='_self')    
                        button.btn.btn-success.btn-sm(type='button') Excel 

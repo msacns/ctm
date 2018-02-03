@@ -6,7 +6,7 @@ block content
         ol.breadcrumb
           li.breadcrumb-item Administração
           li.breadcrumb-item Configurações
-          li.breadcrumb-item Fornecedores
+          li.breadcrumb-item Clientes
           li.breadcrumb-item.active Detalhes
         .container-fluid
           .animated.fadeIn
@@ -15,24 +15,26 @@ block content
                   .card
                     .card-header
                       i.fa.fa-edit
-                      |  Fornecedor - Detalhes
-                      - var docid       = suppliers.id;
-                      - var codfor      = suppliers.supplier;
-                      - var descfor     = suppliers.description;
-                      - var codpais     = suppliers.country;
-                      - var desccontato = suppliers.contact;
-                      - var ativo       = suppliers.active;
-                      - var dtcriacao   = suppliers.createdAt;
+                      |  Clientes - Detalhes
+                      - var docid       = clients.id;
+                      - var codfor      = clients.customer;
+                      - var descfor     = clients.description;
+                      - var codpais     = clients.country;
+                      - var codestado   = clients.state;
+                      - var codcidade   = clients.city;
+                      - var desccontato = clients.contact;
+                      - var ativo       = clients.active;
+                      - var dtcriacao   = clients.createdAt;
                     .card-body   
                       != messages()  
-                      form.form-horizontal(action='/suppliers/update/' + docid, method='post')                         
+                      form.form-horizontal(action='/customers/update/' + docid, method='post')                         
                         .form-group
                           label.form-control-label(for='fullname') Código
                           .controls
                             .input-group
-                              input#supplier.form-control(name='supplier',size='16', type='text',  value=codfor, readonly=true)
+                              input#customer.form-control(name='customer',size='16', type='text',  value=codfor, readonly=true)
                         .form-group
-                          label.form-control-label(for='description') Fornecedor
+                          label.form-control-label(for='description') Customer
                           .controls
                             .input-group
                               input#description.form-control(name='description',size='100', type='text',  value=descfor, readonly=false)                                                           
@@ -43,7 +45,17 @@ block content
                               select#select.form-control-sm(name='country')
                                each namecountry in countries
                                 - var ncountry = namecountry.name;
-                                option(value=ncountry selected=suppliers.country==ncountry) #{ncountry} 
+                                option(value=ncountry selected=clients.country==ncountry) #{ncountry} 
+                        .form-group
+                          label.form-control-label(for='lblstate') Estado
+                          .controls
+                            .input-group
+                              input#state.form-control(name='state',size='100', type='text',  value=codestado, readonly=false)                                                                   
+                        .form-group
+                          label.form-control-label(for='lblcity') Cidade
+                          .controls
+                            .input-group
+                              input#city.form-control(name='city',size='100', type='text',  value=codcidade, readonly=false)                                                                 
                         .form-group
                           label.form-control-label(for='cnt') Contato
                           .controls
@@ -66,7 +78,7 @@ block content
                             i.fa.fa-edit
                             |  Atualizar   
                           span     
-                          a(href='/suppliers/show/' + docid)                                           
+                          a(href='/customers/show/' + docid)                                           
                             button.btn.btn-sm.btn-danger(type='button')
                               i.fa.fa-ban
                               |  Cancelar                               

@@ -6,7 +6,7 @@ block content
         ol.breadcrumb
           li.breadcrumb-item Administração
           li.breadcrumb-item Configurações
-          li.breadcrumb-item.active Fornecedores
+          li.breadcrumb-item.active Clientes
         .container-fluid
           .animated.fadeIn
             .row
@@ -14,12 +14,12 @@ block content
                   .card
                     .card-header
                       i.fa.fa-edit
-                      |  Fornecedores
+                      |  Clientes
                     .card-body                                              
                       != messages()
-                      form.form-horizontal(action='/suppliers/save', method='post')
+                      form.form-horizontal(action='/customers/save', method='post')
                         .form-group
-                          label.form-control-label(for='suppliername') Fornecedor
+                          label.form-control-label(for='suppliername') Cliente
                           .controls
                             .input-group
                               input#description.form-control(name='description',size='16', type='text')
@@ -31,7 +31,17 @@ block content
                                option(value='') Selecione um País 
                                each namecountry in countries
                                 - var ncountry = namecountry.name;
-                                option(value=ncountry) #{ncountry}                                                      
+                                option(value=ncountry) #{ncountry}   
+                        .form-group
+                          label.form-control-label(for='suppliername') Estado
+                          .controls
+                            .input-group
+                              input#state.form-control(name='state',size='16', type='text')
+                        .form-group
+                          label.form-control-label(for='suppliername') Cidade
+                          .controls
+                            .input-group
+                              input#city.form-control(name='city',size='16', type='text')                                                                    
                         .form-group
                           label.form-control-label(for='contato') Contato
                           .controls
@@ -47,5 +57,5 @@ block content
                         .form-actions
                           button.btn.btn-sm.primary(type='submit') Salvar
                           span
-                          a(href='/suppliers') 
+                          a(href='/customers') 
                            button.btn.btn-sm.secondary(type='button') Cancelar                                                                       
