@@ -200,26 +200,36 @@ supplierController.export2excel = function(req, res) {
     Supplier
         .find()       
         .exec(function(err, suppliers){     
-            Supplier.count().exec(function(err, count){   
-                    // res.render('suppliers/index',
-                    // { title: 'CTM [v1.0.0] - Fornecedores', 
-                    //     list: suppliers,
-                    //     user_info: req.user,
-                    //     page: page + 1,
-                    //     pages: Math.ceil(count / limit)}
-                    // );
-                    // res.json();
-
+            Supplier.count().exec(function(err, count){                    
+                if(count)    {
                     res.writeHead(200, {
-                        'Content-Disposition': 'attachment; filename="file.xlsx"',
+                        'Content-Disposition': 'attachment; filename="fornecedores.xlsx"',
                         'Transfer-Encoding': 'chunked',
                         'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
                       });
                     var workbook = new Excel.stream.xlsx.WorkbookWriter({ stream: res });
-                    var worksheet = workbook.addWorksheet('some-worksheet');
-                    worksheet.addRow(['foo', 'bar']).commit();
+                    var worksheet = workbook.addWorksheet('lista');
+                    worksheet.columns = [
+                        { header: 'Código', key: 'id', width: 10 },
+                        { header: 'Fornecedor', key: 'name', width: 32 },
+                        { header: 'País', key: 'country', width: 10 },
+                        { header: 'Contato', key: 'contact', width: 22},
+                        { header: 'Ativo', key: 'activeflag', width: 10}
+                    ];                                        
+                    for(i=0;i < count; i++){
+                        var codfor = suppliers[i].supplier;
+                        var desfor = suppliers[i].description;
+                        var cdpais = suppliers[i].country;
+                        var contac = suppliers[i].contact;
+                        var ativo = suppliers[i].active;
+                       
+                        worksheet.addRow([codfor, desfor,cdpais,contac,ativo]).commit();
+                    }                    
                     worksheet.commit();
                     workbook.commit();
+                 } else {
+                    req.flash('alert-danger', "Sem dados para exportar para Excel."); 
+                 };  
                 }); 
             });               
   }  
