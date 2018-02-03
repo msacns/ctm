@@ -2,8 +2,6 @@
 var mongoose        = require('mongoose');
 var passport        = require('passport');
 var Supplier         = require('../models/Suppliers');
-// var config          = require('../lib/config');
-// var async           = require('run-async');
 
 var supplierController = {}
 
@@ -27,7 +25,7 @@ var supplierController = {}
         .exec(function(err, suppliers){     
             Supplier.count().exec(function(err, count){   
                     res.render('suppliers/index',
-                    { title: 'CTM [v1.0.0]| Fornecedores', 
+                    { title: 'CTM [v1.0.0] - Fornecedores', 
                         list: suppliers,
                         user_info: req.user,
                         page: page + 1,
@@ -75,8 +73,7 @@ supplierController.show = function(req, res){
                             req.flash('alert-danger', "Erro ao exibir:"+ err)  
                             break;
                     }   
-                } else {     
-                    console.log('ck:'+ JSON.stringify(suppliers));
+                } else {                         
                     req.flash('alert-info', 'Dados salvos com sucesso!')  
                     res.render('suppliers/show', {suppl: suppliers});
                 }
@@ -87,7 +84,7 @@ supplierController.show = function(req, res){
   }    
 
  supplierController.edit = function(req, res){ 
-  var baseurl = req.protocol + "://" + req.get('host') + "/"    
+//   var baseurl = req.protocol + "://" + req.get('host') + "/"    
   Supplier.findOne({_id: req.params.id}).exec(function (err, suppl) {
         if (err) {
           switch (err.code)
@@ -107,6 +104,11 @@ supplierController.show = function(req, res){
 
  supplierController.update = function(req, res){  
     // var baseurl = req.protocol + "://" + req.get('host') + "/"    
+    var moduser;
+    if (req.user){
+        moduser = req.user.username;
+    }
+
     Supplier.findByIdAndUpdate(
           req.params.id,          
           { $set: 
@@ -116,7 +118,7 @@ supplierController.show = function(req, res){
                 country: req.body.country,
                 contact: req.body.contact,
                 active: req.body.active,
-                modifiedBy: req.user.username
+                modifiedBy: moduser
               }
           }, 
           { new: true }, 
@@ -141,17 +143,14 @@ supplierController.show = function(req, res){
 
  supplierController.save  =   function(req, res){
     // var baseurl = req.protocol + "://" + req.get('host') + "/";
-    var payload = req.body;
-    console.log('body=>'+ JSON.stringify(payload));
-    if(req.user) {           
-      // console.log('Check req.user data:'+ JSON.stringify(req.user))
+    var payload = req.body;    
+    if(req.user) {                 
       payload.modifiedBy = req.user.username;
     }  
     
     var supplier = new Supplier(payload);     
     supplier.save(function(err) {
-      if(err) {  
-          console.log('err=>'+ err);
+      if(err) {            
         switch (err.code)
         {
            case 11000: 
