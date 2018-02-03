@@ -1,7 +1,7 @@
 // 'use strict';
 var mongoose        = require('mongoose');
 var passport        = require('passport');
-var Supplier        = require('../models/Suppliers');
+var Customer        = require('../models/Customers');
 var Countries       = require('../models/Countries');
 /*
 ExcelJS
@@ -11,12 +11,12 @@ var Excel           = require('exceljs');
 /******************************************************** */
 
 
-var supplierController = {}
+var customerController = {}
 
 /**
  * CRUD
  */ 
- supplierController.list = function(req, res) {   
+ customerController.list = function(req, res) {   
     // var baseurl = req.protocol + "://" + req.get('host') + "/"    
     var page = (req.query.page > 0 ? req.query.page : 1) - 1;
     var _id = req.query.item;
@@ -26,15 +26,15 @@ var supplierController = {}
       page: page
     };
     
-    Supplier
+    Customer
         .find()       
         .limit(limit)
         .skip(limit * page)
-        .exec(function(err, suppliers){     
-            Supplier.count().exec(function(err, count){   
-                    res.render('suppliers/index',
-                    { title: 'CTM [v1.0.0] - Fornecedores', 
-                        list: suppliers,
+        .exec(function(err, customers){     
+            Customer.count().exec(function(err, count){   
+                    res.render('customers/index',
+                    { title: 'CTM [v1.0.0] - Clientes', 
+                        list: customers,
                         user_info: req.user,
                         page: page + 1,
                         pages: Math.ceil(count / limit)}
@@ -43,12 +43,12 @@ var supplierController = {}
             });               
   }
 
- supplierController.create = function(req, res){   
+ customerController.create = function(req, res){   
     try {
         Countries
             .find()
             .exec(function(err, country){
-                res.render('suppliers/new', { title: 'CTM [v1.0.0] - Novo Fornecedor', countries: country });              
+                res.render('customers/new', { title: 'CTM [v1.0.0] - Novo Cliente', countries: country });              
         }); 
         
     } catch ( err ) {
@@ -59,16 +59,16 @@ var supplierController = {}
 
   }; 
  
-supplierController.show = function(req, res){ 
+customerController.show = function(req, res){ 
 //   var baseurl = req.protocol + "://" + req.get('host') + "/" 
   if (req.params.id != null || req.params.id != undefined) {      
-    Supplier.findOne({_id: req.params.id})  
-        .exec(function (err, suppliers) {            
+    Customer.findOne({_id: req.params.id})  
+        .exec(function (err, customers) {            
                 if (err) {
                     switch (err.code)
                     {
                         case 11000: 
-                            req.flash('alert-danger', 'Estes dados já existem no registro de fornecedores.')    
+                            req.flash('alert-danger', 'Estes dados já existem no registro de clientes.')    
                             break;        
                         default: 
                             req.flash('alert-danger', "Erro ao exibir:"+ err)  
@@ -76,7 +76,7 @@ supplierController.show = function(req, res){
                     }   
                 } else {                         
                     req.flash('alert-info', 'Dados salvos com sucesso!')  
-                    res.render('suppliers/show', {suppl: suppliers});
+                    res.render('customers/show', {clients: customers});
                 }
             });
     } else {    
@@ -84,14 +84,14 @@ supplierController.show = function(req, res){
     }
   }    
 
- supplierController.edit = function(req, res){ 
+ customerController.edit = function(req, res){ 
 //   var baseurl = req.protocol + "://" + req.get('host') + "/"    
-  Supplier.findOne({_id: req.params.id}).exec(function (err, suppl) {
+  Customer.findOne({_id: req.params.id}).exec(function (err, customers) {
         if (err) {
           switch (err.code)
           {
              case 11000: 
-                 req.flash('alert-danger', 'Estes dados já existem no registro de fornecedores.')    
+                 req.flash('alert-danger', 'Estes dados já existem no registro de clientes.')    
                  break;        
              default: 
                  req.flash('alert-danger', "Erro ao editar:"+ err)  
@@ -100,20 +100,20 @@ supplierController.show = function(req, res){
         } else {    
             Countries
               .find().exec(function(err, country){
-                res.render('suppliers/edit', {suppliers: suppl, countries: country});
+                res.render('suppliers/edit', {clients: customers, countries: country});
               });                
         };
       });
   }
 
- supplierController.update = function(req, res){  
+ customerController.update = function(req, res){  
     // var baseurl = req.protocol + "://" + req.get('host') + "/"    
     var moduser;
     if (req.user){
         moduser = req.user.username;
     }
 
-    Supplier.findByIdAndUpdate(
+    Customer.findByIdAndUpdate(
           req.params.id,          
           { $set: 
               { 
@@ -126,39 +126,39 @@ supplierController.show = function(req, res){
               }
           }, 
           { new: true }, 
-   function (err, suppl) {                                                              
+   function (err, customers) {                                                              
         if (err) {         
           switch (err.code)
           {
              case 11000: 
-                 req.flash('alert-danger', 'Estes dados já existem no registro de fornecedores.');    
+                 req.flash('alert-danger', 'Estes dados já existem no registro de clientes.');    
                  break;        
              default: 
                  req.flash('alert-danger', "Erro ao atualizar:"+ err);  
                  break;
           }   
-          res.render("suppliers/edit", {vehicles: req.body, baseuri:baseurl});
+          res.render("customers/edit", {clients: req.body, baseuri:baseurl});
         }else{
           req.flash('alert-info', 'Dados salvos com sucesso!');         
-          res.redirect("/suppliers/show/"+suppl._id);
+          res.redirect("/customers/show/"+suppl._id);
         }
       })
   }  
 
- supplierController.save  =   function(req, res){
+ customerController.save  =   function(req, res){
     // var baseurl = req.protocol + "://" + req.get('host') + "/";
     var payload = req.body;    
     if(req.user) {                 
       payload.modifiedBy = req.user.username;
     }  
     
-    var supplier = new Supplier(payload);     
-    supplier.save(function(err) {
+    var clients = new Customer(payload);     
+    clients.save(function(err) {
       if(err) {            
         switch (err.code)
         {
            case 11000: 
-               req.flash('alert-danger', 'Estes dados já existem no registro de fornecedores.')    
+               req.flash('alert-danger', 'Estes dados já existem no registro de clientes.')    
                break;        
            default: 
                req.flash('alert-danger', "Erro ao salvar:"+ err)  
@@ -166,19 +166,19 @@ supplierController.show = function(req, res){
         }        
       } else {          
         req.flash('alert-info', 'Dados salvos com sucesso!')  
-        res.redirect('/suppliers/show/'+supplier._id)
+        res.redirect('/customers/show/'+clients._id)
       }
     });
   };
 
- supplierController.delete = function(req, res){    
+ customerController.delete = function(req, res){    
     var baseurl = req.protocol + "://" + req.get('host') + "/" 
-    Supplier.remove({_id: req.params.id}, function(err) {
+    Customer.remove({_id: req.params.id}, function(err) {
         if(err) {
           switch (err.code)
           {
             case 11000: 
-                req.flash('alert-danger', 'Estes dados já existem no registro de fornecedores.')    
+                req.flash('alert-danger', 'Estes dados já existem no registro de clientes.')    
                 break;        
             default: 
                 req.flash('alert-danger', "Erro ao deletar:"+ err)  
@@ -186,18 +186,18 @@ supplierController.show = function(req, res){
           }  
         } else {    
           req.flash('alert-info', 'Dados removidos com sucesso!')        
-          res.redirect("/suppliers");
+          res.redirect("/customers");
         }
       });
   };
 
-supplierController.export2excel = function(req, res) {   
+customerController.export2excel = function(req, res) {   
     // var baseurl = req.protocol + "://" + req.get('host') + "/"    
     
-    Supplier
+    Customer
         .find()       
-        .exec(function(err, suppliers){     
-            Supplier.count().exec(function(err, count){                    
+        .exec(function(err, customers){     
+            Customer.count().exec(function(err, count){                    
                 if(count)    {
                     res.writeHead(200, {
                         'Content-Disposition': 'attachment; filename="fornecedores.xlsx"',
@@ -208,7 +208,7 @@ supplierController.export2excel = function(req, res) {
                     var worksheet = workbook.addWorksheet('lista');
                     worksheet.columns = [
                         { header: 'Código', key: 'id', width: 10 },
-                        { header: 'Fornecedor', key: 'name', width: 32 },
+                        { header: 'Cliente', key: 'name', width: 32 },
                         { header: 'País', key: 'country', width: 10 },
                         { header: 'Contato', key: 'contact', width: 22},
                         { header: 'Ativo', key: 'activeflag', width: 10}
@@ -232,4 +232,4 @@ supplierController.export2excel = function(req, res) {
             });               
   }  
 
-module.exports = supplierController;
+module.exports = customerController;

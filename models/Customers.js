@@ -2,12 +2,11 @@ var mongoose  = require('mongoose'),
     Schema    = mongoose.Schema;
 var passportLocalMongoose = require('passport-local-mongoose')
 var mongooseLogs = require('mongoose-activitylogs')
-    
+var AutoIncrement = require('mongoose-sequence')(mongoose);
+
 var CustomerSchema = new Schema({    
-    supplier: {
-        type: String,
-        unique: true,
-        required: true
+    customer: {
+        type: Number
     },
     description: {
         type: String,        
@@ -39,6 +38,7 @@ var CustomerSchema = new Schema({
 }
 );
 
+CustomerSchema.plugin(AutoIncrement, {inc_field: 'customer'});
 
 CustomerSchema.plugin(mongooseLogs, {
     schemaName: "Customers",
