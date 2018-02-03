@@ -37,10 +37,13 @@ block content
                             .input-group
                               input#description.form-control(name='description',size='100', type='text',  value=descfor, readonly=false)                                                           
                         .form-group
-                          label.form-control-label(for='country') País
+                          label.form-control-label(for='countrynm') País
                           .controls
                             .input-group
-                              input#country.form-control(name='country',size='16', type='text',  value=codpais, readonly=false) 
+                              select#select.form-control-sm(name='country')
+                               each namecountry in countries
+                                - var ncountry = namecountry.name;
+                                option(value=ncountry selected=suppliers.country==ncountry) #{ncountry} 
                         .form-group
                           label.form-control-label(for='cnt') Contato
                           .controls

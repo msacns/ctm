@@ -24,10 +24,14 @@ block content
                             .input-group
                               input#description.form-control(name='description',size='16', type='text')
                         .form-group
-                          label.form-control-label(for='county') País
+                          label.form-control-label(for='countrynm') País
                           .controls
                             .input-group
-                              input#country.form-control(name='country',size='100', type='text')                                                              
+                              select#select.form-control-sm(name='country')
+                               option(value='') Selecione um País 
+                               each namecountry in countries
+                                - var ncountry = namecountry.name;
+                                option(value=ncountry) #{ncountry}                                                      
                         .form-group
                           label.form-control-label(for='contato') Contato
                           .controls

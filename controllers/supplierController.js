@@ -2,6 +2,7 @@
 var mongoose        = require('mongoose');
 var passport        = require('passport');
 var Supplier        = require('../models/Suppliers');
+var Countries       = require('../models/Countries');
 /*
 ExcelJS
 */
@@ -42,28 +43,21 @@ var supplierController = {}
             });               
   }
 
- supplierController.create = function(req, res){         
-    // var baseurl = req.protocol + "://" + req.get('host') + "/"     
-    
-    Supplier
-    .find({active: true}).exec(function(err, suppliers){
-      if (err) {
-        switch (err.code)
-        {
-          case 11000: 
-              req.flash('alert-danger', 'Estes dados já existem no registro de fornecedores.')    
-              break;        
-          default: 
-              req.flash('alert-danger', "Erro ao carregar os fornecedores:"+ err)  
-              break;
-        }   
-      }else{                                           
-            res.render('suppliers/new', { title: 'CTM [v1.0.0] - Novo Fornecedor' });              
-      }
-    }); 
+ supplierController.create = function(req, res){   
+    try {
+        Countries
+            .find()
+            .exec(function(err, country){
+                res.render('suppliers/new', { title: 'CTM [v1.0.0] - Novo Fornecedor', countries: country });              
+        }); 
+        
+    } catch ( err ) {
+        console.log('Error on load json:'+ err);
+        // req.flash('alert-danger', "Erro ao exibir:"+ err) 
+        res.render('errors/500', {message:'Erro interno, favor informar o administrador!Detalhe do erro:'+err});    
+    };
 
-
-  } 
+  }; 
  
 supplierController.show = function(req, res){ 
 //   var baseurl = req.protocol + "://" + req.get('host') + "/" 
@@ -103,10 +97,13 @@ supplierController.show = function(req, res){
                  req.flash('alert-danger', "Erro ao editar:"+ err)  
                  break;
           }   
-        } else {          
-          res.render('suppliers/edit', {suppliers: suppl});
-        }
-      })
+        } else {    
+            Countries
+              .find().exec(function(err, country){
+                res.render('suppliers/edit', {suppliers: suppl, countries: country});
+              });                
+        };
+      });
   }
 
  supplierController.update = function(req, res){  
