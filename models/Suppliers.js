@@ -6,13 +6,10 @@ var AutoIncrement = require('mongoose-sequence')(mongoose);
 
 var SupplierSchema = new Schema({    
     supplier: {
-        type: String,
-        unique: true,
-        required: true
+        type: Number
     },
     description: {
-        type: String,        
-        lowercase: true
+        type: String
     },
     country: {
         type: String,
@@ -35,7 +32,7 @@ var SupplierSchema = new Schema({
 }
 );
 
-SupplierSchema.plugin(AutoIncrement, {inc_field: 'id'});
+SupplierSchema.plugin(AutoIncrement, {inc_field: 'supplier'});
 
 SupplierSchema.plugin(mongooseLogs, {
     schemaName: "Suppliers",

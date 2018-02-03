@@ -3,7 +3,6 @@ var env = process.env.NODE_ENV || 'development';
 var express       = require('express');
 var path          = require('path');
 var favicon       = require('serve-favicon');
-var  logger       = require('morgan');
 var logger        = require('morgan');
 var cookieParser  = require('cookie-parser');
 var bodyParser    = require('body-parser');
@@ -12,6 +11,8 @@ var mongoose      = require('mongoose');
 var config        = require('./config/config')[env];
 var passport      = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+var helpers       = require('view-helpers');
+
 
 global.config = config;
 
@@ -45,6 +46,14 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({keys: [config.crypto.secret]}));
 
+//*********************************************************************************************
+app.use(require('connect-flash')())
+app.use(function (req, res, next) {
+  res.locals.messages = require('express-messages')(req, res)
+  next()
+})
+//*********************************************************************************************  
+app.use(helpers('CTM'));
 // Configure passport middleware
 app.use(passport.initialize());
 app.use(passport.session());

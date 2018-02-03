@@ -53,15 +53,15 @@ var supplierController = {}
               break;
         }   
       }else{                                           
-            res.render('suppliers/new.jade', { title: 'CTM [v1.0.0] | Novo Fornecedor' });              
+            res.render('suppliers/new', { title: 'CTM [v1.0.0] | Novo Fornecedor' });              
       }
     }); 
 
 
   } 
  
- supplierController.show = function(req, res){ 
-  var baseurl = req.protocol + "://" + req.get('host') + "/" 
+supplierController.show = function(req, res){ 
+//   var baseurl = req.protocol + "://" + req.get('host') + "/" 
   if (req.params.id != null || req.params.id != undefined) {      
     Supplier.findOne({_id: req.params.id})  
         .exec(function (err, suppliers) {
@@ -77,7 +77,7 @@ var supplierController = {}
                     }   
                 } else {     
                     req.flash('alert-info', 'Dados salvos com sucesso!')  
-                    res.render('suppliers/show', {suppl: suppliers, baseuri:baseurl});
+                    res.render('suppliers/show', {suppl: suppliers});
                 }
             });
     } else {    
@@ -139,17 +139,18 @@ var supplierController = {}
   }  
 
  supplierController.save  =   function(req, res){
-    var baseurl = req.protocol + "://" + req.get('host') + "/";
+    // var baseurl = req.protocol + "://" + req.get('host') + "/";
     var payload = req.body;
-    
+    console.log('body=>'+ JSON.stringify(payload));
     if(req.user) {           
       // console.log('Check req.user data:'+ JSON.stringify(req.user))
       payload.modifiedBy = req.user.username;
     }  
     
-    var supplier = new Supplier(payload)      
+    var supplier = new Supplier(payload);     
     supplier.save(function(err) {
       if(err) {  
+          console.log('err=>'+ err);
         switch (err.code)
         {
            case 11000: 
