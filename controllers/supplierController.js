@@ -1,7 +1,14 @@
 // 'use strict';
 var mongoose        = require('mongoose');
 var passport        = require('passport');
-var Supplier         = require('../models/Suppliers');
+var Supplier        = require('../models/Suppliers');
+/*
+ExcelJS
+*/
+var Excel           = require('exceljs');
+// var workbook        = new Excel.Workbook();
+/******************************************************** */
+
 
 var supplierController = {}
 
@@ -51,7 +58,7 @@ var supplierController = {}
               break;
         }   
       }else{                                           
-            res.render('suppliers/new', { title: 'CTM [v1.0.0] | Novo Fornecedor' });              
+            res.render('suppliers/new', { title: 'CTM [v1.0.0] - Novo Fornecedor' });              
       }
     }); 
 
@@ -187,5 +194,34 @@ supplierController.show = function(req, res){
       });
   };
 
+supplierController.export2excel = function(req, res) {   
+    // var baseurl = req.protocol + "://" + req.get('host') + "/"    
+    
+    Supplier
+        .find()       
+        .exec(function(err, suppliers){     
+            Supplier.count().exec(function(err, count){   
+                    // res.render('suppliers/index',
+                    // { title: 'CTM [v1.0.0] - Fornecedores', 
+                    //     list: suppliers,
+                    //     user_info: req.user,
+                    //     page: page + 1,
+                    //     pages: Math.ceil(count / limit)}
+                    // );
+                    // res.json();
+
+                    res.writeHead(200, {
+                        'Content-Disposition': 'attachment; filename="file.xlsx"',
+                        'Transfer-Encoding': 'chunked',
+                        'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                      });
+                    var workbook = new Excel.stream.xlsx.WorkbookWriter({ stream: res });
+                    var worksheet = workbook.addWorksheet('some-worksheet');
+                    worksheet.addRow(['foo', 'bar']).commit();
+                    worksheet.commit();
+                    workbook.commit();
+                }); 
+            });               
+  }  
 
 module.exports = supplierController;

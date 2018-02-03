@@ -61,6 +61,8 @@ router.post('/suppliers/update/:id',isLoggedIn,  Supplier.update);
 // Delete
 router.post('/suppliers/delete/:id', isLoggedIn, Supplier.delete);
 
+router.get('/suppliers/exportxls',  isLoggedIn, Supplier.export2excel);
+
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 module.exports = router;
