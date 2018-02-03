@@ -2,12 +2,11 @@ var mongoose  = require('mongoose'),
     Schema    = mongoose.Schema;
 var passportLocalMongoose = require('passport-local-mongoose')
 var mongooseLogs = require('mongoose-activitylogs')
-    
+var AutoIncrement = require('mongoose-sequence')(mongoose);
+
 var StatusSchema = new Schema({    
     status: {
-        type: String,
-        unique: true,
-        required: true
+        type: Number
     },
     description: {
         type: String,        
@@ -31,6 +30,7 @@ var StatusSchema = new Schema({
 }
 );
 
+SupplierSchema.plugin(AutoIncrement, {inc_field: 'status'});
 
 StatusSchema.plugin(mongooseLogs, {
     schemaName: "Status",
