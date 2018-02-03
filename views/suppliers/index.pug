@@ -26,8 +26,9 @@ block content
                             th Contato  
                             th Ativo
                             th Ações
-                        tbody                                                                                                         
-                            each suppl in list                         
+                        tbody                                                                                                                                     
+                            each suppl in list  
+                              - var  lnid = suppl.id;                      
                               tr
                                 td #{suppl.supplier}
                                 td #{suppl.description}                                                                
@@ -36,8 +37,8 @@ block content
                                 td #{ativo = suppl.active==true?'Sim':'Não' }                            
                                 td 
                                   .form-group
-                                    form.form-horizontal(action='/suppliers/delete/#{suppl.id}', method='post')                                      
-                                      a(href='/suppliers/edit/#{suppl.id}')
+                                    form.form-horizontal(action='/suppliers/delete/'+lnid, method='post')                                      
+                                      a(href='/suppliers/edit/'+lnid)
                                         button(type='button', style='background-color:transparent; border-color:transparent;')
                                           i.fa.fa-edit                                                                                                              
                                       span                                      

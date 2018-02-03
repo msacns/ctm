@@ -64,7 +64,7 @@ supplierController.show = function(req, res){
 //   var baseurl = req.protocol + "://" + req.get('host') + "/" 
   if (req.params.id != null || req.params.id != undefined) {      
     Supplier.findOne({_id: req.params.id})  
-        .exec(function (err, suppliers) {
+        .exec(function (err, suppliers) {            
                 if (err) {
                     switch (err.code)
                     {
@@ -76,6 +76,7 @@ supplierController.show = function(req, res){
                             break;
                     }   
                 } else {     
+                    console.log('ck:'+ JSON.stringify(suppliers));
                     req.flash('alert-info', 'Dados salvos com sucesso!')  
                     res.render('suppliers/show', {suppl: suppliers});
                 }
@@ -99,13 +100,13 @@ supplierController.show = function(req, res){
                  break;
           }   
         } else {          
-          res.render('suppliers/edit', {suppliers: suppl, baseuri:baseurl});
+          res.render('suppliers/edit', {suppliers: suppl});
         }
       })
   }
 
  supplierController.update = function(req, res){  
-    var baseurl = req.protocol + "://" + req.get('host') + "/"    
+    // var baseurl = req.protocol + "://" + req.get('host') + "/"    
     Supplier.findByIdAndUpdate(
           req.params.id,          
           { $set: 
@@ -124,16 +125,16 @@ supplierController.show = function(req, res){
           switch (err.code)
           {
              case 11000: 
-                 req.flash('alert-danger', 'Estes dados já existem no registro de fornecedores.')    
+                 req.flash('alert-danger', 'Estes dados já existem no registro de fornecedores.');    
                  break;        
              default: 
-                 req.flash('alert-danger', "Erro ao atualizar:"+ err)  
+                 req.flash('alert-danger', "Erro ao atualizar:"+ err);  
                  break;
           }   
-          res.render("suppliers/edit", {vehicles: req.body, baseuri:baseurl})
+          res.render("suppliers/edit", {vehicles: req.body, baseuri:baseurl});
         }else{
-          req.flash('alert-info', 'Dados salvos com sucesso!')            
-          res.redirect("/suppliers/show/"+suppl._id)
+          req.flash('alert-info', 'Dados salvos com sucesso!');         
+          res.redirect("/suppliers/show/"+suppl._id);
         }
       })
   }  
