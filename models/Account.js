@@ -2,8 +2,10 @@ var mongoose  = require('mongoose'),
     Schema    = mongoose.Schema;
 var passportLocalMongoose = require('passport-local-mongoose')
 var mongooseLogs = require('mongoose-activitylogs')
-    
-var Account = new Schema({    
+var AutoIncrement = require('mongoose-sequence')(mongoose);
+
+var Account = new Schema({   
+    userid: Number, 
     username: {
         type: String,
         unique: true,
@@ -35,6 +37,8 @@ var Account = new Schema({
     timestamps:true
 }
 );
+
+Account.plugin(AutoIncrement, {inc_field: 'userid'});
 
 Account.plugin(passportLocalMongoose,{
     usernameField: 'username',

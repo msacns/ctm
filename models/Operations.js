@@ -2,12 +2,11 @@ var mongoose  = require('mongoose'),
     Schema    = mongoose.Schema;
 var passportLocalMongoose = require('passport-local-mongoose')
 var mongooseLogs = require('mongoose-activitylogs')
-    
+var AutoIncrement = require('mongoose-sequence')(mongoose);
+
 var OperationsSchema = new Schema({    
     operation: {
-        type: String,
-        unique: true,
-        required: true
+        type: Number,
     },
     description: {
         type: String,        
@@ -54,6 +53,7 @@ var OperationsSchema = new Schema({
 }
 );
 
+OperationsSchema.plugin(AutoIncrement, {inc_field: 'operation'});
 
 OperationsSchema.plugin(mongooseLogs, {
     schemaName: "Operations",
