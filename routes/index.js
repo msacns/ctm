@@ -5,6 +5,8 @@ var router = express.Router();
 var Account = require('../models/Account');
 var Supplier = require('../controllers/supplierController');
 var Customer = require('../controllers/customerController');
+var Statuses = require('../controllers/statusController');
+
 
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'CTM [v1.0.0]', user: req.user });
@@ -86,6 +88,28 @@ router.post('/customers/delete/:id', isLoggedIn, Customer.delete);
 router.get('/customers/exportxls',  isLoggedIn, Customer.export2excel);
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+// ++++++++++++++++++++++ Statuses +++++++++++++++++++++++++++
+
+router.get('/statuses',  isLoggedIn, Statuses.list);
+// Get single user by id
+router.get('/statuses/show/:id', isLoggedIn, Statuses.show);
+// Create user
+router.get('/statuses/new', isLoggedIn, Statuses.create);
+// Save user
+router.post('/statuses/save', isLoggedIn, Statuses.save);
+// Edit user
+router.get('/statuses/edit/:id', isLoggedIn, Statuses.edit);
+// Edit user
+router.post('/statuses/update/:id',isLoggedIn,  Statuses.update);
+// Delete
+router.post('/statuses/delete/:id', isLoggedIn, Statuses.delete);
+
+router.get('/statuses/exportxls',  isLoggedIn, Statuses.export2excel);
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
 module.exports = router;
 
 function isLoggedIn(req, res, next) {            

@@ -47,7 +47,7 @@ statusController.create = function(req, res){
         Countries
             .find()
             .exec(function(err, country){
-                res.render('customers/new', { title: 'CTM [v1.0.0] - Novo Status', countries: country });              
+                res.render('statuses/new', { title: 'CTM [v1.0.0] - Novo Status', countries: country });              
         }); 
         
     } catch ( err ) {                

@@ -30,7 +30,7 @@ var StatusSchema = new Schema({
 }
 );
 
-SupplierSchema.plugin(AutoIncrement, {inc_field: 'status'});
+StatusSchema.plugin(AutoIncrement, {inc_field: 'status'});
 
 StatusSchema.plugin(mongooseLogs, {
     schemaName: "Status",

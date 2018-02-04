@@ -30,7 +30,7 @@ block content
                           label.form-control-label(for='fullname') Código
                           .controls
                             .input-group
-                              input#customer.form-control(name='customer',size='16', type='text',  value=codfor, readonly=true)
+                              input#status.form-control(name='status',size='16', type='text',  value=codfor, readonly=true)
                         .form-group
                           label.form-control-label(for='description') Customer
                           .controls
@@ -43,7 +43,7 @@ block content
                               select#select.form-control-sm(name='country')
                                each namecountry in countries
                                 - var ncountry = namecountry.name;
-                                option(value=ncountry selected=clients.country==ncountry) #{ncountry}                         
+                                option(value=ncountry selected=stats.country==ncountry) #{ncountry}                         
                         .form-group
                           label.form-control-label(for='cnt') Contato
                           .controls
