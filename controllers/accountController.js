@@ -1,8 +1,9 @@
 // 'use strict';
 var mongoose        = require('mongoose');
 var passport        = require('passport');
-var Account        = require('../models/Account');
+var Account         = require('../models/Account');
 var Countries       = require('../models/Countries');
+var AccountType     = require('../models/AccountType'); 
 /*
 ExcelJS
 */
@@ -44,10 +45,10 @@ accountController.list = function(req, res) {
 
 accountController.create = function(req, res){   
     try {
-        Countries
+        AccountType
             .find()
-            .exec(function(err, country){
-                res.render('users/new', { title: 'CTM [v1.0.0] - Novo Usuário', countries: country });              
+            .exec(function(err, acctp){
+                res.render('users/new', { title: 'CTM [v1.0.0] - Novo Usuário', acctypes: acctp });              
         }); 
         
     } catch ( err ) {                
@@ -142,28 +143,37 @@ accountController.update = function(req, res){
   };
 
 accountController.save  =   function(req, res){    
-    var payload = req.body;    
-    if(req.user) {                 
-      payload.modifiedBy = req.user.username;
-    }  
-    
-    var uAcc = new Account(payload);     
-    uAcc.save(function(err) {
-      if(err) {            
+    var ulogin =  ''
+  
+    if (req.user){    
+      ulogin =  req.user.userid;
+    }
+  
+    var user = new Account({ 
+      username: req.body.fullname, 
+      email: req.body.email, 
+      accountType: req.body.accountType,      
+      gender: req.body.gender,
+      active: req.body.active,
+      modifiedBy: ulogin
+    })      
+    Account.register(user, req.body.password, function(err, user) {      
+      if(err) {  
         switch (err.code)
         {
            case 11000: 
-               req.flash('alert-danger', 'Estes dados já existem no registro de Usuários.');    
+               req.flash('alert-danger', 'Estes dados já existem no registro de usuários.');    
                break;        
            default: 
-               req.flash('alert-danger', "Erro ao salvar:"+ err);
+               req.flash('alert-danger', "Erro ao salvar:"+ err);  
                break;
-        };       
+        }   
+        res.render("users/edit", {stats: req.body});
       } else {          
-        req.flash('alert-info', 'Dados salvos com sucesso!') ; 
-        res.redirect('/users/show/'+uAcc._id);
+        req.flash('alert-info', 'Dados salvos com sucesso!');  
+        res.redirect('/users/show/'+user._id);
       };
-    });
+     });
   };
 
 accountController.delete = function(req, res){        

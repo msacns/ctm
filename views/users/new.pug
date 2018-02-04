@@ -1,4 +1,4 @@
-extends ../layout/default
+extends ../default
 
 block content
   main.main
@@ -19,10 +19,10 @@ block content
                       != messages()
                       form.form-horizontal(action='/users/save', method='post')
                         .form-group
-                          label.form-control-label(for='fullname') Nome
+                          label.form-control-label(for='lblusername') Nome
                           .controls
                             .input-group
-                              input#fullname.form-control(name='fullname',size='16', type='text')
+                              input#username.form-control(name='username',size='16', type='text')
                         .form-group
                           label.form-control-label(for='email') e-mail
                           .controls
@@ -41,27 +41,13 @@ block content
                                 option(value='Masculino') Masculino
                                 option(value='Feminino') Feminino 
                         .form-group
-                          label.form-control-label(for='profilelbl') Perfil
+                          label.form-control-label(for='lbltype') Tipo
                           .controls
                             .input-group
-                              select#select.form-control-sm(name='profile')
-                                each prof in profiles
-                                  option(value='#{prof.id}') #{prof.ProfileDescription}                                                                                       
+                              select#accountType.form-control-sm(name='accountType')
+                                each atypes in acctypes
+                                  option(value='#{atypes.id}') #{atypes.accountTypeDescription}                                                                                                                 
                         .form-group
-                          label.form-control-label(for='authlbl') Autoridade
-                          .controls
-                            .input-group
-                              select#select.form-control-sm(name='authority')
-                                each auth in authorities
-                                  option(value='#{auth.id}') #{auth.AuthorityDescription}  
-                         .form-group
-                          label.form-control-label(for='accountlbl') Conta
-                          .controls
-                            .input-group
-                              select#select.form-control-sm(name='customer')
-                                each cust in customers
-                                  option(value='#{cust.id}') #{cust.fullname}   
-                         .form-group
                           label.form-control-label(for='activedYN') Ativo?
                           .controls
                             .input-group

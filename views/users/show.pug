@@ -18,42 +18,44 @@ block content
                       |  Usuário - Detalhes
                     .card-body   
                       != messages()  
-                      form.form-horizontal(action='/users/delete/#{users.id}', method='post') 
-                         .form-group
-                          label.form-control-label(for='fullname') Nome
+                      - var userid = accounts.userid;
+                      - var usernm = accounts.username;
+                      - var uemail = accounts.email;
+                      - var utype  = accounts.accountType;
+                      - var pwd     = accounts.password;
+                      - var ugender = accounts.gender;
+                      - var ativo   = accounts.active;
+                      form.form-horizontal(action='/users/delete/'+userid, method='post') 
+                        .form-group
+                          label.form-control-label(for='fullname') Código
                           .controls
                             .input-group
-                              input#fullname.form-control(name='fullname',size='16', type='text',  value='#{users.fullname}', readonly=true)
+                              input#userid.form-control(name='userid',size='16', type='text',  value=userid, readonly=true)
+                        .form-group
+                          label.form-control-label(for='fullname') Usuário
+                          .controls
+                            .input-group
+                              input#username.form-control(name='username',size='16', type='text',  value=usernm, readonly=true)
                         .form-group
                           label.form-control-label(for='email') e-mail
                           .controls
                             .input-group
-                              input#email.form-control(name='email',size='100', type='text',  value='#{users.email}', readonly=true)                                                           
+                              input#email.form-control(name='email',size='100', type='text',  value=uemail, readonly=true)                                                           
                         .form-group
                           label.form-control-label(for='password') Senha
                           .controls
                             .input-group
-                              input#password.form-control(name='password',size='16', type='password',  value='#{users.password}', readonly=true) 
+                              input#password.form-control(name='password',size='16', type='password',  value=pwd, readonly=true) 
                         .form-group
                           label.form-control-label(for='genderMF') Genero
                           .controls
                             .input-group
-                              input#gender.form-control(name='gender',size='100', type='text',  value="if(users.gender =='M') 'Masculino' else 'Feminino'", readonly=true) 
+                              input#gender.form-control(name='gender',size='100', type='text',  value=ugender, readonly=true) 
                         .form-group
-                          label.form-control-label(for='profilelbl') Perfil
+                          label.form-control-label(for='profilelbl') Tipo
                           .controls
                             .input-group
-                              input#profile.form-control(name='profile',size='100', type='text', value='#{users.profile}',  readonly=true)                                                                                     
-                        .form-group
-                          label.form-control-label(for='authlbl') Autoridade
-                          .controls
-                            .input-group
-                              input#authority.form-control(name='authority',size='100', type='text',  value='#{users.authority}', readonly=true)   
-                         .form-group
-                          label.form-control-label(for='accountlbl') Conta
-                          .controls
-                            .input-group
-                              input#customer.form-control(name='customer',size='100', type='text',  value='#{users.customer}', readonly=true) 
+                              input#profile.form-control(name='profile',size='100', type='text', value=utype,  readonly=true)                                                                                                              
                         .form-group
                           label.col-md-3.form-control-label(for='activedYN') Ativo?
                           .controls
@@ -67,7 +69,7 @@ block content
                             .input-group
                               input#createdAt.form-control(size='16', type='text', readonly=true, value='#{users.createdAt}')                                                                                                              
                         .form-actions                          
-                          a(href='/users/edit/#{users.id}') 
+                          a(href='/users/edit/'+userid) 
                             button.btn.btn-sm.btn-success(type='button')
                               i.fa.fa-edit
                               |  Editar   

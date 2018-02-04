@@ -6,7 +6,7 @@ var Account = require('../models/Account');
 var Supplier = require('../controllers/supplierController');
 var Customer = require('../controllers/customerController');
 var Statuses = require('../controllers/statusController');
-
+var UserAccount = require('../controllers/accountController');
 
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'CTM [v1.0.0]', user: req.user });
@@ -43,9 +43,9 @@ router.get('/logout', function(req, res) {
   res.redirect('/');
 });
 
-router.get('/users', function(req, res) {
-  res.render('login', {title: 'CTM [v1.0.1] - Usuários', user: req.user});
-});
+// router.get('/users', function(req, res) {
+//   res.render('login', {title: 'CTM [v1.0.1] - Usuários', user: req.user});
+// });
 
 
 // ++++++++++++++++++++++ Suppliers +++++++++++++++++++++++++++
@@ -106,6 +106,26 @@ router.post('/statuses/update/:id',isLoggedIn,  Statuses.update);
 router.post('/statuses/delete/:id', isLoggedIn, Statuses.delete);
 
 router.get('/statuses/exportxls',  isLoggedIn, Statuses.export2excel);
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+// ++++++++++++++++++++++ User Account +++++++++++++++++++++++++++
+
+router.get('/users',  isLoggedIn, UserAccount.list);
+// Get single user by id
+router.get('/users/show/:id', isLoggedIn, UserAccount.show);
+// Create user
+router.get('/users/new', isLoggedIn, UserAccount.create);
+// Save user
+router.post('/users/save', isLoggedIn, UserAccount.save);
+// Edit user
+router.get('/users/edit/:id', isLoggedIn, UserAccount.edit);
+// Edit user
+router.post('/users/update/:id',isLoggedIn,  UserAccount.update);
+// Delete
+router.post('/users/delete/:id', isLoggedIn, UserAccount.delete);
+
+router.get('/users/exportxls',  isLoggedIn, UserAccount.export2excel);
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
