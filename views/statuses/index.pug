@@ -6,7 +6,7 @@ block content
         ol.breadcrumb
           li.breadcrumb-item Administração
           li.breadcrumb-item Configurações
-          li.breadcrumb-item.active Clientes
+          li.breadcrumb-item.active Statuses
         .container-fluid
           .animated.fadeIn
             .row
@@ -14,35 +14,31 @@ block content
                   .card
                     .card-header
                       i.fa.fa-align-justify
-                      |  Clientes
+                      |  Statuses
                     .card-body   
                       != messages()                        
                       table.table.table-striped
                         thead
                           tr
                             th Código
-                            th Cliente
+                            th Status
                             th País
-                            th Estado / Província
-                            th Cidade
                             th Contato  
                             th Ativo
                             th Ações
                         tbody                                                                                                                                     
-                            each custome in list  
-                              - var  lnid = custome.id;                      
+                            each statu in list  
+                              - var  lnid = statu.id;                      
                               tr
-                                td #{custome.customer}
-                                td #{custome.description}                                                                
-                                td #{custome.country}
-                                td #{custome.state}
-                                td #{custome.city}
-                                td #{custome.contact} 
-                                td #{ativo = custome.active==true?'Sim':'Não' }                            
+                                td #{statu.status}
+                                td #{statu.description}                                                                
+                                td #{statu.country}
+                                td #{statu.contact} 
+                                td #{ativo = statu.active==true?'Sim':'Não' }                            
                                 td 
                                   .form-group
-                                    form.form-horizontal(action='/customers/delete/'+lnid, method='post')                                      
-                                      a(href='/customers/edit/'+lnid)
+                                    form.form-horizontal(action='/statuses/delete/'+lnid, method='post')                                      
+                                      a(href='/statuses/edit/'+lnid)
                                         button(type='button', style='background-color:transparent; border-color:transparent;')
                                           i.fa.fa-edit                                                                                                              
                                       span                                      
@@ -51,7 +47,7 @@ block content
                         if (pages > 1)
                           ul.pagination
                             != createPagination(pages, page)  
-                      a(href='/customers/new', target='_top')    
+                      a(href='/statuses/new', target='_top')    
                        button.btn.btn-primary.btn-sm(type='button') Novo
-                      a(href='/customers/exportxls', target='_self')    
+                      a(href='/statuses/exportxls', target='_self')    
                        button.btn.btn-success.btn-sm(type='button') Excel 

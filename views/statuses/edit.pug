@@ -6,7 +6,7 @@ block content
         ol.breadcrumb
           li.breadcrumb-item Administração
           li.breadcrumb-item Configurações
-          li.breadcrumb-item Clientes
+          li.breadcrumb-item Statuses
           li.breadcrumb-item.active Detalhes
         .container-fluid
           .animated.fadeIn
@@ -15,19 +15,17 @@ block content
                   .card
                     .card-header
                       i.fa.fa-edit
-                      |  Clientes - Detalhes
-                      - var docid       = clients.id;
-                      - var codfor      = clients.customer;
-                      - var descfor     = clients.description;
-                      - var codpais     = clients.country;
-                      - var codestado   = clients.state;
-                      - var codcidade   = clients.city;
-                      - var desccontato = clients.contact;
-                      - var ativo       = clients.active;
-                      - var dtcriacao   = clients.createdAt;
+                      |  Statuses - Detalhes
+                      - var docid       = stats.id;
+                      - var codfor      = stats.status;
+                      - var descfor     = stats.description;
+                      - var codpais     = stats.country;
+                      - var desccontato = stats.contact;
+                      - var ativo       = stats.active;
+                      - var dtcriacao   = stats.createdAt;
                     .card-body   
                       != messages()  
-                      form.form-horizontal(action='/customers/update/' + docid, method='post')                         
+                      form.form-horizontal(action='/statuses/update/' + docid, method='post')                         
                         .form-group
                           label.form-control-label(for='fullname') Código
                           .controls
@@ -45,17 +43,7 @@ block content
                               select#select.form-control-sm(name='country')
                                each namecountry in countries
                                 - var ncountry = namecountry.name;
-                                option(value=ncountry selected=clients.country==ncountry) #{ncountry} 
-                        .form-group
-                          label.form-control-label(for='lblstate') Estado
-                          .controls
-                            .input-group
-                              input#state.form-control(name='state',size='100', type='text',  value=codestado, readonly=false)                                                                   
-                        .form-group
-                          label.form-control-label(for='lblcity') Cidade
-                          .controls
-                            .input-group
-                              input#city.form-control(name='city',size='100', type='text',  value=codcidade, readonly=false)                                                                 
+                                option(value=ncountry selected=clients.country==ncountry) #{ncountry}                         
                         .form-group
                           label.form-control-label(for='cnt') Contato
                           .controls
@@ -78,7 +66,7 @@ block content
                             i.fa.fa-edit
                             |  Atualizar   
                           span     
-                          a(href='/customers/show/' + docid)                                           
+                          a(href='/statuses/show/' + docid)                                           
                             button.btn.btn-sm.btn-danger(type='button')
                               i.fa.fa-ban
                               |  Cancelar                               
