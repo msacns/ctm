@@ -1,4 +1,4 @@
-extends ../layout/default
+extends ../default
 
 block content
   main.main
@@ -18,6 +18,7 @@ block content
                       |  Usuário - Detalhes
                     .card-body   
                       != messages()  
+                      - var uuid = accounts.id;
                       - var userid = accounts.userid;
                       - var usernm = accounts.username;
                       - var uemail = accounts.email;
@@ -25,7 +26,8 @@ block content
                       - var pwd     = accounts.password;
                       - var ugender = accounts.gender;
                       - var ativo   = accounts.active;
-                      form.form-horizontal(action='/users/delete/'+userid, method='post') 
+                      - var dtcreate = accounts.createdAt;
+                      form.form-horizontal(action='/users/delete/'+uuid, method='post') 
                         .form-group
                           label.form-control-label(for='fullname') Código
                           .controls
@@ -50,26 +52,28 @@ block content
                           label.form-control-label(for='genderMF') Genero
                           .controls
                             .input-group
-                              input#gender.form-control(name='gender',size='100', type='text',  value=ugender, readonly=true) 
+                              input#gender.form-control(name='gender',size='100', type='text',  value=ugender, readonly=true)                       
                         .form-group
-                          label.form-control-label(for='profilelbl') Tipo
+                          label.form-control-label(for='lbltype') Tipo
                           .controls
                             .input-group
-                              input#profile.form-control(name='profile',size='100', type='text', value=utype,  readonly=true)                                                                                                              
+                              select#accountType.form-control-sm(name='accountType', disabled=true)
+                                each atypes in acctypes
+                                  option(value='#{atypes.id}', selected=atypes.accountTypeDescription==utype) #{atypes.accountTypeDescription}                                                                                                                   
                         .form-group
                           label.col-md-3.form-control-label(for='activedYN') Ativo?
                           .controls
                             .col-md-9
                               select#active.form-control-sm(name='active', disabled=true)
-                                option(value='true', selected=users.active == true) Sim
-                                option(value='false', selected=users.active == false) Não
+                                option(value='true', selected=ativo == true) Sim
+                                option(value='false', selected=ativo == false) Não
                         .form-group
                           label.form-control-label(for='createdAt') Criado em
                           .controls
                             .input-group
-                              input#createdAt.form-control(size='16', type='text', readonly=true, value='#{users.createdAt}')                                                                                                              
+                              input#createdAt.form-control(size='16', type='text', readonly=true, value=formatDate(dtcreate))                                                                                                              
                         .form-actions                          
-                          a(href='/users/edit/'+userid) 
+                          a(href='/users/edit/'+uuid) 
                             button.btn.btn-sm.btn-success(type='button')
                               i.fa.fa-edit
                               |  Editar   

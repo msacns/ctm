@@ -1,4 +1,4 @@
-extends ../layout/default
+extends ../default
 
 block content
   main.main
@@ -18,14 +18,16 @@ block content
                       |  Usuário - Edição
                     .card-body   
                       != messages()  
-                      - var userid = accounts.userid;
-                      - var usernm = accounts.username;
-                      - var uemail = accounts.email;
-                      - var utype  = accounts.accountType;
-                      - var pwd     = accounts.password;
-                      - var ugender = accounts.gender;
-                      - var ativo   = accounts.active;
-                      form.form-horizontal(action='/users/update/'+userid, method='post')
+                      - var uuid = uaccount.id; 
+                      - var userid = uaccount.userid;
+                      - var usernm = uaccount.username;
+                      - var uemail = uaccount.email;
+                      - var utype  = uaccount.accountType;
+                      - var pwd     = uaccount.password;
+                      - var ugender = uaccount.gender;
+                      - var ativo   = uaccount.active;
+                      - var dtcreate = uaccount.createdAt;
+                      form.form-horizontal(action='/users/update/'+uuid, method='post')
                         .form-group
                           label.form-control-label(for='fullname') Código
                           .controls
@@ -64,20 +66,20 @@ block content
                           label.col-md-3.form-control-label(for='activedYN') Ativo?
                           .controls
                             .col-md-9
-                              select#active.form-control-sm(name='active', disabled=true)
-                                option(value='true', selected=users.active == true) Sim
-                                option(value='false', selected=users.active == false) Não
+                              select#active.form-control-sm(name='active', disabled=false)
+                                option(value='true', selected=uaccount.active == true) Sim
+                                option(value='false', selected=uaccount.active == false) Não
                         .form-group
                           label.form-control-label(for='createdAt') Criado em
                           .controls
                             .input-group
-                              input#createdAt.form-control(size='16', type='text', readonly=true, value='#{users.createdAt}')                                                                                                              
+                              input#createdAt.form-control(size='16', type='text', readonly=true, value=formatDate(dtcreate))                                                                                                              
                         .form-actions
                           button.btn.btn-sm.btn-success(type='submit')
                             i.fa.fa-edit
                             |  Atualizar   
                           span     
-                          a(href='/users/show/'+userid)                                           
+                          a(href='/users/show/'+uuid)                                           
                             button.btn.btn-sm.btn-danger(type='button')
                               i.fa.fa-ban
                               |  Cancelar                               

@@ -12,7 +12,7 @@ var Excel           = require('exceljs');
 /******************************************************** */
 
 
-var accountController = {}
+var accountController = {};
 
 /**
  * CRUD
@@ -27,18 +27,37 @@ accountController.list = function(req, res) {
     };
     
     Account
-        .find()       
+        .find()          
+        .populate({
+            path:'nd_AccountType', 
+            select:'accountTypeDescription',
+            options: { sort: { $natural: -1 }}
+          })   
         .limit(limit)
         .skip(limit * page)
-        .exec(function(err, siti){     
+        .exec(function(err, siti){                
             Account.count().exec(function(err, count){   
-                    res.render('users/index',
-                    { title: 'CTM [v1.0.0] - Usuários', 
-                        list: siti,
-                        user_info: req.user,
-                        page: page + 1,
-                        pages: Math.ceil(count / limit)}
-                    );
+                    if(err) {  
+                        console.log('Error no save:'+ err);
+                        switch (err.code)
+                        {
+                            case 11000: 
+                                req.flash('alert-danger', 'Estes dados já existem no registro de usuários.');    
+                                break;        
+                            default: 
+                                req.flash('alert-danger', "Erro ao salvar:"+ err);  
+                                break;
+                        }
+                    }else{
+                        console.log('List:'+JSON.stringify(siti));
+                        res.render('users/index',
+                        { title: 'CTM [v1.0.0] - Usuários', 
+                            list: siti,
+                            user_info: req.user,
+                            page: page + 1,
+                            pages: Math.ceil(count / limit)}
+                        );   
+                    }    
                 }); 
             });               
   };
@@ -49,8 +68,7 @@ accountController.create = function(req, res){
             .find()
             .exec(function(err, acctp){
                 res.render('users/new', { title: 'CTM [v1.0.0] - Novo Usuário', acctypes: acctp });              
-        }); 
-        
+        });         
     } catch ( err ) {                
         res.render('errors/500', {message:'Erro interno, favor informar o administrador!Detalhe do erro:'+err});    
     };
@@ -71,9 +89,16 @@ accountController.show = function(req, res){
                             req.flash('alert-danger', "Erro ao exibir:"+ err);  
                             break;
                     }   
-                } else {                         
-                    req.flash('alert-info', 'Dados salvos com sucesso!');  
-                    res.render('users/show', {accounts: actuser});
+                } else {                     
+                    AccountType
+                    .find().exec(function(err, acctp){
+                      if (err) {                   
+                          req.flash('alert-danger', "Erro ao Exibir:"+ err);                            
+                        } else {  
+                            req.flash('alert-info', 'Dados salvos com sucesso!'); 
+                            res.render('users/show', {accounts: actuser, acctypes: acctp});
+                        };
+                    });   
                 }
             });
     } else {    
@@ -94,9 +119,13 @@ accountController.edit = function(req, res){
                  break;
           };   
         } else {    
-            Countries
-              .find().exec(function(err, country){
-                res.render('users/edit', {uaccount: accuser, countries: country});
+            AccountType
+              .find().exec(function(err, acctp){
+                if (err) {                   
+                    req.flash('alert-danger', "Erro ao editar:"+ err);                            
+                  } else {  
+                    res.render('users/edit', {uaccount: accuser, acctypes: acctp});
+                  };
               });                
         };
       });
@@ -133,8 +162,15 @@ accountController.update = function(req, res){
              default: 
                  req.flash('alert-danger', "Erro ao atualizar:"+ err);  
                  break;
-          }   
-          res.render("users/edit", {stats: req.body});
+          }             
+          AccountType
+            .find().exec(function(err, acctp){
+                if (err) {                   
+                    req.flash('alert-danger', "Erro ao atualizar:"+ err);                            
+                } else {  
+                    res.render('users/edit', {uaccount: req.body, acctypes: acctp});
+                };
+            });  
         }else{
           req.flash('alert-info', 'Dados salvos com sucesso!');         
           res.redirect("/users/show/"+uacc._id);
@@ -143,22 +179,24 @@ accountController.update = function(req, res){
   };
 
 accountController.save  =   function(req, res){    
-    var ulogin =  ''
+    var ulogin =  '';
   
     if (req.user){    
       ulogin =  req.user.userid;
     }
   
     var user = new Account({ 
-      username: req.body.fullname, 
+      username: req.body.username, 
       email: req.body.email, 
       accountType: req.body.accountType,      
       gender: req.body.gender,
       active: req.body.active,
       modifiedBy: ulogin
     })      
+    console.log('User to save:'+ JSON.stringify(user));
     Account.register(user, req.body.password, function(err, user) {      
       if(err) {  
+          console.log('Error no save:'+ err);
         switch (err.code)
         {
            case 11000: 
@@ -167,8 +205,15 @@ accountController.save  =   function(req, res){
            default: 
                req.flash('alert-danger', "Erro ao salvar:"+ err);  
                break;
-        }   
-        res.render("users/edit", {stats: req.body});
+        }           
+        AccountType
+        .find().exec(function(err, acctp){
+          if (err) {                   
+              req.flash('alert-danger', "Erro ao editar:"+ err);                            
+            } else {  
+              res.render('users/edit', {uaccount: req.body, acctypes: acctp});
+            };
+        });  
       } else {          
         req.flash('alert-info', 'Dados salvos com sucesso!');  
         res.redirect('/users/show/'+user._id);

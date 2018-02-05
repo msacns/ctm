@@ -20,7 +20,7 @@ var Account = new Schema({
         type: String,
         required: true
     },
-    accountType:  { type: Schema.Types.ObjectId, ref: 'nd_AccountType' },
+    accountType: { type: Schema.Types.ObjectId, ref: 'nd_AccountType' },
     gender: String,
     active: Boolean,
     avatar: { data: Buffer, contentType: String },
