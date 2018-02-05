@@ -1,13 +1,12 @@
 // 'use strict';
 var mongoose        = require('mongoose');
 var passport        = require('passport');
-var Operations        = require('../models/Operations');
+var Operation        = require('../models/Operations');
 var Countries       = require('../models/Countries');
 /*
 ExcelJS
 */
 var Excel           = require('exceljs');
-// var workbook        = new Excel.Workbook();
 /******************************************************** */
 
 
@@ -31,7 +30,7 @@ var operationController = {}
         .limit(limit)
         .skip(limit * page)
         .exec(function(err, operations){     
-            Customer.count().exec(function(err, count){   
+            Operation.count().exec(function(err, count){   
                     res.render('operations/index',
                     { title: 'CTM [v1.0.0] - Operações', 
                         list: operations,
@@ -48,22 +47,21 @@ var operationController = {}
         Countries
             .find()
             .exec(function(err, country){
-                res.render('customers/new', { title: 'CTM [v1.0.0] - Novo Cliente', countries: country });              
+                res.render('operations/new', { title: 'CTM [v1.0.0] - Nova Operação', countries: country });              
         }); 
         
     } catch ( err ) {
         console.log('Error on load json:'+ err);
         // req.flash('alert-danger', "Erro ao exibir:"+ err) 
-        res.render('errors/500', {message:'Erro interno, favor informar o administrador!Detalhe do erro:'+err});    
+        res.render('errors/500', {message:'Erro interno, favor informar o administrador! Detalhe do erro:'+err});    
     };
 
   }; 
  
 operationController.show = function(req, res){ 
-//   var baseurl = req.protocol + "://" + req.get('host') + "/" 
   if (req.params.id != null || req.params.id != undefined) {      
-    Customer.findOne({_id: req.params.id})  
-        .exec(function (err, customers) {            
+    Operation.findOne({_id: req.params.id})  
+        .exec(function (err, opers) {            
                 if (err) {
                     switch (err.code)
                     {
@@ -76,7 +74,7 @@ operationController.show = function(req, res){
                     }   
                 } else {                         
                     req.flash('alert-info', 'Dados salvos com sucesso!')  
-                    res.render('customers/show', {clients: customers});
+                    res.render('operations/show', {clients: opers});
                 }
             });
     } else {    
@@ -84,9 +82,8 @@ operationController.show = function(req, res){
     }
   }    
 
- operationController.edit = function(req, res){ 
-//   var baseurl = req.protocol + "://" + req.get('host') + "/"    
-  Customer.findOne({_id: req.params.id}).exec(function (err, customers) {
+ operationController.edit = function(req, res){    
+  Operation.findOne({_id: req.params.id}).exec(function (err, opers) {
         if (err) {
           switch (err.code)
           {
@@ -100,67 +97,71 @@ operationController.show = function(req, res){
         } else {    
             Countries
               .find().exec(function(err, country){
-                res.render('customers/edit', {clients: customers, countries: country});
+                res.render('operations/edit', {clients: opers, countries: country});
               });                
         };
       });
   }
 
- operationController.update = function(req, res){  
-    // var baseurl = req.protocol + "://" + req.get('host') + "/"    
+ operationController.update = function(req, res){   
     var moduser;
     if (req.user){
         moduser = req.user.username;
     }
 
-    Customer.findByIdAndUpdate(
+    Operation.findByIdAndUpdate(
           req.params.id,          
           { $set: 
               { 
-                customer: req.body.customer, 
+                operation: req.body.operation, 
                 description: req.body.description, 
-                country: req.body.country,
-                state: req.body.state,
-                city: req.body.city,
-                contact: req.body.contact,
-                active: req.body.active,
-                modifiedBy: moduser
+                invoice: req.body.invoice,
+                cntr: req.body.cntr,
+                dtinvoice: req.body.dtinvoice,
+                dtdeparture: req.body.dtdeparture,
+                dtarrival: req.body.dtarrival,
+                dtdemurrage: req.body.dtdemurrage,
+                dtsalesorder: req.body.dtsalesorder,
+                supplier: req.body.supplier,
+                customer: req.body.customer,
+                status: req.body.status,
+                importdeclation: req.body.importdeclation,
+                active: req.body.active
               }
           }, 
           { new: true }, 
-   function (err, custom) {                                                              
+   function (err, opers) {                                                              
         if (err) {         
           switch (err.code)
           {
              case 11000: 
-                 req.flash('alert-danger', 'Estes dados já existem no registro de clientes.');    
+                 req.flash('alert-danger', 'Estes dados já existem no registro de Operações.');    
                  break;        
              default: 
                  req.flash('alert-danger', "Erro ao atualizar:"+ err);  
                  break;
           }   
-          res.render("customers/edit", {clients: req.body});
+          res.render("operations/edit", {operats: req.body});
         }else{
           req.flash('alert-info', 'Dados salvos com sucesso!');         
-          res.redirect("/customers/show/"+custom._id);
+          res.redirect("/operations/show/"+opers._id);
         }
       })
   }  
 
- operationController.save  =   function(req, res){
-    // var baseurl = req.protocol + "://" + req.get('host') + "/";
+ operationController.save  =   function(req, res){    
     var payload = req.body;    
     if(req.user) {                 
       payload.modifiedBy = req.user.username;
     }  
     
-    var clients = new Customer(payload);     
-    clients.save(function(err) {
+    var operats = new Operation(payload);     
+    operats.save(function(err) {
       if(err) {            
         switch (err.code)
         {
            case 11000: 
-               req.flash('alert-danger', 'Estes dados já existem no registro de clientes.')    
+               req.flash('alert-danger', 'Estes dados já existem no registro de operações.');    
                break;        
            default: 
                req.flash('alert-danger', "Erro ao salvar:"+ err)  
@@ -168,18 +169,18 @@ operationController.show = function(req, res){
         }        
       } else {          
         req.flash('alert-info', 'Dados salvos com sucesso!')  
-        res.redirect('/customers/show/'+clients._id)
+        res.redirect('/operations/show/'+operats._id)
       }
     });
   };
 
  operationController.delete = function(req, res){        
-    Customer.remove({_id: req.params.id}, function(err) {
+    Operation.remove({_id: req.params.id}, function(err) {
         if(err) {
           switch (err.code)
           {
             case 11000: 
-                req.flash('alert-danger', 'Estes dados já existem no registro de clientes.')    
+                req.flash('alert-danger', 'Estes dados já existem no registro de operações.');   
                 break;        
             default: 
                 req.flash('alert-danger', "Erro ao deletar:"+ err)  
@@ -187,21 +188,20 @@ operationController.show = function(req, res){
           }  
         } else {    
           req.flash('alert-info', 'Dados removidos com sucesso!')        
-          res.redirect("/customers");
+          res.redirect("/operations");
         }
       });
   };
 
-operationController.export2excel = function(req, res) {   
-    // var baseurl = req.protocol + "://" + req.get('host') + "/"    
+operationController.export2excel = function(req, res) {     
     
-    Customer
+    Operation
         .find()       
-        .exec(function(err, customers){     
-            Customer.count().exec(function(err, count){                    
+        .exec(function(err, Operations){     
+            Operation.count().exec(function(err, count){                    
                 if(count)    {
                     res.writeHead(200, {
-                        'Content-Disposition': 'attachment; filename="clientes.xlsx"',
+                        'Content-Disposition': 'attachment; filename="operações.xlsx"',
                         'Transfer-Encoding': 'chunked',
                         'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
                       });
@@ -209,29 +209,43 @@ operationController.export2excel = function(req, res) {
                     var worksheet = workbook.addWorksheet('lista');
                     worksheet.columns = [
                         { header: 'Código', key: 'id', width: 10 },
-                        { header: 'Cliente', key: 'name', width: 32 },
-                        { header: 'País', key: 'country', width: 15 },
-                        { header: 'Estado', key: 'state', width: 15 },
-                        { header: 'Cidate', key: 'city', width: 15 },
-                        { header: 'Contato', key: 'contact', width: 22},
-                        { header: 'Ativo', key: 'activeflag', width: 10}
+                        { header: 'Operação', key: 'description', width: 32 },
+                        { header: 'Invoice', key: 'invoice', width: 15 },
+                        { header: 'Container', key: 'cntr', width: 15 },
+                        { header: 'Dt. invoice', key: 'dtinvoice', width: 22 },
+                        { header: 'Dt. Saída', key: 'dtdeparture', width: 22},
+                        { header: 'Dt. Chegada', key: 'dtarrival', width: 22},
+                        { header: 'Dt. Demurrage', key: 'dtdemurrage', width: 22},
+                        { header: 'Dt. PV', key: 'dtsalesorder', width: 22},
+                        { header: 'Fornecedor', key: 'supplier', width: 22},
+                        { header: 'Cliente', key: 'customer', width: 22},
+                        { header: 'Status', key: 'status', width: 22},
+                        { header: 'DI', key: 'importdeclation', width: 22},
+                        { header: 'Ativo', key: 'active', width: 10}
                     ];                                        
                     for(i=0;i < count; i++){
-                        var codfor = customers[i].customer;
-                        var desfor = customers[i].description;
-                        var cdpais = customers[i].country;
-                        var cdestado = customers[i].state;
-                        var cdcidade = customers[i].city;
-                        var contac = customers[i].contact;
-                        var ativo = customers[i].active;
-                       
-                        worksheet.addRow([codfor, desfor,cdpais,cdestado,cdcidade,contac,ativo]).commit();
+                        var c1      = Operations[i].operation;
+                        var c2      = Operations[i].description;
+                        var c3      = Operations[i].invoice;
+                        var c4      = Operations[i].cntr;
+                        var c5      = Operations[i].dtinvoice;
+                        var c6      = Operations[i].dtdeparture;
+                        var c7      = Operations[i].dtarrival;
+                        var c8      = Operations[i].dtdemurrage;
+                        var c9      = Operations[i].dtsalesorder;
+                        var c10     = Operations[i].supplier;
+                        var c11     = Operations[i].customer;
+                        var c12     = Operations[i].status;
+                        var c13     = Operations[i].importdeclation;
+                        var c14     = Operations[i].active;                        
+
+                        worksheet.addRow([c1, c2, c3,c4, c5, c6,c7, c8, c9,c10, c11, c12,c13, c14]).commit();
                     }                    
                     worksheet.commit();
                     workbook.commit();
                  } else {
                     req.flash('alert-danger', "Sem dados para exportar ao Excel."); 
-                    res.redirect("/customers");
+                    res.redirect("/operations");
                  };  
                 }); 
             });               
