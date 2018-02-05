@@ -11,8 +11,12 @@ var OperationsSchema = new Schema({
     description: {
         type: String,        
         lowercase: true
-    },
+    },    
     invoice: {
+        type: String,
+        required: false
+    },
+    cntr: {
         type: String,
         required: false
     },

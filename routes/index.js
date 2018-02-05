@@ -7,6 +7,7 @@ var Supplier = require('../controllers/supplierController');
 var Customer = require('../controllers/customerController');
 var Statuses = require('../controllers/statusController');
 var UserAccount = require('../controllers/accountController');
+var Operations = require('../controllers/operationController');
 
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'CTM [v1.0.0]', user: req.user });
@@ -129,6 +130,25 @@ router.get('/users/exportxls',  isLoggedIn, UserAccount.export2excel);
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+// ++++++++++++++++++++++ Operations Account +++++++++++++++++++++++++++
+
+router.get('/operations',  isLoggedIn, Operations.list);
+// Get single user by id
+router.get('/operations/show/:id', isLoggedIn, Operations.show);
+// Create user
+router.get('/operations/new', isLoggedIn, Operations.create);
+// Save user
+router.post('/operations/save', isLoggedIn, Operations.save);
+// Edit user
+router.get('/operations/edit/:id', isLoggedIn, Operations.edit);
+// Edit user
+router.post('/operations/update/:id',isLoggedIn,  Operations.update);
+// Delete
+router.post('/operations/delete/:id', isLoggedIn, Operations.delete);
+
+router.get('/operations/exportxls',  isLoggedIn, Operations.export2excel);
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 module.exports = router;
 
