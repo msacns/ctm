@@ -4,9 +4,9 @@ block content
   main.main
         // Breadcrumb
         ol.breadcrumb
-          li.breadcrumb-item Administração
-          li.breadcrumb-item Configurações
-          li.breadcrumb-item Clientes
+          li.breadcrumb-item Transações
+          li.breadcrumb-item Registro
+          li.breadcrumb-item Operações
           li.breadcrumb-item.active Detalhes
         .container-fluid
           .animated.fadeIn
@@ -15,19 +15,19 @@ block content
                   .card
                     .card-header
                       i.fa.fa-edit
-                      |  Cliente - Detalhes
-                      - var docid       = clients.id;
-                      - var codcli      = clients.customer;
-                      - var descli      = clients.description;
-                      - var codpais     = clients.country;
-                      - var codestado     = clients.state;
-                      - var codcidade     = clients.city;
-                      - var desccontato = clients.contact;
-                      - var ativo       = clients.active;
-                      - var dtcriacao   = clients.createdAt;
+                      |  Operações - Detalhes
+                      - var docid       = operations.id;
+                      - var codcli      = operations.operations;
+                      - var descli      = operations.description;
+                      - var codpais     = operations.country;
+                      - var codestado     = operations.state;
+                      - var codcidade     = operations.city;
+                      - var desccontato = operations.contact;
+                      - var ativo       = operations.active;
+                      - var dtcriacao   = operations.createdAt;
                     .card-body   
                       != messages()  
-                      form.form-horizontal(action='/customers/delete/' + docid, method='post')                         
+                      form.form-horizontal(action='/operations/delete/' + docid, method='post')                         
                         .form-group
                           label.form-control-label(for='fullname') Código
                           .controls
@@ -72,7 +72,7 @@ block content
                             .input-group
                               input#createdAt.form-control(size='16', type='text', readonly=true, value=formatDate(dtcriacao))                                                                                                              
                         .form-actions                          
-                          a(href='/customers/edit/'+docid) 
+                          a(href='/operations/edit/'+docid) 
                             button.btn.btn-sm.btn-success(type='button')
                               i.fa.fa-edit
                               |  Editar   
@@ -81,7 +81,7 @@ block content
                             i.fa.fa-delicious
                             |  Deletar   
                           span         
-                          a(href='/customers')                
+                          a(href='/operations')                
                             button.btn.btn-sm.btn-info(type='button')
                               i.fa.fa-backward
                               |  Voltar a lista                               

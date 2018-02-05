@@ -1,8 +1,10 @@
 // 'use strict';
 var mongoose        = require('mongoose');
 var passport        = require('passport');
-var Operation        = require('../models/Operations');
-var Countries       = require('../models/Countries');
+var Operation       = require('../models/Operations');
+var Customer        = require('../models/Customers');
+var Supplier        = require('../models/Suppliers');
+var Status          = require('../models/Status');
 /*
 ExcelJS
 */
@@ -43,18 +45,33 @@ var operationController = {}
   }
 
  operationController.create = function(req, res){   
-    try {
-        Countries
-            .find()
-            .exec(function(err, country){
-                res.render('operations/new', { title: 'CTM [v1.0.0] - Nova Operação', countries: country });              
-        }); 
-        
-    } catch ( err ) {
-        console.log('Error on load json:'+ err);
-        // req.flash('alert-danger', "Erro ao exibir:"+ err) 
-        res.render('errors/500', {message:'Erro interno, favor informar o administrador! Detalhe do erro:'+err});    
-    };
+    
+        Supplier
+            .find({active:true})
+            .exec(function(err, suppl){
+                if (err) {
+                    req.flash('alert-danger', "Erro ao listar fornecedores :"+ err);  
+                }else{
+                    Customer
+                    .find({active:true})
+                        .exec(function(err, custm){
+                            if (err) {
+                                req.flash('alert-danger', "Erro ao listar clientes:"+ err);  
+                            }else{
+                                Status  
+                                    .find({active:true})
+                                    .exec(function(err, sts){
+                                        if (err) {
+                                            req.flash('alert-danger', "Erro ao listar clientes:"+ err);  
+                                        }else{ 
+                                            res.render('operations/new', { title: 'CTM [v1.0.0] - Nova Operação', suppliers: suppl, customers:custm, statuss:sts });              
+                                        }
+                                    });   
+                            }
+                        }); 
+                }
+            });        
+    
 
   }; 
  
@@ -164,12 +181,12 @@ operationController.show = function(req, res){
                req.flash('alert-danger', 'Estes dados já existem no registro de operações.');    
                break;        
            default: 
-               req.flash('alert-danger', "Erro ao salvar:"+ err)  
+               req.flash('alert-danger', "Erro ao salvar:"+ err); 
                break;
         }        
       } else {          
-        req.flash('alert-info', 'Dados salvos com sucesso!')  
-        res.redirect('/operations/show/'+operats._id)
+        req.flash('alert-info', 'Dados salvos com sucesso!'); 
+        res.redirect('/operations/show/'+operats._id);
       }
     });
   };
