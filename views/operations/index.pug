@@ -30,14 +30,16 @@ block content
                             th Ações
                         tbody                                                                                                                                     
                             each oper in list  
-                              - var  lnid = oper.id;                      
+                              - var  lnid  = oper.id;                      
+                              - var  suppl = oper.supplier;
+                              - var  cust  = oper.customer;
                               tr
                                 td #{oper.operation}
-                                td #{oper.description}                                                                
+                                td #{oper.description.substr(1, 7) + '...'}                                                                
                                 td #{oper.invoice}
                                 td #{oper.cntr}
-                                td #{oper.supplier}
-                                td #{oper.customer} 
+                                td #{suppl}
+                                td #{cust} 
                                 td #{oper.status }                            
                                 td 
                                   .form-group

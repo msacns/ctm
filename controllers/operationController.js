@@ -130,7 +130,7 @@ operationController.show = function(req, res){
                                         if (err) {
                                             req.flash('alert-danger', "Erro ao listar clientes:"+ err);  
                                         }else{ 
-                                            res.render('operations/editnew', { title: 'CTM [v1.0.0]', suppliers: suppl, customers:custm, statuss:sts, operations: opers });                                                          
+                                            res.render('operations/edit', { title: 'CTM [v1.0.0]', suppliers: suppl, customers:custm, statuss:sts, operations: opers });                                                          
                                         }
                                     });   
                             }
@@ -206,7 +206,7 @@ operationController.show = function(req, res){
           }); 
         }else{
           req.flash('alert-info', 'Dados salvos com sucesso!');         
-          res.redirect("/operations/show/"+opers._id);
+          res.redirect("/operations/show/"+operations._id);
         }
       })
   }  
@@ -228,7 +228,8 @@ operationController.show = function(req, res){
            default: 
                req.flash('alert-danger', "Erro ao salvar:"+ err); 
                break;
-        }        
+        }      
+        res.redirect('/operations/show/'+operats._id);  
       } else {          
         req.flash('alert-info', 'Dados salvos com sucesso!'); 
         res.redirect('/operations/show/'+operats._id);

@@ -17,7 +17,7 @@ block content
                       i.fa.fa-edit
                       |  Operações - Detalhes
                       - var docid       = operations.id;
-                      - var codope      = operations.operations;
+                      - var codope      = operations.operation;
                       - var desoper     = operations.description;
                       - var inv         = operations.invoice;
                       - var cntr        = operations.cntr;
@@ -39,7 +39,7 @@ block content
                           label.form-control-label(for='lbloper') Operação
                           .controls
                             .input-group
-                              input#operation.form-control(name='description',size='16', type='text', value=codope, readonly=true)
+                              input#operation.form-control(name='operation',size='16', type='text', value=codope, readonly=true)                        
                         .form-group
                           label.form-control-label(for='suppliername') Descrição de Medida
                           .controls
@@ -81,38 +81,20 @@ block content
                             .input-group                                                                                     
                               input#dtsalesorder(type='text', name='dtsalesorder', value=dtso, readonly=true)                
                         .form-group
-                          label.form-control-label(for='supplnm') Fornecedor
+                          label.form-control-label(for='lbldtinvo') Fornecedor
                           .controls
-                            .input-group
-                              select#select.form-control-sm(name='supplier', disabled=true)
-                               option(value='') Selecione um Fornecedor 
-                               if (suppliers)
-                                each namesupplier in suppliers
-                                  - var isupll = namesupplier.id;
-                                  - var nsuppl = namesupplier.description;
-                                  option(value=isupll, selected=isupll==suppl) #{nsuppl}  
+                            .input-group                                                                                     
+                              input#supplier.form-control(type='text', name='supplier', value=suppl, readonly=true)                 
                         .form-group
-                          label.form-control-label(for='customnm') Cliente
+                          label.form-control-label(for='lbldtinvo') Cliente
                           .controls
-                            .input-group
-                              select#select.form-control-sm(name='customer', disabled=true)
-                               option(value='') Selecione um Cliente 
-                               if (customers)
-                                each namecustomer in customers
-                                  - var icust = namecustomer.id;
-                                  - var ncust = namecustomer.description;
-                                  option(value=icust, selected=icust==custom) #{ncust}  
+                            .input-group                                                                                     
+                              input#customer.form-control(type='text', name='customer', value=custom, readonly=true)  
                         .form-group
-                          label.form-control-label(for='statusnm') Status
+                          label.form-control-label(for='lbldtinvo') Status
                           .controls
-                            .input-group
-                              select#select.form-control-sm(name='status', disabled=true)
-                               option(value='') Selecione um Status 
-                               if (statuss)
-                                each namestatus in statuss
-                                  - var istatus = namestatus.id;
-                                  - var nstatus = namestatus.description;
-                                  option(value=istatus, selected=istatus==stss) #{nstatus}                  
+                            .input-group                                                                                     
+                              input#status.form-control(type='text', name='status', value=stss, readonly=true)                 
                         .form-group
                           label.form-control-label(for='suppliername') D.I.
                           .controls
@@ -122,7 +104,7 @@ block content
                           label.form-control-label(for='activedYN') Ativo?
                           .controls
                             .input-group
-                              select#select.form-control-sm(name='active')
+                              select#select.form-control-sm(name='active', disabled=true)
                                 option(value='true', selected=ativo==true) Sim
                                 option(value='false', selected=ativo==false) Não 
                         .form-group
