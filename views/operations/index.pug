@@ -31,8 +31,9 @@ block content
                         tbody                                                                                                                                     
                             each oper in list  
                               - var  lnid  = oper.id;                      
-                              - var  suppl = oper.supplier;
-                              - var  cust  = oper.customer;
+                              - var  suppl = oper.supplier.description;
+                              - var  cust  = oper.customer.description;
+                              - var  stss  = oper.status.description;
                               tr
                                 td #{oper.operation}
                                 td #{oper.description.substr(1, 7) + '...'}                                                                
@@ -40,7 +41,7 @@ block content
                                 td #{oper.cntr}
                                 td #{suppl}
                                 td #{cust} 
-                                td #{oper.status }                            
+                                td #{stss}                            
                                 td 
                                   .form-group
                                     form.form-horizontal(action='/operations/delete/'+lnid, method='post')                                      

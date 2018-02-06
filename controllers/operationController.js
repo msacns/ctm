@@ -28,10 +28,29 @@ var operationController = {}
     };
     
     Operation
-        .find()       
-        .limit(limit)
+        .find()      
+        .populate({
+            path:'supplier', 
+            select:'description',            
+            match:{ active: true },
+            options: { sort: { $natural: -1 }}
+          })            
+        .populate({
+            path:'customer', 
+            select:'description',
+            match:{ active: true },
+            options: { sort: { $natural: -1 }}
+          })  
+        .populate({
+            path:'status', 
+            select:'description',
+            match:{ active: true },
+            options: { sort: { $natural: -1 }}
+          })     
+        .limit(limit)        
         .skip(limit * page)
-        .exec(function(err, operations){     
+        .exec(function(err, operations){    
+            // console.log('List =>' + operations); 
             Operation.count().exec(function(err, count){   
                     res.render('operations/index',
                     { title: 'CTM [v1.0.0] - Operações', 
@@ -77,8 +96,26 @@ var operationController = {}
  
 operationController.show = function(req, res){ 
   if (req.params.id != null || req.params.id != undefined) {      
-    Operation.findOne({_id: req.params.id})  
-        .exec(function (err, opers) {            
+    Operation.findOne({_id: req.params.id}) 
+    .populate({
+        path:'supplier', 
+        select:'description',            
+        match:{ active: true },
+        options: { sort: { $natural: -1 }}
+      })            
+    .populate({
+        path:'customer', 
+        select:'description',
+        match:{ active: true },
+        options: { sort: { $natural: -1 }}
+      })  
+    .populate({
+        path:'status', 
+        select:'description',
+        match:{ active: true },
+        options: { sort: { $natural: -1 }}
+      })    
+    .exec(function (err, opers) {            
                 if (err) {
                     switch (err.code)
                     {
@@ -259,7 +296,25 @@ operationController.show = function(req, res){
 operationController.export2excel = function(req, res) {     
     
     Operation
-        .find()       
+        .find()    
+        .populate({
+            path:'supplier', 
+            select:'description',            
+            match:{ active: true },
+            options: { sort: { $natural: -1 }}
+          })            
+        .populate({
+            path:'customer', 
+            select:'description',
+            match:{ active: true },
+            options: { sort: { $natural: -1 }}
+          })  
+        .populate({
+            path:'status', 
+            select:'description',
+            match:{ active: true },
+            options: { sort: { $natural: -1 }}
+          })   
         .exec(function(err, Operations){     
             Operation.count().exec(function(err, count){                    
                 if(count)    {
@@ -296,9 +351,9 @@ operationController.export2excel = function(req, res) {
                         var c7      = Operations[i].dtarrival;
                         var c8      = Operations[i].dtdemurrage;
                         var c9      = Operations[i].dtsalesorder;
-                        var c10     = Operations[i].supplier;
-                        var c11     = Operations[i].customer;
-                        var c12     = Operations[i].status;
+                        var c10     = Operations[i].supplier.description;
+                        var c11     = Operations[i].customer.description;
+                        var c12     = Operations[i].status.description;
                         var c13     = Operations[i].importdeclation;
                         var c14     = Operations[i].active;                        
 
