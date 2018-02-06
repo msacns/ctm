@@ -91,7 +91,7 @@ operationController.show = function(req, res){
                     }   
                 } else {                         
                     req.flash('alert-info', 'Dados salvos com sucesso!')  
-                    res.render('operations/show', {clients: opers});
+                    res.render('operations/show', {operations: opers});
                 }
             });
     } else {    
@@ -105,17 +105,38 @@ operationController.show = function(req, res){
           switch (err.code)
           {
              case 11000: 
-                 req.flash('alert-danger', 'Estes dados já existem no registro de clientes.')    
+                 req.flash('alert-danger', 'Estes dados já existem no registro de Operações.')    
                  break;        
              default: 
                  req.flash('alert-danger', "Erro ao editar:"+ err)  
                  break;
           }   
-        } else {    
-            Countries
-              .find().exec(function(err, country){
-                res.render('operations/edit', {clients: opers, countries: country});
-              });                
+        } else {  
+            Supplier
+            .find({active:true})
+            .exec(function(err, suppl){
+                if (err) {
+                    req.flash('alert-danger', "Erro ao listar fornecedores :"+ err);  
+                }else{
+                    Customer
+                    .find({active:true})
+                        .exec(function(err, custm){
+                            if (err) {
+                                req.flash('alert-danger', "Erro ao listar clientes:"+ err);  
+                            }else{
+                                Status  
+                                    .find({active:true})
+                                    .exec(function(err, sts){
+                                        if (err) {
+                                            req.flash('alert-danger', "Erro ao listar clientes:"+ err);  
+                                        }else{ 
+                                            res.render('operations/editnew', { title: 'CTM [v1.0.0]', suppliers: suppl, customers:custm, statuss:sts, operations: opers });                                                          
+                                        }
+                                    });   
+                            }
+                        }); 
+                }
+            });                             
         };
       });
   }
@@ -147,7 +168,7 @@ operationController.show = function(req, res){
               }
           }, 
           { new: true }, 
-   function (err, opers) {                                                              
+   function (err, operations) {                                                              
         if (err) {         
           switch (err.code)
           {
@@ -158,7 +179,31 @@ operationController.show = function(req, res){
                  req.flash('alert-danger', "Erro ao atualizar:"+ err);  
                  break;
           }   
-          res.render("operations/edit", {operats: req.body});
+          Supplier
+          .find({active:true})
+          .exec(function(err, suppl){
+              if (err) {
+                  req.flash('alert-danger', "Erro ao listar fornecedores :"+ err);  
+              }else{
+                  Customer
+                  .find({active:true})
+                      .exec(function(err, custm){
+                          if (err) {
+                              req.flash('alert-danger', "Erro ao listar clientes:"+ err);  
+                          }else{
+                              Status  
+                                  .find({active:true})
+                                  .exec(function(err, sts){
+                                      if (err) {
+                                          req.flash('alert-danger', "Erro ao listar clientes:"+ err);  
+                                      }else{ 
+                                          res.render('operations/edit', { title: 'CTM [v1.0.0]', suppliers: suppl, customers:custm, statuss:sts, operations: req.body });                                                          
+                                      }
+                                  });   
+                          }
+                      }); 
+              }
+          }); 
         }else{
           req.flash('alert-info', 'Dados salvos com sucesso!');         
           res.redirect("/operations/show/"+opers._id);
