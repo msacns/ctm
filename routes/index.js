@@ -8,6 +8,7 @@ var Customer = require('../controllers/customerController');
 var Statuses = require('../controllers/statusController');
 var UserAccount = require('../controllers/accountController');
 var Operations = require('../controllers/operationController');
+var Reports   = require('../controllers/reportController');
 
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'CTM [v1.0.0]', user: req.user });
@@ -149,6 +150,14 @@ router.post('/operations/delete/:id', isLoggedIn, Operations.delete);
 router.get('/operations/exportxls',  isLoggedIn, Operations.export2excel);
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+// ++++++++++++++++++++++ Report Operations Grid +++++++++++++++++++++++++++
+// loadData
+router.get('/report/operations',  isLoggedIn, Reports.operationslist);
+// updateItem
+router.put('/report/operations',  isLoggedIn, Reports.operationsupdate);
+// deleteItem
+router.delete('/report/operations',  isLoggedIn, Reports.operationsdelete);
 
 module.exports = router;
 
