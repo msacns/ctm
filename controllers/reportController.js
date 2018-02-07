@@ -1,4 +1,3 @@
-// 'use strict';
 var mongoose        = require('mongoose');
 var passport        = require('passport');
 var Operation       = require('../models/Operations');
@@ -10,88 +9,51 @@ ExcelJS
 */
 var Excel           = require('exceljs');
 /******************************************************** */
+/* GridJS Datastore */
+var Datastore       = require('nedb');
+var db              = new Datastore();
 
+var getOperationFilter = function(query) {
+    // var result = {
+    //     dtsalesorder: new RegExp(query.dtsalesorder, "i"),
+    //     description: new RegExp(query.description, "i"),
+    //     invoice: new RegExp(query.invoice, "i"),
+    //     cntr: new RegExp(query.cntr, "i"),
+    //     dtinvoice: new RegExp(query.dtinvoice, "i"),
+    //     dtdeparture: new RegExp(query.dtdeparture, "i"),
+    //     dtarrival: new RegExp(query.dtarrival, "i"),
+    //     dtdemurrage: new RegExp(query.dtdemurrage, "i"),
+    //     supplier: new RegExp(query.supplier, "i"),
+    //     customer: new RegExp(query.customer, "i"),
+    //     status: new RegExp(query.status, "i")
+    // };
+
+    // if(query.Married) {
+    //     result.Married = query.Married === 'true' ? true : false;
+    // }
+
+    // if(query.Country && query.Country !== '0') {
+    //     result.Country = parseInt(query.Country, 10);
+    // }
+
+    return result;
+};
 
 var reportController = {}
 
-/**
- * CRUD
- */ 
- reportController.list = function(req, res) {   
-    // var baseurl = req.protocol + "://" + req.get('host') + "/"    
-    var page = (req.query.page > 0 ? req.query.page : 1) - 1;
-    var _id = req.query.item;
-    var limit = 10;
-    var options = {
-      limit: limit,
-      page: page
-    };
-    
-    Operation
-        .find()      
-        .populate({
-            path:'supplier', 
-            select:'description',            
-            match:{ active: true },
-            options: { sort: { $natural: -1 }}
-          })            
-        .populate({
-            path:'customer', 
-            select:'description',
-            match:{ active: true },
-            options: { sort: { $natural: -1 }}
-          })  
-        .populate({
-            path:'status', 
-            select:'description',
-            match:{ active: true },
-            options: { sort: { $natural: -1 }}
-          })     
-        .limit(limit)        
-        .skip(limit * page)
-        .exec(function(err, operations){    
-            // console.log('List =>' + operations); 
-            Operation.count().exec(function(err, count){   
-                    res.render('operations/report',
-                    { title: 'CTM [v1.0.0] - Operações', 
-                        list: operations,
-                        user_info: req.user,
-                        page: page + 1,
-                        pages: Math.ceil(count / limit)}
-                    );
-                }); 
-            });               
-  }
+reportController.operationsshow = function(req, res) {        
+    res.render('operations/report',  { title: 'CTM [v1.0.0] - Operações'});
+  };
 
- reportController.create = function(req, res){   
-    
-        Supplier
-            .find({active:true})
-            .exec(function(err, suppl){
-                if (err) {
-                    req.flash('alert-danger', "Erro ao listar fornecedores :"+ err);  
-                }else{
-                    Customer
-                    .find({active:true})
-                        .exec(function(err, custm){
-                            if (err) {
-                                req.flash('alert-danger', "Erro ao listar clientes:"+ err);  
-                            }else{
-                                Status  
-                                    .find({active:true})
-                                    .exec(function(err, sts){
-                                        if (err) {
-                                            req.flash('alert-danger', "Erro ao listar clientes:"+ err);  
-                                        }else{ 
-                                            res.render('operations/new', { title: 'CTM [v1.0.0] - Nova Operação', suppliers: suppl, customers:custm, statuss:sts });              
-                                        }
-                                    });   
-                            }
-                        }); 
-                }
-            });        
-    
-
+reportController.operationslist = function(req, res){       
+    Operation.find({}, function(err, items) {
+        if(err){
+            console.log('Erro on load grid:' + err);
+        } else {
+            // console.log(JSON.stringify(items));
+            res.json(items);
+        };
+    });
   }; 
  
 reportController.show = function(req, res){ 

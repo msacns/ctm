@@ -152,12 +152,14 @@ router.get('/operations/exportxls',  isLoggedIn, Operations.export2excel);
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 // ++++++++++++++++++++++ Report Operations Grid +++++++++++++++++++++++++++
+// View List
+router.get('/report/operation',  isLoggedIn, Reports.operationsshow);
 // loadData
 router.get('/report/operations',  isLoggedIn, Reports.operationslist);
-// updateItem
-router.put('/report/operations',  isLoggedIn, Reports.operationsupdate);
-// deleteItem
-router.delete('/report/operations',  isLoggedIn, Reports.operationsdelete);
+// // updateItem
+// router.put('/report/operations',  isLoggedIn, Reports.operationsupdate);
+// // deleteItem
+// router.delete('/report/operations',  isLoggedIn, Reports.operationsdelete);
 
 module.exports = router;
 

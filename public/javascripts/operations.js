@@ -1,7 +1,7 @@
 $(function() {
-    jsGrid.locale("pt-BR");
+    // jsGrid.locale("pt-BR");
     $("#jsGrid").jsGrid({
-        height: "70%",
+        height: "100%",
         width: "100%",
         filtering: true,
         inserting: true,
@@ -19,7 +19,8 @@ $(function() {
                     url: "/report/operations",
                     data: filter
                   }).then(function(result) {
-                      return result.data;
+                      console.log(JSON.stringify(result));
+                      return JSON.stringify(result);
                   });
               },
             updateItem: function(item) {
