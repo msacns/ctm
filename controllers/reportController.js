@@ -12,17 +12,17 @@ var Excel           = require('exceljs');
 
 var getOperationFilter = function(query) {
     var result = {
-        dtsalesorder: new RegExp(query.dtsalesorder, "i"),
+        // dtsalesorder: new RegExp(query.dtsalesorder, "i"),
         description: new RegExp(query.description, "i"),
         invoice: new RegExp(query.invoice, "i"),
         cntr: new RegExp(query.cntr, "i"),
         dtinvoice: new RegExp(query.dtinvoice, "i"),
         dtdeparture: new RegExp(query.dtdeparture, "i"),
         dtarrival: new RegExp(query.dtarrival, "i"),
-        dtdemurrage: new RegExp(query.dtdemurrage, "i"),
-        supplier: new RegExp(query.supplier, "i"),
-        customer: new RegExp(query.customer, "i"),
-        status: new RegExp(query.status, "i")
+        dtdemurrage: new RegExp(query.dtdemurrage, "i")//,
+        // supplier: new RegExp(query.supplier, "i"),
+        // customer: new RegExp(query.customer, "i"),
+        // status: new RegExp(query.status, "i")
     };
 
     // if(query.Married) {
@@ -32,7 +32,7 @@ var getOperationFilter = function(query) {
     // if(query.Country && query.Country !== '0') {
     //     result.Country = parseInt(query.Country, 10);
     // }
-
+    // console.log(result);
     return result;
 };
 
@@ -42,9 +42,10 @@ reportController.operationsshow = function(req, res) {
     res.render('operations/report',  { title: 'CTM [v1.0.0] - Operações'});
   };
 
-reportController.operationslist = function(req, res){       
+reportController.operationslist = function(req, res){      
     Operation
-        .find()
+        .find(getOperationFilter(req.query))
+        // .find()
         .populate({
             path:'supplier', 
             select:'description',            
@@ -66,10 +67,43 @@ reportController.operationslist = function(req, res){
         .exec(function(err, items) {
             if(err){
                 console.log('Erro on load grid:' + err);
-            } else {            
-                console.log(items);
-                res.json(items);
-            };
+            } else {
+                var retmsg =[];
+
+                for(var i=0;i < items.length;i++){
+                    var dtpv = items[i].dtsalesorder;
+                    var dtso = "";
+                    if (dtpv) {
+                        dtso = dtpv.split('/')[1] + '/' +  dtpv.split('/')[2];
+                    }                   
+                    var description = items[i].description;
+                    var invoice = items[i].invoice;
+                    var cntr = items[i].cntr;
+                    var dtinvoice = items[i].dtinvoice;
+                    var dtdeparture = items[i].dtdeparture;
+                    var dtarrival = items[i].dtarrival;
+                    var dtdemurrage = items[i].dtdemurrage;
+                    var suppliername = items[i].supplier.description;
+                    var customername = items[i].customer.description;
+                    var statusname = items[i].status.description;
+
+                    var retorno = {
+                            "dtso":dtso,
+                            "description":description,
+                            "invoice":invoice,
+                            "cntr": cntr,
+                            "dtinvoice":dtinvoice,
+                            "dtdeparture":dtdeparture,
+                            "dtarrival":dtarrival,
+                            "suppliername": suppliername,
+                            "customername":customername,
+                            "statusname":statusname
+                    };   
+                    retmsg.push(retorno);
+                };
+                // console.log(retmsg);                     
+                res.json(retmsg);
+            }
     });
   }; 
  

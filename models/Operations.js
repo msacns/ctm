@@ -10,7 +10,7 @@ var OperationsSchema = new Schema({
     },
     description: {
         type: String,        
-        lowercase: true
+        lowercase: false
     },    
     invoice: {
         type: String,
