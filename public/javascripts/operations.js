@@ -1,5 +1,5 @@
 $(function() {
-
+    $('#page2xls').hide();
     // var DateField = function(config) {
     //     jsGrid.Field.call(this, config);
     // };
@@ -109,11 +109,9 @@ $(function() {
             { 
                 type: "control",
                 editButton: false,
+                deleteButton: false,
                 headerTemplate: function() {
-                    return $("<button>").attr("type", "button").text("Excel")
-                        .on("click", function () {
-                            showDetailsDialog("Add", {});
-                        });
+                    return $("<a>").attr("type", "button").text("Excel").addClass("btn btn-success btn-sm").attr('href','/report/exportxls');                       
                 }
             }
         ]

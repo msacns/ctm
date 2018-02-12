@@ -156,6 +156,8 @@ router.get('/operations/exportxls',  isLoggedIn, Operations.export2excel);
 router.get('/report/operation',  isLoggedIn, Reports.operationsshow);
 // loadData
 router.get('/report/operations',  isLoggedIn, Reports.operationslist);
+// Excel
+router.get('/report/exportxls',  isLoggedIn, Reports.export2excel);
 // // updateItem
 // router.put('/report/operations',  isLoggedIn, Reports.operationsupdate);
 // // deleteItem
