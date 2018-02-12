@@ -266,7 +266,7 @@ operationController.show = function(req, res){
                req.flash('alert-danger', "Erro ao salvar:"+ err); 
                break;
         }      
-        res.redirect('/operations/show/'+operats._id);  
+        res.redirect('/operations');  
       } else {          
         req.flash('alert-info', 'Dados salvos com sucesso!'); 
         res.redirect('/operations/show/'+operats._id);

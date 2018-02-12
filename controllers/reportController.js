@@ -9,24 +9,21 @@ ExcelJS
 */
 var Excel           = require('exceljs');
 /******************************************************** */
-/* GridJS Datastore */
-var Datastore       = require('nedb');
-var db              = new Datastore();
 
 var getOperationFilter = function(query) {
-    // var result = {
-    //     dtsalesorder: new RegExp(query.dtsalesorder, "i"),
-    //     description: new RegExp(query.description, "i"),
-    //     invoice: new RegExp(query.invoice, "i"),
-    //     cntr: new RegExp(query.cntr, "i"),
-    //     dtinvoice: new RegExp(query.dtinvoice, "i"),
-    //     dtdeparture: new RegExp(query.dtdeparture, "i"),
-    //     dtarrival: new RegExp(query.dtarrival, "i"),
-    //     dtdemurrage: new RegExp(query.dtdemurrage, "i"),
-    //     supplier: new RegExp(query.supplier, "i"),
-    //     customer: new RegExp(query.customer, "i"),
-    //     status: new RegExp(query.status, "i")
-    // };
+    var result = {
+        dtsalesorder: new RegExp(query.dtsalesorder, "i"),
+        description: new RegExp(query.description, "i"),
+        invoice: new RegExp(query.invoice, "i"),
+        cntr: new RegExp(query.cntr, "i"),
+        dtinvoice: new RegExp(query.dtinvoice, "i"),
+        dtdeparture: new RegExp(query.dtdeparture, "i"),
+        dtarrival: new RegExp(query.dtarrival, "i"),
+        dtdemurrage: new RegExp(query.dtdemurrage, "i"),
+        supplier: new RegExp(query.supplier, "i"),
+        customer: new RegExp(query.customer, "i"),
+        status: new RegExp(query.status, "i")
+    };
 
     // if(query.Married) {
     //     result.Married = query.Married === 'true' ? true : false;
@@ -46,13 +43,33 @@ reportController.operationsshow = function(req, res) {
   };
 
 reportController.operationslist = function(req, res){       
-    Operation.find({}, function(err, items) {
-        if(err){
-            console.log('Erro on load grid:' + err);
-        } else {
-            // console.log(JSON.stringify(items));
-            res.json(items);
-        };
+    Operation
+        .find()
+        .populate({
+            path:'supplier', 
+            select:'description',            
+            match:{ active: true },
+            options: { sort: { $natural: -1 }}
+        })            
+        .populate({
+            path:'customer', 
+            select:'description',
+            match:{ active: true },
+            options: { sort: { $natural: -1 }}
+        })  
+        .populate({
+            path:'status', 
+            select:'description',
+            match:{ active: true },
+            options: { sort: { $natural: -1 }}
+        }) 
+        .exec(function(err, items) {
+            if(err){
+                console.log('Erro on load grid:' + err);
+            } else {            
+                console.log(items);
+                res.json(items);
+            };
     });
   }; 
  

@@ -11,13 +11,8 @@ block content
           li.breadcrumb-item Transações
           li.breadcrumb-item Relatórios
           li.breadcrumb-item.active Operações
-        .container-fluid
-          .animated.fadeIn
-            .row
-               .col-md-12
-                  .card
-                    h1.display-4
-                    div#jsGrid
+        .container-fluid                    
+          div#jsGrid(style='height:800px;')
 block scripts                  
   script(src='https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.1/jsgrid.min.js')
   script(src='/javascripts/operations.js')                       

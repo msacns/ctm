@@ -1,4 +1,7 @@
 header.app-header.navbar
+      if (user) 
+        - var username = user.username;
+        - var useremail = user.email;
       button.navbar-toggler.mobile-sidebar-toggler.d-lg-none.mr-auto(type='button') ☰
       a.navbar-brand(href='#')
       button.navbar-toggler.sidebar-minimizer.d-md-down-none(type='button') ☰
@@ -8,24 +11,10 @@ header.app-header.navbar
       ul.nav.navbar-nav.ml-auto
         li.nav-item.dropdown
           a.nav-link.dropdown-toggle.nav-link(data-toggle='dropdown', href='#', role='button', aria-haspopup='true', aria-expanded='false')
-            //- img.img-avatar(src='#{user_info.avatar}', alt='#{user_info.email}')
-            //- img.img-avatar(src='#{baseuri}img/avatars/2.jpg', alt='#{user_info.email}')
-            //- span.d-md-down-none #{user_info.fullname}
+            span(data-letters=uavatar).d-md-down-none #{username}  
           .dropdown-menu.dropdown-menu-right
             .dropdown-header.text-center
               strong Conta de Usuário
-            a.dropdown-item(href='#')
-              i.fa.fa-bell-o
-              |  Eventos
-              span.badge.badge-info 42
-            a.dropdown-item(href='#')
-              i.fa.fa-envelope-o
-              |  Mensagens
-              span.badge.badge-success 42
-            a.dropdown-item(href='#')
-              i.fa.fa-tasks
-              |  Diagnósticos
-              span.badge.badge-danger 42
             a.dropdown-item(href='#')
               i.fa.fa-comments
               |  Avisos
@@ -37,11 +26,7 @@ header.app-header.navbar
               |  Perfil
             a.dropdown-item(href='#')
               i.fa.fa-wrench
-              |  Parâmetros
-            a.dropdown-item(href='#')
-              i.fa.fa-usd
-              |  Financeiro
-              span.badge.badge-default 42  
+              |  Parâmetros 
             .divider
             a.dropdown-item(href='#')
               i.fa.fa-shield
@@ -49,4 +34,3 @@ header.app-header.navbar
             a.dropdown-item(href='/logout')
               i.fa.fa-lock
               |  Logout
-            //- button.navbar-toggler.aside-menu-toggler(type='button') ☰  

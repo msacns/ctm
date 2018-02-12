@@ -1,7 +1,55 @@
 $(function() {
     // jsGrid.locale("pt-BR");
+
+    var DateField = function(config) {
+        jsGrid.Field.call(this, config);
+    };
+    
+    DateField.prototype = new jsGrid.Field({
+        sorter: function(date1, date2) {
+            return new Date(date1) - new Date(date2);
+        },    
+    
+        itemTemplate: function(value) {
+            return new Date(value).toDateString();
+        },
+    
+        filterTemplate: function() {
+            var now = new Date();
+            this._fromPicker = $("<input>").datepicker({ defaultDate: now.setFullYear(now.getFullYear() - 1) });
+            this._toPicker = $("<input>").datepicker({ defaultDate: now.setFullYear(now.getFullYear() + 1) });
+            return $("<div>").append(this._fromPicker).append(this._toPicker);
+        },
+    
+        insertTemplate: function(value) {
+            return this._insertPicker = $("<input>").datepicker({ defaultDate: new Date() });
+        },
+    
+        editTemplate: function(value) {
+            return this._editPicker = $("<input>").datepicker().datepicker("setDate", new Date(value));
+        },
+    
+        insertValue: function() {
+            return this._insertPicker.datepicker("getDate").toISOString();
+        },
+    
+        editValue: function() {
+            return this._editPicker.datepicker("getDate").toISOString();
+        },
+    
+        filterValue: function() {
+            return {
+                from: this._fromPicker.datepicker("getDate"),
+                to: this._toPicker.datepicker("getDate")
+            };
+        }
+    });
+    
+    jsGrid.fields.date = DateField;
+
+
     $("#jsGrid").jsGrid({
-        height: "100%",
+        height: "400px",
         width: "100%",
         filtering: true,
         inserting: true,
@@ -18,11 +66,8 @@ $(function() {
                     type: "GET",
                     url: "/report/operations",
                     data: filter
-                  }).then(function(result) {
-                      console.log(JSON.stringify(result));
-                      return JSON.stringify(result);
                   });
-              },
+            },
             updateItem: function(item) {
                 return $.ajax({
                     type: "PUT",
@@ -43,14 +88,16 @@ $(function() {
             { name: "description",title: "Medidas", type: "text", width: 250 },
             { name: "invoice",title: "Invoice", type: "text", width: 75 },
             { name: "cntr",title: "Conteiner", type: "text", width: 100 },
-            { name: "dtinvoice",title: "Data", type: "text", width: 75 },
-            { name: "dtdeparture",title: "Saída ", type: "text", width: 75 },
-            { name: "dtarrival",title: "Chegada", type: "text", width: 75 },
-            { name: "dtdemurrage",title: "Demurrage", type: "text", width: 75 },
-            { name: "supplier",title: "EXPORT", type: "text", width: 75 },
-            { name: "customer",title: "Cliente", type: "text", width: 75 },
-            { name: "status",title: "Status", type: "text", width: 100 },            
+            { name: "dtinvoice",title: "Data", type: "date", width: 75 },
+            { name: "dtdeparture",title: "Saída ", type: "date", width: 75 },
+            { name: "dtarrival",title: "Chegada", type: "date", width: 75 },
+            { name: "dtdemurrage",title: "Demurrage", type: "date", width: 95 },
+            { name: "supplier.description",title: "EXPORT", type: "text", width: 75 },
+            { name: "customer.description",title: "Cliente", type: "text", width: 75 },
+            { name: "status.description",title: "Status", type: "text", width: 100 },            
             { type: "control" }
         ]
     }); 
+
+    $("#jsGrid").jsGrid("option", "height", 400);
   });
