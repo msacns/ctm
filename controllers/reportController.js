@@ -380,4 +380,64 @@ reportController.export2excel = function(req, res) {
             });               
   }  
 
+/***********************/
+/* Pivot Table */
+/***********************/
+
+reportController.pivot = function(req, res) {        
+    res.render('statuses/report',  { title: 'CTM [v1.0.0] - Pivot Table'});
+  };
+
+reportController.customers = function(req, res) {        
+    Customer
+        .find({active:true})
+        .exec(function(err, customers){
+            if(err){
+                res.json(err);
+            }else{
+                res.json(customers);
+            }
+        });
+    
+  };
+
+reportController.status = function(req, res) {        
+    Status
+        .find({active:true})
+        .exec(function(err, statuses){
+            if(err){
+                res.json(err);
+            }else{
+                res.json(statuses);
+            }
+        });
+    
+  };  
+
+reportController.suppliers = function(req, res) {        
+    Supplier
+        .find({active:true})
+        .exec(function(err, Suppliers){
+            if(err){
+                res.json(err);
+            }else{
+                res.json(Suppliers);
+            }
+        });
+    
+  };    
+
+reportController.operations = function(req, res) {        
+    Operation
+        .find({active:true})
+        .exec(function(err, operations){
+            if(err){
+                res.json(err);
+            }else{
+                res.json(operations);
+            }
+        });
+    
+  };  
+
 module.exports = reportController;

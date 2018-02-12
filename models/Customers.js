@@ -10,7 +10,7 @@ var CustomerSchema = new Schema({
     },
     description: {
         type: String,        
-        lowercase: true
+        lowercase: false
     },
     country: {
         type: String,

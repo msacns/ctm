@@ -9,10 +9,9 @@ var Statuses = require('../controllers/statusController');
 var UserAccount = require('../controllers/accountController');
 var Operations = require('../controllers/operationController');
 var Reports   = require('../controllers/reportController');
+var Master  = require('../controllers/masterController');
 
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'CTM [v1.0.0]', user: req.user });
-});
+router.get('/',  isLoggedIn, Master.list);
 
 router.get('/register', function(req, res) {
   res.render('register', {});
@@ -36,18 +35,12 @@ router.get('/login', function(req, res) {
   res.render('login', {title: 'CTM [v1.0.1]', user: req.user});
 });
 
-router.post('/login', passport.authenticate('local'), function(req, res) {
-  res.redirect('/');
-});
+router.post('/login', UserAccount.doLogin);
 
 router.get('/logout', function(req, res) {
   req.logout();
   res.redirect('/');
 });
-
-// router.get('/users', function(req, res) {
-//   res.render('login', {title: 'CTM [v1.0.1] - Usuários', user: req.user});
-// });
 
 
 // ++++++++++++++++++++++ Suppliers +++++++++++++++++++++++++++
@@ -163,11 +156,26 @@ router.get('/report/exportxls',  isLoggedIn, Reports.export2excel);
 // // deleteItem
 // router.delete('/report/operations',  isLoggedIn, Reports.operationsdelete);
 
+// View List
+router.get('/report/pivot', isLoggedIn, Reports.pivot);
+
+// View Customers
+router.get('/report/pivot/customers', isLoggedIn, Reports.customers);
+
+// View Status
+router.get('/report/pivot/status', isLoggedIn, Reports.status);
+
+// View Suppliers
+router.get('/report/pivot/suppliers', isLoggedIn, Reports.suppliers);
+
+// View Operations
+router.get('/report/pivot/operations', isLoggedIn, Reports.operations);
+
 module.exports = router;
 
 function isLoggedIn(req, res, next) {            
-  // if (req.isAuthenticated())        
+   if (req.isAuthenticated())        
       return next();
 
-  // res.redirect('/login');
+   res.redirect('/login');
 }

@@ -44,7 +44,7 @@ var acctype = [
 // accounttype.collection.insertMany(acctype, function(err, r){
 //     assert.equal(null, err);
 //     assert.equal(2, r.insertedCount);
-// })
+// });
 
 
 

@@ -14,6 +14,30 @@ var Excel           = require('exceljs');
 
 var accountController = {};
 
+
+accountController.doLogin = function(req, res, next) {   
+    passport.authenticate('local', function(err, user, info) {
+      if (err) { 
+          return next(err); 
+      }
+  
+      if (!user) { 
+        req.flash('alert-danger', "Usuário não encontrado, Favor revisar usuário e senha. Detalhes:"+ err)  
+        // return res.send({ success : false, message : 'authentication failed' });
+        return res.redirect('/login') 
+        // res.render('login', {title:'DriveOn'})
+      }
+      
+      req.logIn(user, function(loginErr) {      
+        if (loginErr) { 
+            return next(loginErr); 
+        }
+        // return res.send({ success : true, message : 'authentication succeeded' });
+         return res.redirect('/');
+      });
+    })(req, res, next);
+   }
+
 /**
  * CRUD
  */ 
@@ -29,7 +53,7 @@ accountController.list = function(req, res) {
     Account
         .find()          
         .populate({
-            path:'nd_AccountType', 
+            path:'accountType', 
             select:'accountTypeDescription',
             options: { sort: { $natural: -1 }}
           })   
@@ -168,7 +192,7 @@ accountController.update = function(req, res){
                 if (err) {                   
                     req.flash('alert-danger', "Erro ao atualizar:"+ err);                            
                 } else {  
-                    res.render('users/edit', {uaccount: req.body, acctypes: acctp});
+                    res.render('users/edit', {uaccount:uacc, acctypes: acctp});
                 };
             });  
         }else{
