@@ -41,10 +41,10 @@ var acctype = [
     {accountType: 'B', accountTypeDescription: 'Visualização de Operações'}
 ];
 // habilitar somente quando instalar
- accounttype.collection.insertMany(acctype, function(err, r){
-     assert.equal(null, err);
-     assert.equal(2, r.insertedCount);
- });
+// accounttype.collection.insertMany(acctype, function(err, r){
+//     assert.equal(null, err);
+//     assert.equal(2, r.insertedCount);
+// });
 
 
 
