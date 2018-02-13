@@ -43,7 +43,7 @@ module.exports = {
         ip: "0.0.0.0",
         port: 80,
         db_type: 'mongoDB', // tingoDB or mongoDB
-        db: 'mongodb://ctmadmin:ctm@2018@ds131698.mlab.com:31698/ctm',
+        db: 'mongodb://ctmadmin:ctm2018!@ds131698.mlab.com:31698/ctm',
         app: {
             name: 'CTM',
             contactEmail: '',
