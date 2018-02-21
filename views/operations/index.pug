@@ -28,7 +28,8 @@ block content
                             th Cliente  
                             th Status
                             th Ações
-                        tbody                                                                                                                                     
+                        tbody     
+                          if(list)                                                                                                                                
                             each oper in list  
                               - var  lnid  = oper.id;                      
                               - var  suppl = oper.supplier.description;

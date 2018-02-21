@@ -25,7 +25,8 @@ block content
                             th Contato  
                             th Ativo
                             th Ações
-                        tbody                                                                                                                                     
+                        tbody      
+                          if(list)                                                                                                                               
                             each statu in list  
                               - var  lnid = statu.id;                      
                               tr

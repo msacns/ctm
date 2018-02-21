@@ -27,16 +27,17 @@ block content
                             th Tipo
                             th Ativo
                             th Ações
-                        tbody                                                                                                         
-                            each user in list   
-                              - var codu = user.id;                      
+                        tbody      
+                           if(list)                                                                                                   
+                            each users in list   
+                              - var codu = users.id;                      
                               tr
-                                td #{user.userid}
-                                td #{user.username}
-                                td #{user.fullname}                                                                
-                                td #{user.email}
-                                td #{user.accountType}   
-                                td #{ativo = user.active==true?'Sim':'Não' }                            
+                                td #{users.userid}
+                                td #{users.username}
+                                td #{users.fullname}                                                                
+                                td #{users.email}
+                                td #{users.accountType}   
+                                td #{ativo = users.active==true?'Sim':'Não' }                            
                                 td 
                                   .form-group
                                     form.form-horizontal(action='/users/delete/'+codu, method='post')                                      
