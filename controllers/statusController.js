@@ -201,14 +201,12 @@ statusController.export2excel = function(req, res) {
                     worksheet.columns = [
                         { header: 'Código', key: 'id', width: 10 },
                         { header: 'Status', key: 'name', width: 32 },
-                        { header: 'País', key: 'country', width: 15 },
                         { header: 'Contato', key: 'contact', width: 22},
                         { header: 'Ativo', key: 'activeflag', width: 10}
                     ];                                        
                     for(i=0;i < count; i++){
                         var codfor = statuss[i].status;
                         var desfor = statuss[i].description;
-                        var cdpais = statuss[i].country;
                         var contac = statuss[i].contact;
                         var ativo = statuss[i].active;
                        

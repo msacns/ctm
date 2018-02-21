@@ -6,7 +6,7 @@ block content
         ol.breadcrumb
           li.breadcrumb-item Administração
           li.breadcrumb-item Configurações
-          li.breadcrumb-item.active Statuses
+          li.breadcrumb-item.active Status
         .container-fluid
           .animated.fadeIn
             .row
@@ -14,7 +14,7 @@ block content
                   .card
                     .card-header
                       i.fa.fa-align-justify
-                      |  Statuses
+                      |  Status
                     .card-body   
                       != messages()                        
                       table.table.table-striped
@@ -22,7 +22,6 @@ block content
                           tr
                             th Código
                             th Status
-                            th País
                             th Contato  
                             th Ativo
                             th Ações
@@ -31,8 +30,7 @@ block content
                               - var  lnid = statu.id;                      
                               tr
                                 td #{statu.status}
-                                td #{statu.description}                                                                
-                                td #{statu.country}
+                                td #{statu.description} 
                                 td #{statu.contact} 
                                 td #{ativo = statu.active==true?'Sim':'Não' }                            
                                 td 
