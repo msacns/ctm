@@ -6,7 +6,7 @@ block content
         ol.breadcrumb
           li.breadcrumb-item Administração
           li.breadcrumb-item Configurações
-          li.breadcrumb-item.active Statuses
+          li.breadcrumb-item.active Status
         .container-fluid
           .animated.fadeIn
             .row
@@ -14,7 +14,7 @@ block content
                   .card
                     .card-header
                       i.fa.fa-edit
-                      |  Statuses
+                      |  Status
                     .card-body                                              
                       != messages()
                       form.form-horizontal(action='/statuses/save', method='post')
@@ -23,15 +23,15 @@ block content
                           .controls
                             .input-group
                               input#description.form-control(name='description',size='16', type='text')
-                        .form-group
-                          label.form-control-label(for='countrynm') País
-                          .controls
-                            .input-group
-                              select#select.form-control-sm(name='country')
-                               option(value='') Selecione um País 
-                               each namecountry in countries
-                                - var ncountry = namecountry.name;
-                                option(value=ncountry) #{ncountry}                                                                                              
+                        //- .form-group
+                        //-   label.form-control-label(for='countrynm') País
+                        //-   .controls
+                        //-     .input-group
+                        //-       select#select.form-control-sm(name='country')
+                        //-        option(value='') Selecione um País 
+                        //-        each namecountry in countries
+                        //-         - var ncountry = namecountry.name;
+                        //-         option(value=ncountry) #{ncountry}                                                                                              
                         .form-group
                           label.form-control-label(for='lblcontato') Contato
                           .controls

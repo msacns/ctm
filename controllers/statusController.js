@@ -210,7 +210,7 @@ statusController.export2excel = function(req, res) {
                         var contac = statuss[i].contact;
                         var ativo = statuss[i].active;
                        
-                        worksheet.addRow([codfor, desfor,cdpais,contac,ativo]).commit();
+                        worksheet.addRow([codfor, desfor, contac, ativo]).commit();
                     }                    
                     worksheet.commit();
                     workbook.commit();

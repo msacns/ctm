@@ -11,6 +11,7 @@ var Account = new Schema({
         unique: true,
         required: true
     },
+    fullname: String,
     email: {
         type: String,
         unique: true,

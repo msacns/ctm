@@ -6,7 +6,7 @@ block content
         ol.breadcrumb
           li.breadcrumb-item Administração
           li.breadcrumb-item Configurações
-          li.breadcrumb-item Statuses
+          li.breadcrumb-item Status
           li.breadcrumb-item.active Detalhes
         .container-fluid
           .animated.fadeIn
@@ -15,7 +15,7 @@ block content
                   .card
                     .card-header
                       i.fa.fa-edit
-                      |  Statuses - Detalhes
+                      |  Status - Detalhes
                       - var docid       = stats.id;
                       - var codfor      = stats.status;
                       - var descfor     = stats.description;
@@ -36,14 +36,14 @@ block content
                           .controls
                             .input-group
                               input#description.form-control(name='description',size='100', type='text',  value=descfor, readonly=false)                                                           
-                        .form-group
-                          label.form-control-label(for='countrynm') País
-                          .controls
-                            .input-group
-                              select#select.form-control-sm(name='country')
-                               each namecountry in countries
-                                - var ncountry = namecountry.name;
-                                option(value=ncountry selected=stats.country==ncountry) #{ncountry}                         
+                        //- .form-group
+                        //-   label.form-control-label(for='countrynm') País
+                        //-   .controls
+                        //-     .input-group
+                        //-       select#select.form-control-sm(name='country')
+                        //-        each namecountry in countries
+                        //-         - var ncountry = namecountry.name;
+                        //-         option(value=ncountry selected=stats.country==ncountry) #{ncountry}                         
                         .form-group
                           label.form-control-label(for='cnt') Contato
                           .controls
