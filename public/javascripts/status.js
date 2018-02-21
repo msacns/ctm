@@ -2,16 +2,17 @@ $(function() {
 
   $.ajax({
     type: "GET",
-    url: "/report/pivot/customers",
+    url: "/report/pivot/operations",
     dataType: "json",
     contentType: "application/json; charset=UTF-8" 
   }).done(function ( operdata ) {  
+    console.log(operdata);
     $("#output").pivotUI(operdata, {
-      rows: ["Province"],
-      cols: ["Party"],
-      aggregatorName: "Integer Sum",
-      vals: ["Age"],
-      rendererName: "Heatmap",
+      rows: ["Descrição"],
+      cols: ["Fornecedor"],
+      aggregatorName: "Count",
+      vals: ["status"],
+      rendererName: "Table",
       rendererOptions: {
           table: {
               clickCallback: function(e, value, filters, pivotData){

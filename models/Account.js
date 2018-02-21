@@ -21,7 +21,7 @@ var Account = new Schema({
         type: String,
         required: true
     },
-    accountType: { type: Schema.Types.ObjectId, ref: 'nd_AccountType' },
+    accountType: { type: Schema.Types.ObjectId, ref: 'nd_accounttypes' },
     gender: String,
     accountPrefix: String,
     active: Boolean,
@@ -63,6 +63,6 @@ Account.plugin(mongooseLogs, {
     deleteAction: "deleted" 
 });
 
-var account = mongoose.model('nd_Account', Account);
+var account = mongoose.model('nd_account', Account);
 
 module.exports = account;

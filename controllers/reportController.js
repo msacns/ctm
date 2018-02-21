@@ -230,14 +230,66 @@ reportController.suppliers = function(req, res) {
 
 reportController.operations = function(req, res) {        
     Operation
-        .find({active:true})
-        .exec(function(err, operations){
-            if(err){
-                res.json(err);
-            }else{
-                res.json(operations);
-            }
-        });
+    .find({active:true})    
+    .populate({
+        path:'supplier', 
+        select:'description',            
+        match:{ active: true },
+        options: { sort: { $natural: -1 }}
+    })            
+    .populate({
+        path:'customer', 
+        select:'description',
+        match:{ active: true },
+        options: { sort: { $natural: -1 }}
+    })  
+    .populate({
+        path:'status', 
+        select:'description',
+        match:{ active: true },
+        options: { sort: { $natural: -1 }}
+    }) 
+    .exec(function(err, items) {
+        if(err){
+            console.log('Erro on load grid:' + err);
+        } else {
+            var retmsg =[];
+
+            for(var i=0;i < items.length;i++){
+                var dtpv = items[i].dtsalesorder;
+                var dtso = "";
+                if (dtpv) {
+                    dtso = dtpv.split('/')[1] + '/' +  dtpv.split('/')[2];
+                }                   
+                var description = items[i].description;
+                var invoice = items[i].invoice;
+                var cntr = items[i].cntr;
+                var dtinvoice = items[i].dtinvoice;
+                var dtdeparture = items[i].dtdeparture;
+                var dtarrival = items[i].dtarrival;
+                var dtdemurrage = items[i].dtdemurrage;
+                var suppliername = items[i].supplier.description;
+                var customername = items[i].customer.description;
+                var statusname = items[i].status.description;
+
+                var retorno = {
+                        "Data Pedido Venda":dtso,
+                        "Descrição":description,
+                        "Invoice":invoice,
+                        "Container": cntr,
+                        "Data Invoice":dtinvoice,
+                        "Data de Saida":dtdeparture,
+                        "Data de Chegada":dtarrival,
+                        "Fornecedor": suppliername,
+                        "Cliente":customername,
+                        "Status":statusname
+                };   
+                retmsg.push(retorno);
+            };
+            // console.log(retmsg);                     
+            res.json(retmsg);
+        }
+    });
     
   };  
 

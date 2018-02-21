@@ -26,7 +26,7 @@ CountriesSchema.plugin(mongooseLogs, {
     deleteAction: "deleted" 
 });
 
-var Country = mongoose.model('nd_Countries', CountriesSchema);
+var Country = mongoose.model('nd_countries', CountriesSchema);
 
 // Run just at first time
  //var countrylist = [ 
