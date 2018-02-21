@@ -34,7 +34,7 @@ statusController.list = function(req, res) {
                     res.render('statuses/index',
                     { title: 'CTM [v1.0.0] - Status', 
                         list: siti,
-                        user_info: req.user,
+                        user: req.user,
                         page: page + 1,
                         pages: Math.ceil(count / limit)}
                     );
@@ -47,7 +47,7 @@ statusController.create = function(req, res){
         Countries
             .find()
             .exec(function(err, country){
-                res.render('statuses/new', { title: 'CTM [v1.0.0] - Novo Status', countries: country });              
+                res.render('statuses/new', { title: 'CTM [v1.0.0] - Novo Status', user: req.user, countries: country });              
         }); 
         
     } catch ( err ) {                
@@ -72,7 +72,7 @@ statusController.show = function(req, res){
                     }   
                 } else {                         
                     req.flash('alert-info', 'Dados salvos com sucesso!');  
-                    res.render('statuses/show', {stats: statuses});
+                    res.render('statuses/show', {user: req.user,stats: statuses});
                 }
             });
     } else {    
@@ -95,7 +95,7 @@ statusController.edit = function(req, res){
         } else {    
             Countries
               .find().exec(function(err, country){
-                res.render('statuses/edit', {stats: statuses, countries: country});
+                res.render('statuses/edit', {stats: statuses, user: req.user, countries: country});
               });                
         };
       });
@@ -132,7 +132,7 @@ statusController.update = function(req, res){
                  req.flash('alert-danger', "Erro ao atualizar:"+ err);  
                  break;
           }   
-          res.render("statuses/edit", {stats: req.body});
+          res.render("statuses/edit", {user: req.user,stats: req.body});
         }else{
           req.flash('alert-info', 'Dados salvos com sucesso!');         
           res.redirect("/statuses/show/"+situat._id);

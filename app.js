@@ -15,6 +15,7 @@ var helpers       = require('view-helpers');
 
 
 global.config = config;
+global.version = '1.0.0';
 
 var index = require('./routes/index');
 

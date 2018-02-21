@@ -35,7 +35,7 @@ var customerController = {}
                     res.render('customers/index',
                     { title: 'CTM [v1.0.0] - Clientes', 
                         list: customers,
-                        user_info: req.user,
+                        user: req.user,
                         page: page + 1,
                         pages: Math.ceil(count / limit)}
                     );
@@ -48,7 +48,7 @@ var customerController = {}
         Countries
             .find()
             .exec(function(err, country){
-                res.render('customers/new', { title: 'CTM [v1.0.0] - Novo Cliente', countries: country });              
+                res.render('customers/new', { title: 'CTM [v1.0.0] - Novo Cliente',user: req.user, countries: country });              
         }); 
         
     } catch ( err ) {
@@ -59,8 +59,7 @@ var customerController = {}
 
   }; 
  
-customerController.show = function(req, res){ 
-//   var baseurl = req.protocol + "://" + req.get('host') + "/" 
+ customerController.show = function(req, res){ 
   if (req.params.id != null || req.params.id != undefined) {      
     Customer.findOne({_id: req.params.id})  
         .exec(function (err, customers) {            
@@ -76,16 +75,15 @@ customerController.show = function(req, res){
                     }   
                 } else {                         
                     req.flash('alert-info', 'Dados salvos com sucesso!')  
-                    res.render('customers/show', {clients: customers});
+                    res.render('customers/show', {user: req.user, clients: customers});
                 }
             });
     } else {    
         res.render('errors/500', {message:'Erro interno, favor informar o administrador!'});    
     }
-  }    
+  };    
 
  customerController.edit = function(req, res){ 
-//   var baseurl = req.protocol + "://" + req.get('host') + "/"    
   Customer.findOne({_id: req.params.id}).exec(function (err, customers) {
         if (err) {
           switch (err.code)
@@ -100,14 +98,14 @@ customerController.show = function(req, res){
         } else {    
             Countries
               .find().exec(function(err, country){
-                res.render('customers/edit', {clients: customers, countries: country});
+                res.render('customers/edit', {clients: customers,user: req.user, countries: country});
               });                
         };
       });
   }
 
  customerController.update = function(req, res){  
-    // var baseurl = req.protocol + "://" + req.get('host') + "/"    
+  
     var moduser;
     if (req.user){
         moduser = req.user.username;
@@ -139,7 +137,7 @@ customerController.show = function(req, res){
                  req.flash('alert-danger', "Erro ao atualizar:"+ err);  
                  break;
           }   
-          res.render("customers/edit", {clients: req.body});
+          res.render("customers/edit", {user: req.user,clients: req.body});
         }else{
           req.flash('alert-info', 'Dados salvos com sucesso!');         
           res.redirect("/customers/show/"+custom._id);
@@ -148,7 +146,7 @@ customerController.show = function(req, res){
   }  
 
  customerController.save  =   function(req, res){
-    // var baseurl = req.protocol + "://" + req.get('host') + "/";
+ 
     var payload = req.body;    
     if(req.user) {                 
       payload.modifiedBy = req.user.username;
@@ -192,9 +190,8 @@ customerController.show = function(req, res){
       });
   };
 
-customerController.export2excel = function(req, res) {   
-    // var baseurl = req.protocol + "://" + req.get('host') + "/"    
-    
+ customerController.export2excel = function(req, res) {   
+   
     Customer
         .find()       
         .exec(function(err, customers){     

@@ -55,7 +55,7 @@ var operationController = {}
                     res.render('operations/index',
                     { title: 'CTM [v1.0.0] - Operações', 
                         list: operations,
-                        user_info: req.user,
+                        user: req.user,
                         page: page + 1,
                         pages: Math.ceil(count / limit)}
                     );
@@ -83,7 +83,7 @@ var operationController = {}
                                         if (err) {
                                             req.flash('alert-danger', "Erro ao listar clientes:"+ err);  
                                         }else{ 
-                                            res.render('operations/new', { title: 'CTM [v1.0.0] - Nova Operação', suppliers: suppl, customers:custm, statuss:sts });              
+                                            res.render('operations/new', { title: 'CTM [v1.0.0] - Nova Operação', user: req.user, suppliers: suppl, customers:custm, statuss:sts });              
                                         }
                                     });   
                             }
@@ -94,7 +94,7 @@ var operationController = {}
 
   }; 
  
-operationController.show = function(req, res){ 
+ operationController.show = function(req, res){ 
   if (req.params.id != null || req.params.id != undefined) {      
     Operation.findOne({_id: req.params.id}) 
     .populate({
@@ -128,7 +128,7 @@ operationController.show = function(req, res){
                     }   
                 } else {                         
                     req.flash('alert-info', 'Dados salvos com sucesso!')  
-                    res.render('operations/show', {operations: opers});
+                    res.render('operations/show', {user: req.user,operations: opers});
                 }
             });
     } else {    
@@ -167,7 +167,7 @@ operationController.show = function(req, res){
                                         if (err) {
                                             req.flash('alert-danger', "Erro ao listar clientes:"+ err);  
                                         }else{ 
-                                            res.render('operations/edit', { title: 'CTM [v1.0.0]', suppliers: suppl, customers:custm, statuss:sts, operations: opers });                                                          
+                                            res.render('operations/edit', { title: 'CTM [v1.0.0]', user: req.user, suppliers: suppl, customers:custm, statuss:sts, operations: opers });                                                          
                                         }
                                     });   
                             }
@@ -234,7 +234,7 @@ operationController.show = function(req, res){
                                       if (err) {
                                           req.flash('alert-danger', "Erro ao listar clientes:"+ err);  
                                       }else{ 
-                                          res.render('operations/edit', { title: 'CTM [v1.0.0]', suppliers: suppl, customers:custm, statuss:sts, operations: req.body });                                                          
+                                          res.render('operations/edit', { title: 'CTM [v1.0.0]', user: req.user, suppliers: suppl, customers:custm, statuss:sts, operations: req.body });                                                          
                                       }
                                   });   
                           }
@@ -293,7 +293,7 @@ operationController.show = function(req, res){
       });
   };
 
-operationController.export2excel = function(req, res) {     
+ operationController.export2excel = function(req, res) {     
     
     Operation
         .find()    

@@ -35,7 +35,7 @@ var supplierController = {}
                     res.render('suppliers/index',
                     { title: 'CTM [v1.0.0] - Fornecedores', 
                         list: suppliers,
-                        user_info: req.user,
+                        user: req.user,
                         page: page + 1,
                         pages: Math.ceil(count / limit)}
                     );
@@ -48,7 +48,7 @@ var supplierController = {}
         Countries
             .find()
             .exec(function(err, country){
-                res.render('suppliers/new', { title: 'CTM [v1.0.0] - Novo Fornecedor', countries: country });              
+                res.render('suppliers/new', { title: 'CTM [v1.0.0] - Novo Fornecedor', user: req.user, countries: country });              
         }); 
         
     } catch ( err ) {
@@ -59,8 +59,8 @@ var supplierController = {}
 
   }; 
  
-supplierController.show = function(req, res){ 
-//   var baseurl = req.protocol + "://" + req.get('host') + "/" 
+ supplierController.show = function(req, res){ 
+
   if (req.params.id != null || req.params.id != undefined) {      
     Supplier.findOne({_id: req.params.id})  
         .exec(function (err, suppliers) {            
@@ -76,7 +76,7 @@ supplierController.show = function(req, res){
                     }   
                 } else {                         
                     req.flash('alert-info', 'Dados salvos com sucesso!')  
-                    res.render('suppliers/show', {suppl: suppliers});
+                    res.render('suppliers/show', {user: req.user,suppl: suppliers});
                 }
             });
     } else {    
@@ -85,7 +85,7 @@ supplierController.show = function(req, res){
   }    
 
  supplierController.edit = function(req, res){ 
-//   var baseurl = req.protocol + "://" + req.get('host') + "/"    
+
   Supplier.findOne({_id: req.params.id}).exec(function (err, suppl) {
         if (err) {
           switch (err.code)
@@ -100,14 +100,14 @@ supplierController.show = function(req, res){
         } else {    
             Countries
               .find().exec(function(err, country){
-                res.render('suppliers/edit', {suppliers: suppl, countries: country});
+                res.render('suppliers/edit', {suppliers: suppl, user: req.user, countries: country});
               });                
         };
       });
   }
 
  supplierController.update = function(req, res){  
-    // var baseurl = req.protocol + "://" + req.get('host') + "/"    
+    
     var moduser;
     if (req.user){
         moduser = req.user.username;
@@ -137,7 +137,7 @@ supplierController.show = function(req, res){
                  req.flash('alert-danger', "Erro ao atualizar:"+ err);  
                  break;
           }   
-          res.render("suppliers/edit", {vehicles: req.body, baseuri:baseurl});
+          res.render("suppliers/edit", {vehicles: req.body, user: req.user, baseuri:baseurl});
         }else{
           req.flash('alert-info', 'Dados salvos com sucesso!');         
           res.redirect("/suppliers/show/"+suppl._id);
@@ -146,7 +146,7 @@ supplierController.show = function(req, res){
   }  
 
  supplierController.save  =   function(req, res){
-    // var baseurl = req.protocol + "://" + req.get('host') + "/";
+    
     var payload = req.body;    
     if(req.user) {                 
       payload.modifiedBy = req.user.username;
@@ -172,7 +172,7 @@ supplierController.show = function(req, res){
   };
 
  supplierController.delete = function(req, res){    
-    var baseurl = req.protocol + "://" + req.get('host') + "/" 
+    
     Supplier.remove({_id: req.params.id}, function(err) {
         if(err) {
           switch (err.code)
@@ -191,9 +191,8 @@ supplierController.show = function(req, res){
       });
   };
 
-supplierController.export2excel = function(req, res) {   
-    // var baseurl = req.protocol + "://" + req.get('host') + "/"    
-    
+ supplierController.export2excel = function(req, res) {   
+        
     Supplier
         .find()       
         .exec(function(err, suppliers){     

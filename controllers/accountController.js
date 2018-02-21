@@ -73,6 +73,7 @@ accountController.list = function(req, res) {
                         res.render('users/index',
                         { title: 'CTM [v1.0.0] - Usuários', 
                             list: siti,
+                            user: req.user,
                             page: page + 1,
                             pages: Math.ceil(count / limit)}
                         );   
@@ -86,7 +87,7 @@ accountController.create = function(req, res){
         AccountType
             .find()
             .exec(function(err, acctp){
-                res.render('users/new', { title: 'CTM [v1.0.0] - Novo Usuário', acctypes: acctp });              
+                res.render('users/new', { title: 'CTM [v1.0.0] - Novo Usuário', user: req.user, acctypes: acctp });              
         });         
     } catch ( err ) {                
         res.render('errors/500', {message:'Erro interno, favor informar o administrador!Detalhe do erro:'+err});    
@@ -115,7 +116,7 @@ accountController.show = function(req, res){
                           req.flash('alert-danger', "Erro ao Exibir:"+ err);                            
                         } else {  
                             req.flash('alert-info', 'Dados salvos com sucesso!'); 
-                            res.render('users/show', {accounts: actuser, acctypes: acctp});
+                            res.render('users/show', {accounts: actuser, user: req.user, acctypes: acctp});
                         };
                     });   
                 }
@@ -143,7 +144,7 @@ accountController.edit = function(req, res){
                 if (err) {                   
                     req.flash('alert-danger', "Erro ao editar:"+ err);                            
                   } else {  
-                    res.render('users/edit', {uaccount: accuser, acctypes: acctp});
+                    res.render('users/edit', {uaccount: accuser, user: req.user, acctypes: acctp});
                   };
               });                
         };
@@ -190,7 +191,7 @@ accountController.update = function(req, res){
                 if (err) {                   
                     req.flash('alert-danger', "Erro ao atualizar:"+ err);                            
                 } else {  
-                    res.render('users/edit', {uaccount:uacc, acctypes: acctp});
+                    res.render('users/edit', {uaccount:uacc,user: req.user, acctypes: acctp});
                 };
             });  
         }else{
@@ -210,7 +211,7 @@ accountController.update = function(req, res){
                         if (err) {                   
                             req.flash('alert-danger', "Erro ao atualizar:"+ uerr);                            
                         } else {  
-                            res.render('users/edit', {uaccount:uacc, acctypes: acctp});
+                            res.render('users/edit', {uaccount:uacc,user: req.user, acctypes: acctp});
                         };
                     });
             })       
@@ -254,7 +255,7 @@ accountController.save  =   function(req, res){
           if (err) {                   
               req.flash('alert-danger', "Erro ao editar:"+ err);                            
             } else {  
-              res.render('users/edit', {uaccount: req.body, acctypes: acctp});
+              res.render('users/edit', {uaccount: req.body,user: req.user, acctypes: acctp});
             };
         });  
       } else {          
@@ -337,4 +338,4 @@ var getInitials = function (string) {
         initials = names.substring(0, 1).toUpperCase();
     }   
     return initials;
-};
+ };
