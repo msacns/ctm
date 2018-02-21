@@ -40,9 +40,9 @@ var OperationsSchema = new Schema({
         type: String,
         required: false
     }, 
-    supplier:  { type: Schema.Types.ObjectId, ref: 'nd_supplier', required: true },
-    customer:  { type: Schema.Types.ObjectId, ref: 'nd_customer', required: true },
-    status:  { type: Schema.Types.ObjectId, ref: 'nd_status', required: true },
+    supplier:  { type: Schema.Types.ObjectId, ref: 'nd_suppliers', required: true },
+    customer:  { type: Schema.Types.ObjectId, ref: 'nd_customers', required: true },
+    status:  { type: Schema.Types.ObjectId, ref: 'nd_statuses', required: true },
     importdeclation:{
         type: String,
         required: false
@@ -66,6 +66,6 @@ OperationsSchema.plugin(mongooseLogs, {
     deleteAction: "deleted" 
 });
 
-var Statuss = mongoose.model('nd_operation', OperationsSchema);
+var Statuss = mongoose.model('nd_operations', OperationsSchema);
 
 module.exports = Statuss;

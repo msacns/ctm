@@ -319,7 +319,7 @@ var operationController = {}
             Operation.count().exec(function(err, count){                    
                 if(count)    {
                     res.writeHead(200, {
-                        'Content-Disposition': 'attachment; filename="operações.xlsx"',
+                        'Content-Disposition': 'attachment; filename="operacoes.xlsx"',
                         'Transfer-Encoding': 'chunked',
                         'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
                       });
@@ -354,8 +354,8 @@ var operationController = {}
                         var c10     = Operations[i].supplier.description;
                         var c11     = Operations[i].customer.description;
                         var c12     = Operations[i].status.description;
-                        var c13     = Operations[i].importdeclation;
-                        var c14     = Operations[i].active;                        
+                        var c13     = Operations[i].importdeclation;                 
+                        var c14     = Operations[i].active==true?'Sim':'Não';
 
                         worksheet.addRow([c1, c2, c3,c4, c5, c6,c7, c8, c9,c10, c11, c12,c13, c14]).commit();
                     }                    

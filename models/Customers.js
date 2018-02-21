@@ -47,6 +47,6 @@ CustomerSchema.plugin(mongooseLogs, {
     deleteAction: "deleted" 
 });
 
-var Customer = mongoose.model('nd_customer', CustomerSchema);
+var Customer = mongoose.model('nd_customers', CustomerSchema);
 
 module.exports = Customer;

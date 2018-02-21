@@ -34,7 +34,7 @@ AccountTypeSchema.plugin(mongooseLogs, {
     deleteAction: "deleted" 
 });
 
-var accounttype = mongoose.model('nd_accounttype', AccountTypeSchema);
+var accounttype = mongoose.model('nd_accounttypes', AccountTypeSchema);
 
 var acctype = [
     {accountType: 'A', accountTypeDescription: 'Manutenção Total'}, 

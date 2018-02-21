@@ -39,6 +39,6 @@ StatusSchema.plugin(mongooseLogs, {
     deleteAction: "deleted" 
 });
 
-var Statuss = mongoose.model('nd_status', StatusSchema);
+var Statuss = mongoose.model('nd_statuses', StatusSchema);
 
 module.exports = Statuss;

@@ -50,10 +50,10 @@ accountController.list = function(req, res) {
     Account
         .find()          
         .populate({
-            path:'accounttype', 
+            path:'accountType', 
             select:'accountTypeDescription',
             options: { sort: { $natural: -1 }}
-          })   
+          })    
         .limit(limit)
         .skip(limit * page)
         .exec(function(err, siti){       
@@ -314,8 +314,8 @@ accountController.export2excel = function(req, res) {
                         var desnm = uaccc[i].fullname;
                         var cdpais = uaccc[i].email;
                         var contac = uaccc[i].accountType;
-                        var ativo = uaccc[i].active;
-                       
+                        var ativo = uaccc[i].active==true?'Sim':'Não';
+                        
                         worksheet.addRow([codfor, desfor,desnm, cdpais,contac,ativo]).commit();
                     }                    
                     worksheet.commit();

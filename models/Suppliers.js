@@ -41,6 +41,6 @@ SupplierSchema.plugin(mongooseLogs, {
     deleteAction: "deleted" 
 });
 
-var Supplier = mongoose.model('nd_supplier', SupplierSchema);
+var Supplier = mongoose.model('nd_suppliers', SupplierSchema);
 
 module.exports = Supplier;

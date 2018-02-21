@@ -93,6 +93,7 @@ reportController.operationslist = function(req, res){
                             "cntr": cntr,
                             "dtinvoice":dtinvoice,
                             "dtdeparture":dtdeparture,
+                            "dtdemurrage":dtdemurrage,
                             "dtarrival":dtarrival,
                             "suppliername": suppliername,
                             "customername":customername,
@@ -133,7 +134,7 @@ reportController.export2excel = function(req, res) {
             Operation.count().exec(function(err, count){                    
                 if(count)    {
                     res.writeHead(200, {
-                        'Content-Disposition': 'attachment; filename="report_operações.xlsx"',
+                        'Content-Disposition': 'attachment; filename="report_operacoes.xlsx"',
                         'Transfer-Encoding': 'chunked',
                         'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
                       });

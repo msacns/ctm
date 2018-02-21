@@ -217,8 +217,8 @@ var supplierController = {}
                         var desfor = suppliers[i].description;
                         var cdpais = suppliers[i].country;
                         var contac = suppliers[i].contact;
-                        var ativo = suppliers[i].active;
-                       
+                        var ativo = suppliers[i].active==true?'Sim':'Não';
+                        
                         worksheet.addRow([codfor, desfor,cdpais,contac,ativo]).commit();
                     }                    
                     worksheet.commit();

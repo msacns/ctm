@@ -220,8 +220,8 @@ var customerController = {}
                         var cdestado = customers[i].state;
                         var cdcidade = customers[i].city;
                         var contac = customers[i].contact;
-                        var ativo = customers[i].active;
-                       
+                        var ativo = customers[i].active==true?'Sim':'Não';
+                        
                         worksheet.addRow([codfor, desfor,cdpais,cdestado,cdcidade,contac,ativo]).commit();
                     }                    
                     worksheet.commit();

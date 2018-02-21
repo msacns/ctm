@@ -208,7 +208,7 @@ statusController.export2excel = function(req, res) {
                         var codfor = statuss[i].status;
                         var desfor = statuss[i].description;
                         var contac = statuss[i].contact;
-                        var ativo = statuss[i].active;
+                        var ativo = statuss[i].active==true?'Sim':'Não';
                        
                         worksheet.addRow([codfor, desfor, contac, ativo]).commit();
                     }                    
