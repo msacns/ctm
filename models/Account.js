@@ -63,6 +63,6 @@ Account.plugin(mongooseLogs, {
     deleteAction: "deleted" 
 });
 
-var account = mongoose.model('nd_account', Account);
+var account = mongoose.model('nd_accounts', Account);
 
 module.exports = account;

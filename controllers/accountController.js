@@ -50,13 +50,14 @@ accountController.list = function(req, res) {
     Account
         .find()          
         .populate({
-            path:'accountType', 
+            path:'accounttype', 
             select:'accountTypeDescription',
             options: { sort: { $natural: -1 }}
           })   
         .limit(limit)
         .skip(limit * page)
-        .exec(function(err, siti){                
+        .exec(function(err, siti){       
+            
             Account.count().exec(function(err, count){   
                     if(err) {  
                         console.log('Error no save:'+ err);
@@ -69,7 +70,8 @@ accountController.list = function(req, res) {
                                 req.flash('alert-danger', "Erro ao salvar:"+ err);  
                                 break;
                         }
-                    }else{                        
+                    }else{        
+                        console.log(siti);                
                         res.render('users/index',
                         { title: 'CTM [v1.0.0] - Usuários', 
                             list: siti,
