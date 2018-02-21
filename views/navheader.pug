@@ -1,8 +1,8 @@
 header.app-header.navbar
       if (user) 
-        - var username = user.username;
+        - var username = user.fullname;
         - var useremail = user.email;
-        - var uavatar = ulogo;
+        - var uavatar = user.accountPrefix;
       button.navbar-toggler.mobile-sidebar-toggler.d-lg-none.mr-auto(type='button') ☰
       a.navbar-brand(href='#')
       button.navbar-toggler.sidebar-minimizer.d-md-down-none(type='button') ☰

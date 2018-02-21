@@ -22,18 +22,15 @@ accountController.doLogin = function(req, res, next) {
       }
   
       if (!user) { 
-        req.flash('alert-danger', "Usuário não encontrado, Favor revisar usuário e senha. Detalhes:"+ err)  
-        // return res.send({ success : false, message : 'authentication failed' });
+        req.flash('alert-danger', "Usuário não encontrado, Favor revisar usuário e senha.")  
         return res.redirect('/login') 
-        // res.render('login', {title:'DriveOn'})
       }
       
       req.logIn(user, function(loginErr) {      
         if (loginErr) { 
             return next(loginErr); 
         }
-        // return res.send({ success : true, message : 'authentication succeeded' });
-         return res.redirect('/');
+        return res.redirect('/');
       });
     })(req, res, next);
    }
@@ -72,12 +69,10 @@ accountController.list = function(req, res) {
                                 req.flash('alert-danger', "Erro ao salvar:"+ err);  
                                 break;
                         }
-                    }else{
-                        console.log('List:'+JSON.stringify(siti));
+                    }else{                        
                         res.render('users/index',
                         { title: 'CTM [v1.0.0] - Usuários', 
                             list: siti,
-                            user_info: req.user,
                             page: page + 1,
                             pages: Math.ceil(count / limit)}
                         );   
@@ -161,17 +156,20 @@ accountController.update = function(req, res){
     if (req.user){
         moduser = req.user.username;
     }
+    var npwd = req.body.password;
+    var initials = getInitials(req.body.fullname);
 
     Account.findByIdAndUpdate(
           req.params.id,          
           { $set: 
               { 
                 username: req.body.username, 
-                email: req.body.email, 
-                password: req.body.password,
+                fullname: req.body.fullname,
+                email: req.body.email,
                 accountType: req.body.accountType,
                 gender: req.body.gender,                
                 active: req.body.active,
+                accountPrefix:initials,
                 modifiedBy: moduser
               }
           }, 
@@ -196,8 +194,27 @@ accountController.update = function(req, res){
                 };
             });  
         }else{
-          req.flash('alert-info', 'Dados salvos com sucesso!');         
-          res.redirect("/users/show/"+uacc._id);
+            Account.findByUsername(uacc.username).then(function(sanitizedUser){
+                    if (sanitizedUser){
+                        sanitizedUser.setPassword(npwd, function(){
+                            sanitizedUser.save();
+                            req.flash('alert-info', 'Dados salvos com sucesso!') 
+                            res.redirect("/users/show/"+uacc._id);
+                        })
+                    } else {
+                        req.flash('alert-danger', 'Falha ao definir o usuario para troca a senha. Favor contactar o Administrado.') 
+                    }          
+                },function(uerr){
+                  AccountType
+                    .find().exec(function(err, acctp){
+                        if (err) {                   
+                            req.flash('alert-danger', "Erro ao atualizar:"+ uerr);                            
+                        } else {  
+                            res.render('users/edit', {uaccount:uacc, acctypes: acctp});
+                        };
+                    });
+            })       
+            
         };
       });
   };
@@ -208,19 +225,21 @@ accountController.save  =   function(req, res){
     if (req.user){    
       ulogin =  req.user.userid;
     }
-  
+    var initials = getInitials(req.body.fullname);
+
     var user = new Account({ 
       username: req.body.username, 
+      fullname: req.body.fullname,
       email: req.body.email, 
-      accountType: req.body.accountType,      
+      accountType: req.body.accountType,
+      accountPrefix: initials,      
       gender: req.body.gender,
       active: req.body.active,
       modifiedBy: ulogin
     })      
-    console.log('User to save:'+ JSON.stringify(user));
+    
     Account.register(user, req.body.password, function(err, user) {      
-      if(err) {  
-          console.log('Error no save:'+ err);
+      if(err) {            
         switch (err.code)
         {
            case 11000: 
@@ -281,6 +300,7 @@ accountController.export2excel = function(req, res) {
                     worksheet.columns = [
                         { header: 'Código', key: 'userid', width: 10 },
                         { header: 'Usuário', key: 'username', width: 32 },
+                        { header: 'Nome', key: 'fullname', width: 32 },
                         { header: 'Email', key: 'email', width: 15 },
                         { header: 'Tipo', key: 'accountType', width: 22},
                         { header: 'Ativo', key: 'active', width: 10}
@@ -288,11 +308,12 @@ accountController.export2excel = function(req, res) {
                     for(i=0;i < count; i++){
                         var codfor = uaccc[i].userid;
                         var desfor = uaccc[i].username;
+                        var desnm = uaccc[i].fullname;
                         var cdpais = uaccc[i].email;
                         var contac = uaccc[i].accountType;
                         var ativo = uaccc[i].active;
                        
-                        worksheet.addRow([codfor, desfor,cdpais,contac,ativo]).commit();
+                        worksheet.addRow([codfor, desfor,desnm, cdpais,contac,ativo]).commit();
                     }                    
                     worksheet.commit();
                     workbook.commit();
@@ -305,3 +326,15 @@ accountController.export2excel = function(req, res) {
   }  
 
 module.exports = accountController;
+
+var getInitials = function (string) {
+    var names = string.split(' '),
+        initials = names[0].substring(0, 1).toUpperCase();
+    
+    if (names.length > 1) {
+        initials += names[names.length - 1].substring(0, 1).toUpperCase();
+    }else{
+        initials = names.substring(0, 1).toUpperCase();
+    }   
+    return initials;
+};

@@ -21,6 +21,7 @@ block content
                       - var uuid = uaccount.id; 
                       - var userid = uaccount.userid;
                       - var usernm = uaccount.username;
+                      - var fullnm = uaccount.fullname;
                       - var uemail = uaccount.email;
                       - var utype  = uaccount.accountType;
                       - var pwd     = uaccount.password;
@@ -34,10 +35,15 @@ block content
                             .input-group
                               input#userid.form-control(name='userid',size='16', type='text',  value=userid, readonly=true)
                         .form-group
-                          label.form-control-label(for='fullname') Usuário
+                          label.form-control-label(for='lbluser') Usuário
                           .controls
                             .input-group
                               input#username.form-control(name='username',size='16', type='text',  value=usernm, readonly=false)
+                        .form-group
+                          label.form-control-label(for='lblfullnm') Nome
+                          .controls
+                            .input-group
+                              input#fullname.form-control(name='fullname',size='16', type='text',  value=fullnm, readonly=false)      
                         .form-group
                           label.form-control-label(for='email') e-mail
                           .controls

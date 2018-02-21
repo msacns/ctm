@@ -5,7 +5,7 @@ var masterController = {};
 
 masterController.list = function(req, res){
    
-    var uavatar = getInitials(req.user.username);       
+    var uavatar = getInitials(req.user.fullname);       
 
     User
       .findOne({email:req.user.email}).exec(function(err, user){                            

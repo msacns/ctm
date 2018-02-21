@@ -21,6 +21,7 @@ block content
                         thead
                           tr
                             th Código
+                            th Usuário
                             th Nome
                             th e-mail
                             th Tipo
@@ -31,7 +32,8 @@ block content
                               - var codu = user.id;                      
                               tr
                                 td #{user.userid}
-                                td #{user.username}                                                                
+                                td #{user.username}
+                                td #{user.fullname}                                                                
                                 td #{user.email}
                                 td #{user.accountType}   
                                 td #{ativo = user.active==true?'Sim':'Não' }                            

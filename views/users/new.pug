@@ -19,10 +19,15 @@ block content
                       != messages()
                       form.form-horizontal(action='/users/save', method='post')
                         .form-group
-                          label.form-control-label(for='lblusername') Nome
+                          label.form-control-label(for='lbluser') Usuário
                           .controls
                             .input-group
                               input#username.form-control(name='username',size='16', type='text')
+                        .form-group
+                          label.form-control-label(for='lblfullname') Nome
+                          .controls
+                            .input-group
+                              input#fullname.form-control(name='fullname',size='16', type='text')
                         .form-group
                           label.form-control-label(for='email') e-mail
                           .controls

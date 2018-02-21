@@ -23,6 +23,7 @@ var Account = new Schema({
     },
     accountType: { type: Schema.Types.ObjectId, ref: 'nd_AccountType' },
     gender: String,
+    accountPrefix: String,
     active: Boolean,
     avatar: { data: Buffer, contentType: String },
     attempts: Number,
