@@ -170,6 +170,10 @@ router.get('/report/pivot/suppliers', isLoggedIn, Reports.suppliers);
 
 // View Operations
 router.get('/report/pivot/operations', isLoggedIn, Reports.operations);
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+// ++++++++++++++++++++++ Dashboard Updates +++++++++++++++++++++++++++
+router.get('/dashboard/timeline', isLoggedIn, Master.showtimeline);
 
 module.exports = router;
 
