@@ -8,11 +8,18 @@ var masterController = {};
 
 masterController.list = function(req, res){
    
-    User
-      .findOne({email:req.user.email}).exec(function(err, user){                            
+    User    
+      .findOne({email:req.user.email})
+      .populate({
+        path:'accountType', 
+        select:'accountType',
+        options: { sort: { $natural: -1 }}
+      })
+      .exec(function(err, user_info){        
+            // console.log('user_info=>'+ JSON.stringify(user_info));                    
                           res.render('index',
                           { title: 'CTM [1.0.0]',
-                              user: req.user
+                              user: user_info
                              });
                            
                   });  

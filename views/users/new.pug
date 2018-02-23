@@ -51,7 +51,9 @@ block content
                             .input-group
                               select#accountType.form-control-sm(name='accountType')
                                 each atypes in acctypes
-                                  option(value='#{atypes.id}') #{atypes.accountTypeDescription}                                                                                                                 
+                                  - var atypeid = atypes.id;
+                                  - var atypedesc = atypes.accountTypeDescription
+                                  option(value=atypeid) #{atypedesc}                                                                                                                
                         .form-group
                           label.form-control-label(for='activedYN') Ativo?
                           .controls
