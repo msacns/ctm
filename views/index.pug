@@ -15,12 +15,13 @@ block content
             .rows
               .card
                   .card-header
-                    | Timeline - ETA
+                    | Linha do Tempo : Clientes x Containers
                   .card-body
                     .chart-wrapper
                       div#visualization
                       div#loading(align='center') loading...
                   .card-footer  
-block scripts                  
+block scripts                 
+  script(src='http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.1/moment-with-locales.min.js')
   script(src='https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js')
   script(src='/javascripts/dashboard.js')                   

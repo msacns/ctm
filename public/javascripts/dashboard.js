@@ -1,11 +1,24 @@
 $(function() {    
+      moment.locale('pt-BR');  
+      var groups = new vis.DataSet();
+      $.ajax({
+        type: "GET",
+        url: "/dashboard/timelinegroups",
+        dataType: "json",
+        contentType: "application/json; charset=UTF-8" 
+      }).done(function ( contrs ) { 
+        $.each(contrs, function(index, value) {            
+            groups.add({id: value.id, content: value.group});
+        }); 
+      });
+      
       $.ajax({
         type: "GET",
         url: "/dashboard/timeline",
         dataType: "json",
         contentType: "application/json; charset=UTF-8" 
       }).done(function ( data ) {  
-        console.log(data);
+        
         // hide the "loading..." message
         document.getElementById('loading').style.display = 'none';
       
@@ -17,7 +30,7 @@ $(function() {
 
         // Configuration for the Timeline
         var options = {
-            locales:{
+           locales:{
                 ctmlocale:{
                     January:'Janeiro',
                     February:'Fevereiro',
@@ -37,23 +50,10 @@ $(function() {
             },
             locale: 'ctmlocale'
         };
-
-        var groups = [
-            {
-                id: 'TCU099807896',
-                content: 'TCU099807896'
-            },
-            {
-                id: 'TCU099807897',
-                content: 'TCU099807897'
-            },
-            {
-                id: 'TCU099807899',
-                content: 'TCU099807899'
-            }
-        ];
-
+        
         // Create a Timeline
-        var timeline = new vis.Timeline(container, items, groups, options);  
+        var timeline = new vis.Timeline(container, items );  
+        timeline.setOptions(options);
+        timeline.setGroups(groups)
       });    
 });

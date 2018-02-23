@@ -53,7 +53,7 @@ block content
                           label.form-control-label(for='password') Senha
                           .controls
                             .input-group
-                              input#password.form-control(name='password',size='16', type='password',  value=pwd, readonly=false) 
+                              input#password.form-control(name='password',size='16', type='password',  value=pwd) 
                         .form-group
                           label.form-control-label(for='genderMF') Genero?
                           .controls
@@ -66,8 +66,10 @@ block content
                           .controls
                             .input-group
                               select#accountType.form-control-sm(name='accountType')
-                                each atypes in acctypes
-                                  option(value='#{atypes.id}', selected=atypes.accountTypeDescription==utype) #{atypes.accountTypeDescription}
+                                each atypes in acctypes 
+                                  - var atypeid = atypes.id;
+                                  - var atypedesc = atypes.accountTypeDescription
+                                  option(value=atypeid, selected=atypes.accountTypeDescription==utype) #{atypedesc}
                         .form-group
                           label.col-md-3.form-control-label(for='activedYN') Ativo?
                           .controls

@@ -174,6 +174,8 @@ router.get('/report/pivot/operations', isLoggedIn, Reports.operations);
 
 // ++++++++++++++++++++++ Dashboard Updates +++++++++++++++++++++++++++
 router.get('/dashboard/timeline', isLoggedIn, Master.showtimeline);
+router.get('/dashboard/timelinegroups', isLoggedIn, Master.showtimelinegroups);
+
 
 module.exports = router;
 
