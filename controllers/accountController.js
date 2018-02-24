@@ -262,7 +262,7 @@ accountController.export2excel = function(req, res) {
             Account.count().exec(function(err, count){                    
                 if(count)    {
                     res.writeHead(200, {
-                        'Content-Disposition': 'attachment; filename="usuários.xlsx"',
+                        'Content-Disposition': 'attachment; filename="usuarios.xlsx"',
                         'Transfer-Encoding': 'chunked',
                         'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
                       });

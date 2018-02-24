@@ -34,7 +34,7 @@ var getOperationFilter = function(query) {
     // }
     // console.log(result);
     return result;
-};
+ };
 
 var reportController = {}
 
