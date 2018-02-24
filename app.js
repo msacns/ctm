@@ -82,9 +82,16 @@ var notAuthorized = {
     status: 403
 };
  
+var notAuthenticated = {
+    flashType: 'error',
+    message: 'Usuário ou senha inválidos',
+    redirect: '/login'
+};
+
 app.set('permission', {
-    role: 'accountType',
-    notAuthorized: notAuthorized 
+    role: 'role',
+    notAuthorized: notAuthorized,
+    notAuthenticated: notAuthenticated 
 });
 
 // Set Service Scope for Intercharge messages

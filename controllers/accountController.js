@@ -152,7 +152,7 @@ accountController.update = function(req, res){
                 username: req.body.username, 
                 fullname: req.body.fullname,
                 email: req.body.email,
-                accountType: req.body.accountType,
+                role: req.body.role,
                 gender: req.body.gender,                
                 active: req.body.active,
                 accountPrefix:initials,
@@ -207,7 +207,7 @@ accountController.save  =   function(req, res){
       username: req.body.username, 
       fullname: req.body.fullname,
       email: req.body.email, 
-      accountType: req.body.accountType,
+      role: req.body.role,
       accountPrefix: initials,      
       gender: req.body.gender,
       active: req.body.active,
@@ -273,7 +273,7 @@ accountController.export2excel = function(req, res) {
                         { header: 'Usuário', key: 'username', width: 32 },
                         { header: 'Nome', key: 'fullname', width: 32 },
                         { header: 'Email', key: 'email', width: 15 },
-                        { header: 'Perfil', key: 'accountType', width: 22},
+                        { header: 'Perfil', key: 'role', width: 22},
                         { header: 'Ativo', key: 'active', width: 10}
                     ];                                        
                     for(i=0;i < count; i++){
@@ -281,7 +281,7 @@ accountController.export2excel = function(req, res) {
                         var desfor = uaccc[i].username;
                         var desnm = uaccc[i].fullname;
                         var cdpais = uaccc[i].email;
-                        var contac = uaccc[i].accountType;
+                        var contac = uaccc[i].role;
                         var ativo = uaccc[i].active==true?'Sim':'Não';
                         
                         worksheet.addRow([codfor, desfor,desnm, cdpais,contac,ativo]).commit();

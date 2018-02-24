@@ -66,9 +66,9 @@ block content
                           .controls
                             .input-group
                               select#role.form-control-sm(name='role')
-                                option(value='Manutenção') Manutenção
-                                option(value='Visualização') Visualização       
-                                option(value='Administração') Administração 
+                                option(value='Manutenção', selected= 'Manutenção'==utype) Manutenção
+                                option(value='Visualização',selected= 'Visualização'==utype) Visualização       
+                                option(value='Administração',selected= 'Administração'==utype) Administração 
                         .form-group
                           label.col-md-3.form-control-label(for='activedYN') Ativo?
                           .controls

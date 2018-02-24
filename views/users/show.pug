@@ -23,7 +23,7 @@ block content
                       - var usernm = accounts.username;
                       - var fullnm = accounts.fullname;
                       - var uemail = accounts.email;
-                      - var utype  = accounts.accountType;
+                      - var utype  = accounts.role;
                       - var pwd     = accounts.password;
                       - var ugender = accounts.gender;
                       - var ativo   = accounts.active;
@@ -64,9 +64,9 @@ block content
                           .controls
                             .input-group
                               select#role.form-control-sm(name='role', disabled=true)
-                                option(value='Manutenção') Manutenção
-                                option(value='Visualização') Visualização       
-                                option(value='Administração') Administração                                                                                                                   
+                                option(value='Manutenção', selected='Manutenção'==utype) Manutenção
+                                option(value='Visualização',selected='Visualização'==utype) Visualização       
+                                option(value='Administração',selected='Administração'==utype) Administração                                                                                                                   
                         .form-group
                           label.col-md-3.form-control-label(for='activedYN') Ativo?
                           .controls

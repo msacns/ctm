@@ -12,13 +12,13 @@ var Operations = require('../controllers/operationController');
 var Reports   = require('../controllers/reportController');
 var Master  = require('../controllers/masterController');
 
-router.get('/', require('permission')(),  isLoggedIn, Master.list);
+router.get('/', require('permission')(['Administração','Visualização','Manutenção']),  isLoggedIn, Master.list);
 
-router.get('/register', function(req, res) {
+router.get('/register', require('permission')(['init']),  function(req, res) {
   res.render('register', {});
 });
 
-router.post('/register', function(req, res, next) {
+router.post('/register', require('permission')(['init']),  function(req, res, next) {
   
   Account.register(new Account({username: req.body.username}), req.body.password, function(err) {
     if (err) {
@@ -33,7 +33,7 @@ router.post('/register', function(req, res, next) {
 });
 
 router.get('/login', function(req, res) {
-  res.render('login', {title: 'CTM [v1.0.1]', user: req.user});
+  res.render('login', {title: 'CTM [v1.0.0]', user: req.user});
 });
 
 router.post('/login', UserAccount.doLogin);
@@ -46,136 +46,136 @@ router.get('/logout', function(req, res) {
 
 // ++++++++++++++++++++++ Suppliers +++++++++++++++++++++++++++
 
-router.get('/suppliers',  isLoggedIn, Supplier.list);
+router.get('/suppliers', require('permission')(['Administração','Manutenção']), isLoggedIn, Supplier.list);
 // Get single user by id
-router.get('/suppliers/show/:id', isLoggedIn, Supplier.show);
+router.get('/suppliers/show/:id',  require('permission')(['Administração','Manutenção']), isLoggedIn, Supplier.show);
 // Create user
-router.get('/suppliers/new', isLoggedIn, Supplier.create);
+router.get('/suppliers/new', require('permission')(['Administração','Manutenção']), isLoggedIn, Supplier.create);
 // Save user
-router.post('/suppliers/save', isLoggedIn, Supplier.save);
+router.post('/suppliers/save',  require('permission')(['Administração','Manutenção']), isLoggedIn, Supplier.save);
 // Edit user
-router.get('/suppliers/edit/:id', isLoggedIn, Supplier.edit);
+router.get('/suppliers/edit/:id',  require('permission')(['Administração','Manutenção']), isLoggedIn, Supplier.edit);
 // Edit user
-router.post('/suppliers/update/:id',isLoggedIn,  Supplier.update);
+router.post('/suppliers/update/:id',  require('permission')(['Administração','Manutenção']), isLoggedIn,  Supplier.update);
 // Delete
-router.post('/suppliers/delete/:id', isLoggedIn, Supplier.delete);
+router.post('/suppliers/delete/:id',  require('permission')(['Administração','Manutenção']), isLoggedIn, Supplier.delete);
 
-router.get('/suppliers/exportxls',  isLoggedIn, Supplier.export2excel);
+router.get('/suppliers/exportxls',  require('permission')(['Administração','Manutenção']),  isLoggedIn, Supplier.export2excel);
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 // ++++++++++++++++++++++ Customers +++++++++++++++++++++++++++
 
-router.get('/customers',  isLoggedIn, Customer.list);
+router.get('/customers',  require('permission')(['Administração','Manutenção']), isLoggedIn, Customer.list);
 // Get single user by id
-router.get('/customers/show/:id', isLoggedIn, Customer.show);
+router.get('/customers/show/:id',  require('permission')(['Administração','Manutenção']), isLoggedIn, Customer.show);
 // Create user
-router.get('/customers/new', isLoggedIn, Customer.create);
+router.get('/customers/new', require('permission')(['Administração','Manutenção']), isLoggedIn, Customer.create);
 // Save user
-router.post('/customers/save', isLoggedIn, Customer.save);
+router.post('/customers/save',  require('permission')(['Administração','Manutenção']), isLoggedIn, Customer.save);
 // Edit user
-router.get('/customers/edit/:id', isLoggedIn, Customer.edit);
+router.get('/customers/edit/:id', require('permission')(['Administração','Manutenção']), isLoggedIn, Customer.edit);
 // Edit user
-router.post('/customers/update/:id',isLoggedIn,  Customer.update);
+router.post('/customers/update/:id', require('permission')(['Administração','Manutenção']),isLoggedIn,  Customer.update);
 // Delete
-router.post('/customers/delete/:id', isLoggedIn, Customer.delete);
+router.post('/customers/delete/:id', require('permission')(['Administração','Manutenção']), isLoggedIn, Customer.delete);
 
-router.get('/customers/exportxls',  isLoggedIn, Customer.export2excel);
+router.get('/customers/exportxls', require('permission')(['Administração','Manutenção']), isLoggedIn, Customer.export2excel);
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 // ++++++++++++++++++++++ Statuses +++++++++++++++++++++++++++
 
-router.get('/statuses',  isLoggedIn, Statuses.list);
+router.get('/statuses',  require('permission')(['Administração','Manutenção']), isLoggedIn, Statuses.list);
 // Get single user by id
-router.get('/statuses/show/:id', isLoggedIn, Statuses.show);
+router.get('/statuses/show/:id', require('permission')(['Administração','Manutenção']), isLoggedIn, Statuses.show);
 // Create user
-router.get('/statuses/new', isLoggedIn, Statuses.create);
+router.get('/statuses/new', require('permission')(['Administração','Manutenção']), isLoggedIn, Statuses.create);
 // Save user
-router.post('/statuses/save', isLoggedIn, Statuses.save);
+router.post('/statuses/save', require('permission')(['Administração','Manutenção']), isLoggedIn, Statuses.save);
 // Edit user
-router.get('/statuses/edit/:id', isLoggedIn, Statuses.edit);
+router.get('/statuses/edit/:id', require('permission')(['Administração','Manutenção']), isLoggedIn, Statuses.edit);
 // Edit user
-router.post('/statuses/update/:id',isLoggedIn,  Statuses.update);
+router.post('/statuses/update/:id', require('permission')(['Administração','Manutenção']),isLoggedIn,  Statuses.update);
 // Delete
-router.post('/statuses/delete/:id', isLoggedIn, Statuses.delete);
+router.post('/statuses/delete/:id', require('permission')(['Administração','Manutenção']), isLoggedIn, Statuses.delete);
 
-router.get('/statuses/exportxls',  isLoggedIn, Statuses.export2excel);
+router.get('/statuses/exportxls',  require('permission')(['Administração','Manutenção']), isLoggedIn, Statuses.export2excel);
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 // ++++++++++++++++++++++ User Account +++++++++++++++++++++++++++
 
-router.get('/users',  isLoggedIn, UserAccount.list);
+router.get('/users',  require('permission')(['Administração']), isLoggedIn, UserAccount.list);
 // Get single user by id
-router.get('/users/show/:id', isLoggedIn, UserAccount.show);
+router.get('/users/show/:id',  require('permission')(['Administração']),isLoggedIn, UserAccount.show);
 // Create user
-router.get('/users/new', isLoggedIn, UserAccount.create);
+router.get('/users/new',  require('permission')(['Administração']),isLoggedIn, UserAccount.create);
 // Save user
-router.post('/users/save', isLoggedIn, UserAccount.save);
+router.post('/users/save',  require('permission')(['Administração']),isLoggedIn, UserAccount.save);
 // Edit user
-router.get('/users/edit/:id', isLoggedIn, UserAccount.edit);
+router.get('/users/edit/:id',  require('permission')(['Administração']),isLoggedIn, UserAccount.edit);
 // Edit user
-router.post('/users/update/:id',isLoggedIn,  UserAccount.update);
+router.post('/users/update/:id', require('permission')(['Administração']),isLoggedIn,  UserAccount.update);
 // Delete
-router.post('/users/delete/:id', isLoggedIn, UserAccount.delete);
+router.post('/users/delete/:id', require('permission')(['Administração']), isLoggedIn, UserAccount.delete);
 
-router.get('/users/exportxls',  isLoggedIn, UserAccount.export2excel);
+router.get('/users/exportxls',  require('permission')(['Administração']), isLoggedIn, UserAccount.export2excel);
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 // ++++++++++++++++++++++ Operations Account +++++++++++++++++++++++++++
 
-router.get('/operations',  isLoggedIn, Operations.list);
+router.get('/operations', require('permission')(['Administração','Manutenção']),  isLoggedIn, Operations.list);
 // Get single user by id
-router.get('/operations/show/:id', isLoggedIn, Operations.show);
+router.get('/operations/show/:id', require('permission')(['Administração','Manutenção']),isLoggedIn, Operations.show);
 // Create user
-router.get('/operations/new', isLoggedIn, Operations.create);
+router.get('/operations/new', require('permission')(['Administração','Manutenção']), isLoggedIn, Operations.create);
 // Save user
-router.post('/operations/save', isLoggedIn, Operations.save);
+router.post('/operations/save',require('permission')(['Administração','Manutenção']), isLoggedIn, Operations.save);
 // Edit user
-router.get('/operations/edit/:id', isLoggedIn, Operations.edit);
+router.get('/operations/edit/:id',require('permission')(['Administração','Manutenção']), isLoggedIn, Operations.edit);
 // Edit user
-router.post('/operations/update/:id',isLoggedIn,  Operations.update);
+router.post('/operations/update/:id',require('permission')(['Administração','Manutenção']),isLoggedIn,  Operations.update);
 // Delete
-router.post('/operations/delete/:id', isLoggedIn, Operations.delete);
+router.post('/operations/delete/:id',require('permission')(['Administração','Manutenção']), isLoggedIn, Operations.delete);
 
-router.get('/operations/exportxls',  isLoggedIn, Operations.export2excel);
+router.get('/operations/exportxls', require('permission')(['Administração','Manutenção']), isLoggedIn, Operations.export2excel);
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 // ++++++++++++++++++++++ Report Operations Grid +++++++++++++++++++++++++++
 // View List
-router.get('/report/operation',  isLoggedIn, Reports.operationsshow);
+router.get('/report/operation',require('permission')(['Administração','Visualização']),  isLoggedIn, Reports.operationsshow);
 // loadData
-router.get('/report/operations',  isLoggedIn, Reports.operationslist);
+router.get('/report/operations',require('permission')(['Administração','Visualização']),  isLoggedIn, Reports.operationslist);
 // Excel
-router.get('/report/exportxls',  isLoggedIn, Reports.export2excel);
+router.get('/report/exportxls',require('permission')(['Administração','Visualização']),  isLoggedIn, Reports.export2excel);
 // // updateItem
 // router.put('/report/operations',  isLoggedIn, Reports.operationsupdate);
 // // deleteItem
 // router.delete('/report/operations',  isLoggedIn, Reports.operationsdelete);
 
 // View List
-router.get('/report/pivot', require('permission')(['admin']), isLoggedIn, Reports.pivot);
+router.get('/report/pivot', require('permission')(['Administração','Visualização']), isLoggedIn, Reports.pivot);
 
 // View Customers
-router.get('/report/pivot/customers', isLoggedIn, Reports.customers);
+router.get('/report/pivot/customers',require('permission')(['Administração','Visualização']), isLoggedIn, Reports.customers);
 
 // View Status
-router.get('/report/pivot/status', isLoggedIn, Reports.status);
+router.get('/report/pivot/status',require('permission')(['Administração','Visualização']), isLoggedIn, Reports.status);
 
 // View Suppliers
-router.get('/report/pivot/suppliers', isLoggedIn, Reports.suppliers);
+router.get('/report/pivot/suppliers',require('permission')(['Administração','Visualização']), isLoggedIn, Reports.suppliers);
 
 // View Operations
-router.get('/report/pivot/operations', isLoggedIn, Reports.operations);
+router.get('/report/pivot/operations',require('permission')(['Administração','Visualização']), isLoggedIn, Reports.operations);
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 // ++++++++++++++++++++++ Dashboard Updates +++++++++++++++++++++++++++
-router.get('/dashboard/timeline', isLoggedIn, Master.showtimeline);
-router.get('/dashboard/timelinegroups', isLoggedIn, Master.showtimelinegroups);
+router.get('/dashboard/timeline',require('permission')(['Administração','Visualização','Manutenção']), isLoggedIn, Master.showtimeline);
+router.get('/dashboard/timelinegroups', require('permission')(['Administração','Visualização','Manutenção']), isLoggedIn, Master.showtimelinegroups);
 
 
 // ++++++++++++++++++++++ Errors +++++++++++++++++++++++++++
