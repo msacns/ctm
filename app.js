@@ -12,7 +12,7 @@ var config        = require('./config/config')[env];
 var passport      = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var helpers       = require('view-helpers');
-
+var acl           = require('acl');
 
 global.config = config;
 global.version = '1.0.0';
@@ -29,6 +29,14 @@ app.set('view engine', 'pug');
 mongoose.Promise = global.Promise;
 mongoose.connect(config.db);
 mongoose.connection.on('connected', () => {
+    
+    // Init ACL on Mongoose
+    acl = new acl(new acl.mongodbBackend(mongoose.connection.db, "acl_"));
+    
+    // Defining roles and routes
+    set_roles();
+    set_routes();
+
     return console.log('Mongoose conectado');
 });
 mongoose.connection.on('disconnected', () => {
@@ -95,3 +103,71 @@ app.use(function(err, req, res, next) {
 
 
 module.exports = app;
+
+// This creates a set of roles which have permissions on
+//  different resources.
+function set_roles() {
+  
+      // Define roles, resources and permissions
+      acl.allow([
+          {
+              roles: 'A',
+              allows: [
+                  { resources: '/dashboard', permissions: '*' }
+              ]
+          }, {
+              roles: 'C',
+              allows: [
+                  { resources: '/users', permissions: '*' }
+              ]
+          }, {
+              roles: 'B',
+              allows: []
+          }
+      ]);
+  
+      // Inherit roles
+      //  Every user is allowed to do what guests do
+      //  Every admin is allowed to do what users do
+      acl.addRoleParents( 'A', 'guest' );
+      acl.addRoleParents( 'B', 'guest' );
+      acl.addRoleParents( 'C', 'user' );
+  }
+// Defining routes ( resources )
+function set_routes() {
+  
+      // Simple overview of granted permissions
+      app.get( '/info',
+          function( request, response, next ) {   
+              acl.allowedPermissions( get_user_id(), [ '/info', '/secret', '/topsecret' ], function( error, permissions ){
+                  response.json( permissions );
+              });
+          }
+      );
+  
+      // Only for users and higher
+      app.get( '/secret', acl.middleware( 1, get_user_id ),
+          function( request, response, next ) {
+              response.send( 'Welcome Sir!' );
+          }
+      );
+  
+      // Only for admins
+      app.get( '/topsecret', acl.middleware( 1, get_user_id ),
+          function( request, response, next ) {
+              response.send( 'Hi Admin!' );
+          }
+      );
+  
+      // Setting a new role
+      app.get( '/allow/:user/:role', function( request, response, next ) {
+          acl.addUserRoles( request.params.user, request.params.role );
+          response.send( request.params.user + ' is a ' + request.params.role );
+      });
+  
+      // Unsetting a role
+      app.get( '/disallow/:user/:role', function( request, response, next ) {
+          acl.removeUserRoles( request.params.user, request.params.role );
+          response.send( request.params.user + ' is not a ' + request.params.role + ' anymore.' );
+      });
+  }
