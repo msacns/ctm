@@ -21,7 +21,10 @@ var Account = new Schema({
         type: String,
         required: true
     },
-    accountType: { type: Schema.Types.ObjectId, ref: 'nd_accounttypes' },
+    accountType: {
+        type: String,
+        required: true
+    },
     gender: String,
     accountPrefix: String,
     active: Boolean,

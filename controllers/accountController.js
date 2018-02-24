@@ -3,7 +3,6 @@ var mongoose        = require('mongoose');
 var passport        = require('passport');
 var Account         = require('../models/Account');
 var Countries       = require('../models/Countries');
-var AccountType     = require('../models/AccountType'); 
 /*
 ExcelJS
 */
@@ -30,6 +29,7 @@ accountController.doLogin = function(req, res, next) {
         if (loginErr) { 
             return next(loginErr); 
         }
+        
         return res.redirect('/');
       });
     })(req, res, next);
@@ -48,12 +48,7 @@ accountController.list = function(req, res) {
     };
     
     Account
-        .find()          
-        .populate({
-            path:'accountType', 
-            select:'accountTypeDescription',
-            options: { sort: { $natural: -1 }}
-          })    
+        .find()   
         .limit(limit)
         .skip(limit * page)
         .exec(function(err, siti){       
@@ -86,11 +81,9 @@ accountController.list = function(req, res) {
 
 accountController.create = function(req, res){   
     try {
-        AccountType
-            .find()
-            .exec(function(err, acctp){
-                res.render('users/new', { title: 'CTM [v1.0.0] - Novo Usuário', user: req.user, acctypes: acctp });              
-        });         
+        
+     res.render('users/new', { title: 'CTM [v1.0.0] - Novo Usuário', user: req.user });              
+                 
     } catch ( err ) {                
         res.render('errors/500', {message:'Erro interno, favor informar o administrador!Detalhe do erro:'+err});    
     };
@@ -112,15 +105,10 @@ accountController.show = function(req, res){
                             break;
                     }   
                 } else {                     
-                    AccountType
-                    .find().exec(function(err, acctp){
-                      if (err) {                   
-                          req.flash('alert-danger', "Erro ao Exibir:"+ err);                            
-                        } else {  
+                   
                             req.flash('alert-info', 'Dados salvos com sucesso!'); 
-                            res.render('users/show', {accounts: actuser, user: req.user, acctypes: acctp});
-                        };
-                    });   
+                            res.render('users/show', {accounts: actuser, user: req.user});
+                         
                 }
             });
     } else {    
@@ -141,14 +129,9 @@ accountController.edit = function(req, res){
                  break;
           };   
         } else {    
-            AccountType
-              .find().exec(function(err, acctp){
-                if (err) {                   
-                    req.flash('alert-danger', "Erro ao editar:"+ err);                            
-                  } else {  
-                    res.render('users/edit', {uaccount: accuser, user: req.user, acctypes: acctp});
-                  };
-              });                
+           
+                    res.render('users/edit', {uaccount: accuser, user: req.user});
+                           
         };
       });
   };
@@ -188,14 +171,9 @@ accountController.update = function(req, res){
                  req.flash('alert-danger', "Erro ao atualizar:"+ err);  
                  break;
           }             
-          AccountType
-            .find().exec(function(err, acctp){
-                if (err) {                   
-                    req.flash('alert-danger', "Erro ao atualizar:"+ err);                            
-                } else {  
-                    res.render('users/edit', {uaccount:uacc,user: req.user, acctypes: acctp});
-                };
-            });  
+           
+          res.render('users/edit', {uaccount:uacc,user: req.user});
+               
         }else{
             Account.findByUsername(uacc.username).then(function(sanitizedUser){
                     if (sanitizedUser){
@@ -208,14 +186,9 @@ accountController.update = function(req, res){
                         req.flash('alert-danger', 'Falha ao definir o usuario para troca a senha. Favor contactar o Administrado.') 
                     }          
                 },function(uerr){
-                  AccountType
-                    .find().exec(function(err, acctp){
-                        if (err) {                   
-                            req.flash('alert-danger', "Erro ao atualizar:"+ uerr);                            
-                        } else {  
-                            res.render('users/edit', {uaccount:uacc,user: req.user, acctypes: acctp});
-                        };
-                    });
+                 
+                 res.render('users/edit', {uaccount:uacc,user: req.user});
+                      
             })       
             
         };
@@ -252,14 +225,9 @@ accountController.save  =   function(req, res){
                req.flash('alert-danger', "Erro ao salvar:"+ err);  
                break;
         }           
-        AccountType
-        .find().exec(function(err, acctp){
-          if (err) {                   
-              req.flash('alert-danger', "Erro ao editar:"+ err);                            
-            } else {  
-              res.render('users/edit', {uaccount: req.body,user: req.user, acctypes: acctp});
-            };
-        });  
+        
+        res.render('users/edit', {uaccount: req.body,user: req.user});
+          
       } else {          
         req.flash('alert-info', 'Dados salvos com sucesso!');  
         res.redirect('/users/show/'+user._id);
@@ -305,7 +273,7 @@ accountController.export2excel = function(req, res) {
                         { header: 'Usuário', key: 'username', width: 32 },
                         { header: 'Nome', key: 'fullname', width: 32 },
                         { header: 'Email', key: 'email', width: 15 },
-                        { header: 'Tipo', key: 'accountType', width: 22},
+                        { header: 'Perfil', key: 'accountType', width: 22},
                         { header: 'Ativo', key: 'active', width: 10}
                     ];                                        
                     for(i=0;i < count; i++){

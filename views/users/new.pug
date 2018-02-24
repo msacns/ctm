@@ -46,14 +46,13 @@ block content
                                 option(value='Masculino') Masculino
                                 option(value='Feminino') Feminino 
                         .form-group
-                          label.form-control-label(for='lbltype') Tipo
+                          label.form-control-label(for='lbltype') Perfil
                           .controls
                             .input-group
                               select#accountType.form-control-sm(name='accountType')
-                                each atypes in acctypes
-                                  - var atypeid = atypes.id;
-                                  - var atypedesc = atypes.accountTypeDescription
-                                  option(value=atypeid) #{atypedesc}                                                                                                                
+                                option(value='A') Manutenção Geral
+                                option(value='B') Visualização       
+                                option(value='C') Administrador                                                                                                          
                         .form-group
                           label.form-control-label(for='activedYN') Ativo?
                           .controls

@@ -2,6 +2,7 @@ var passport = require('passport');
 var express = require('express');
 var router = express.Router();
 
+
 var Account = require('../models/Account');
 var Supplier = require('../controllers/supplierController');
 var Customer = require('../controllers/customerController');
@@ -18,7 +19,7 @@ router.get('/register', function(req, res) {
 });
 
 router.post('/register', function(req, res, next) {
-  console.log('registering user');
+  
   Account.register(new Account({username: req.body.username}), req.body.password, function(err) {
     if (err) {
       console.log('error while user register!', err);
@@ -157,7 +158,7 @@ router.get('/report/exportxls',  isLoggedIn, Reports.export2excel);
 // router.delete('/report/operations',  isLoggedIn, Reports.operationsdelete);
 
 // View List
-router.get('/report/pivot', isLoggedIn, Reports.pivot);
+router.get('/report/pivot', require('permission')(['admin']), isLoggedIn, Reports.pivot);
 
 // View Customers
 router.get('/report/pivot/customers', isLoggedIn, Reports.customers);
@@ -175,6 +176,8 @@ router.get('/report/pivot/operations', isLoggedIn, Reports.operations);
 // ++++++++++++++++++++++ Dashboard Updates +++++++++++++++++++++++++++
 router.get('/dashboard/timeline', isLoggedIn, Master.showtimeline);
 router.get('/dashboard/timelinegroups', isLoggedIn, Master.showtimelinegroups);
+
+
 
 
 module.exports = router;

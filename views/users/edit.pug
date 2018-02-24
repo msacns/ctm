@@ -66,10 +66,9 @@ block content
                           .controls
                             .input-group
                               select#accountType.form-control-sm(name='accountType')
-                                each atypes in acctypes 
-                                  - var atypeid = atypes.id;
-                                  - var atypedesc = atypes.accountTypeDescription
-                                  option(value=atypeid, selected=atypes.accountTypeDescription==utype) #{atypedesc}
+                                option(value='A',selected='A'==utype) Manutenção Geral
+                                option(value='B',selected='B'==utype) Visualização       
+                                option(value='C',selected='C'==utype) Administrador
                         .form-group
                           label.col-md-3.form-control-label(for='activedYN') Ativo?
                           .controls
