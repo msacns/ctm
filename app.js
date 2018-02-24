@@ -83,7 +83,7 @@ var notAuthorized = {
 };
  
 app.set('permission', {
-    role: 'A',
+    role: 'accountType',
     notAuthorized: notAuthorized 
 });
 

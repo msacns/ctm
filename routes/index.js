@@ -12,7 +12,7 @@ var Operations = require('../controllers/operationController');
 var Reports   = require('../controllers/reportController');
 var Master  = require('../controllers/masterController');
 
-router.get('/',  isLoggedIn, Master.list);
+router.get('/', require('permission')(),  isLoggedIn, Master.list);
 
 router.get('/register', function(req, res) {
   res.render('register', {});
@@ -178,6 +178,10 @@ router.get('/dashboard/timeline', isLoggedIn, Master.showtimeline);
 router.get('/dashboard/timelinegroups', isLoggedIn, Master.showtimelinegroups);
 
 
+// ++++++++++++++++++++++ Errors +++++++++++++++++++++++++++
+router.get('/errors/403', function(req, res) {
+  res.render('errors/403');
+});
 
 
 module.exports = router;

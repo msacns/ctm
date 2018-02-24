@@ -23,7 +23,7 @@ block content
                       - var usernm = uaccount.username;
                       - var fullnm = uaccount.fullname;
                       - var uemail = uaccount.email;
-                      - var utype  = uaccount.accountType;
+                      - var utype  = uaccount.role;
                       - var pwd     = uaccount.password;
                       - var ugender = uaccount.gender;
                       - var ativo   = uaccount.active;
@@ -65,10 +65,10 @@ block content
                           label.form-control-label(for='lbltype') Tipo
                           .controls
                             .input-group
-                              select#accountType.form-control-sm(name='accountType')
-                                option(value='A',selected='A'==utype) Manutenção Geral
-                                option(value='B',selected='B'==utype) Visualização       
-                                option(value='C',selected='C'==utype) Administrador
+                              select#role.form-control-sm(name='role')
+                                option(value='Manutenção') Manutenção
+                                option(value='Visualização') Visualização       
+                                option(value='Administração') Administração 
                         .form-group
                           label.col-md-3.form-control-label(for='activedYN') Ativo?
                           .controls

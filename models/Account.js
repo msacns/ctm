@@ -21,7 +21,7 @@ var Account = new Schema({
         type: String,
         required: true
     },
-    accountType: {
+    role: {
         type: String,
         required: true
     },
